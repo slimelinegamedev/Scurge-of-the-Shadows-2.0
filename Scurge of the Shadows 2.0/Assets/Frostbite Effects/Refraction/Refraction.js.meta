@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 85bb6cbaf3816480cb3da7eeef6e0a88
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Mat: {fileID: 2100000, guid: 6ae514ec100e74a47814fd3cf2532c60, type: 2}
+  - matShader: {fileID: 4800000, guid: d627da8653f3b4cf7a3667dcc8856c53, type: 3}
+  - newTex: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

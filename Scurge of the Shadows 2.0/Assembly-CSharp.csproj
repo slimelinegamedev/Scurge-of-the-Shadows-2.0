@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{770AE2D4-8551-9EBF-BDDD-1FD4B3FE7865}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+	<BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_5_0;UNITY_4_5;UNITY_STANDALONE_OSX;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_GAMECENTER;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_OSX</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="System.Xml.Linq" />
+	<Reference Include="UnityEngine">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\BSGTools\Components\2D\CollectMouseData.cs" />
+     <Compile Include="Assets\BSGTools\Components\2D\ParallaxDisplay\ParallaxDisplay.cs" />
+     <Compile Include="Assets\BSGTools\Components\2D\ParallaxDisplay\ParallaxScroller.cs" />
+     <Compile Include="Assets\BSGTools\Components\2D\ParallaxDisplay\Rotorz\Reorderable List Field\Demo\DemoBehaviour.cs" />
+     <Compile Include="Assets\BSGTools\Components\AudioBank.cs" />
+     <Compile Include="Assets\BSGTools\Components\ExternalConsole.cs" />
+     <Compile Include="Assets\BSGTools\Components\InGameDebugWindow.cs" />
+     <Compile Include="Assets\BSGTools\Components\InputMaster.cs" />
+     <Compile Include="Assets\BSGTools\Components\Lerper.cs" />
+     <Compile Include="Assets\BSGTools\MonoEvent\MonoEvent.cs" />
+     <Compile Include="Assets\BSGTools\Shaders\ShaderScripts\MirrorReflection3.cs" />
+     <Compile Include="Assets\BSGTools\Utilities\UnityUtils.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\FirstPersonDrifter.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\LockMouse.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\MouseLook.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\Optional\CameraFadeOnStart.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\Optional\CameraZoom.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\Optional\CheckIfBelowLevel.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\Optional\HeadBob.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\Optional\PauseMenu.cs" />
+     <Compile Include="Assets\First Person Drifter Controller\Scripts\Utils\CameraFade.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\AA.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\Bloom.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\Blur.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\ColorBalance.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\DepthOfField.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\FisheyeEffect.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\GodRays.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\IndieEffects.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\Negative.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\Outline.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\SSAOTest.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\StarBloom.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\TextureScale.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\VignetteBlur.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\_Depth.cs" />
+     <Compile Include="Assets\IndieEffects\CSharp\_Normals.cs" />
+     <Compile Include="Assets\LeanTween\Plugins\LeanTween.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\FriendInfo.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\LoadbalancingPeer.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\NetworkingPeer.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonClasses.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonHandler.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonLagSimulationGui.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonNetwork.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonPlayer.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonStatsGui.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonView.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\PingCloudRegions.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\RPC.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\Room.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\RoomInfo.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\RpcIndexComponent.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\ServerSettings.cs" />
+     <Compile Include="Assets\Photon Unity Networking\Plugins\PhotonNetwork\SocketUdp.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\ConnectAndJoinRandom.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\InRoomChat.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\InputToEvent.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\ManualPhotonViewAllocator.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\MoveByKeys.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\OnAwakeUsePhotonView.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\OnClickDestroy.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\OnClickInstantiate.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\OnClickLoadSomething.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\PointedAtGameObjectInfo.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\ServerTime.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\SmoothSyncMovement.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\TestDontDestroyOnLoad.cs" />
+     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\TimeKeeper.cs" />
+     <Compile Include="Assets\Resources\Glitch Effect\GlitchEffect.cs" />
+     <Compile Include="Assets\Scripts(Mine)\AI.cs" />
+     <Compile Include="Assets\Scripts(Mine)\BrickTexture.cs" />
+     <Compile Include="Assets\Scripts(Mine)\CombineChildren.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Culling.cs" />
+     <Compile Include="Assets\Scripts(Mine)\DestroyOnHit.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Dialogue.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Disable.cs" />
+     <Compile Include="Assets\Scripts(Mine)\DroppedItem.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Dungeon.cs" />
+     <Compile Include="Assets\Scripts(Mine)\EnemyStats.cs" />
+     <Compile Include="Assets\Scripts(Mine)\HealthVariables.cs" />
+     <Compile Include="Assets\Scripts(Mine)\HeldItem.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Inventory.cs" />
+     <Compile Include="Assets\Scripts(Mine)\ItemDefinition.cs" />
+     <Compile Include="Assets\Scripts(Mine)\ItemList.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Lava.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Look.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Menu.cs" />
+     <Compile Include="Assets\Scripts(Mine)\MeshCombine.cs" />
+     <Compile Include="Assets\Scripts(Mine)\MeshCombineUtility.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Music.cs" />
+     <Compile Include="Assets\Scripts(Mine)\NextFloor.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Objects.cs" />
+     <Compile Include="Assets\Scripts(Mine)\SPLineModule.cs" />
+     <Compile Include="Assets\Scripts(Mine)\SaveObject.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Spawner.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Stats.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Tile.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Version.cs" />
+     <Compile Include="Assets\Scripts(Mine)\Wander.cs" />
+     <Compile Include="Assets\Scripts(Mine)\iTween Scripts\HiddenDoor.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\AddSomeForce.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\AdditionalData.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\AdditionalDataStorage.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\ArrayOfPrefabs.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\CentreAndPointMe.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\ChangeColor.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\ColorMe.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\CreateChildSphere.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\CreateTexture.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\DeleteComponent.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\DeletedComponent.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\IsDeserializing.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\KeepAReference.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\OpenDoor.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\RenameObject.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\SaveAndLoad.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\SaveAndLoadToServer.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\SaveAndReload.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\ScaleObject.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\SwitchMesh.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\TestCoroutines.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\TestJSON.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\TestLoading.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\TestSerialization.cs" />
+     <Compile Include="Assets\UnitySerializer\Scripts\VariablesToSave.cs" />
+     <None Include="Assets\Frostbite Effects\BloomFlares\DirtyBloomFlares.shader" />
+     <None Include="Assets\Shaders\TextMesh.shader" />
+     <None Include="Assets\Plugins\OpenGUI\Shaders\UnlitAlphaColored.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\ColorBalance.shader" />
+     <None Include="Assets\IndieEffects\AA Shaders\FXAA3Console.shader" />
+     <None Include="Assets\Plugins\release_history.txt" />
+     <None Include="Assets\IndieEffects\ShaderDir\DOFShader - BoxBlur.shader" />
+     <None Include="Assets\LeanTween\LeanTween-ReadMe.txt" />
+     <None Include="Assets\IndieEffects\ShaderDir\FisheyeShader.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\_Depth.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\Outline.shader" />
+     <None Include="Assets\Resources\Glitch Effect\Glitch.shader" />
+     <None Include="Assets\Frostbite Effects\Refraction\ImageRefractionEffect.shader" />
+     <None Include="Assets\First Person Drifter Controller\info.txt" />
+     <None Include="Assets\IndieEffects\ShaderDir\BlurShader - Simple.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\_DepthNormals.shader" />
+     <None Include="Assets\IndieEffects\AA Shaders\FXAA2.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\StarBloom.shader" />
+     <None Include="Assets\BSGTools\Components\2D\ParallaxDisplay\Rotorz\Reorderable List Field\README.txt" />
+     <None Include="Assets\IndieEffects\AA Shaders\FXAAPreset2.shader" />
+     <None Include="Assets\Plugins\OpenGUI\Shaders\UnlitVertexColored.shader" />
+     <None Include="Assets\Plugins\whydoidoit.com\license.txt" />
+     <None Include="Assets\IndieEffects\ShaderDir\_Depth_Corrected.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\SSAOTest.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\Vignette.shader" />
+     <None Include="Assets\Frostbite Effects\BloomFlares\BloomFlares.shader" />
+     <None Include="Assets\Plugins\OpenGUI\Shaders\3DText.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\MotionBlurAlphaBlended.shader" />
+     <None Include="Assets\Frostbite Effects\FilmicTonemap\FT.shader" />
+     <None Include="Assets\BSGTools\Shaders\3D Text Shader.shader" />
+     <None Include="Assets\Frostbite Effects\Bloom\BloomShaderCurve.shader" />
+     <None Include="Assets\IndieEffects\AA Shaders\FXAAPreset3.shader" />
+     <None Include="Assets\IndieEffects\AA Shaders\SSAA.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\negative.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\DOFShader.shader" />
+     <None Include="Assets\Plugins\OpenGUI\Shaders\UnlitClipped.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\BloomShader.shader" />
+     <None Include="Assets\BSGTools\Components\2D\ParallaxDisplay\Rotorz\Reorderable List Field\LICENSE.txt" />
+     <None Include="Assets\Photon Unity Networking\readme.txt" />
+     <None Include="Assets\IndieEffects\ShaderDir\IndieRadialBlur.shader" />
+     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
+     <None Include="Assets\IndieEffects\ShaderDir\BlurShader - Gaussian.shader" />
+     <None Include="Assets\IndieEffects\ShaderDir\GodRays.shader" />
+     <None Include="Assets\Frostbite Effects\BCSVeffect\BCS.shader" />
+     <None Include="Assets\IndieEffects\AA Shaders\DLAA.shader" />
+     <None Include="Assets\IndieEffects\AA Shaders\NFAA.shader" />
+     <None Include="Assets\BSGTools\Shaders\MirrorReflection3.shader" />
+     <None Include="Assets\UnitySerializer\readme.txt" />
+     <None Include="Assets\Photon Unity Networking\changelog.txt" />
+     <None Include="Assets\BSGTools\Components\2D\ParallaxDisplay\Rotorz\Reorderable List Field\Editor\Editor.ReorderableList.xml" />
+ <Reference Include="Photon3Unity3D">
+ <HintPath>/Users/Seth/Development/Scurge-of-the-Shadows-2.0/Scurge of the Shadows 2.0/Assets/Plugins/Photon3Unity3D.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{40BF9E76-DF2B-5D03-A56D-5DD01E6C69BA}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
+      <Project>{3FA84217-2073-E484-470F-5ABA00289E8A}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

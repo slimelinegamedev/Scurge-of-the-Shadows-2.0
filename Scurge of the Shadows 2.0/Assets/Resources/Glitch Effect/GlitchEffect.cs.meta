@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: dbab62ac1779446c483d2e7e177fb7c6
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - displacementMap: {instanceID: 0}
+  - material: {instanceID: 0}
+  - glitchShader: {fileID: 4800000, guid: 7e7ddc56cf283481b8b9a34b8a82794a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
