@@ -1,2 +1,2 @@
-Scurge-of-the-Shadows-2.0
+Scurge of the Shadows 2.0
 =========================
