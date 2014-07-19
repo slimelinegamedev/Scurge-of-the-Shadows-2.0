@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Scurge.Player;
 using Scurge.Util;
 using Scurge.Enemy;
+using Scurge.Scoreboard;
+using Scurge.Environment;
 
 namespace Scurge.Player {
 	public class Stats : MonoBehaviour {
@@ -11,6 +13,8 @@ namespace Scurge.Player {
 		public Objects Objects;
 		public Disable Disable;
 		public Inventory Inventory;
+		public Dungeon Dungeon;
+		public Highscore Highscore;
 
 		public int Health;
 		public int Gold;
@@ -31,7 +35,7 @@ namespace Scurge.Player {
 		public GUISkin Skin;
 
 		void Start() {
-
+			Highscore = GameObject.Find("Highscore").GetComponent<Highscore>();
 		}
 
 		void Update() {
@@ -88,6 +92,7 @@ namespace Scurge.Player {
 		public void Die() {
 			Dead = true;
 			Disable.DisableObj(true);
+			Highscore.add("Player1", Dungeon.Floor, Gold, "SOMETHING");
 			Objects.Player.transform.position = new Vector3(-1000000, -1000000, -1000000);
 		}
 
