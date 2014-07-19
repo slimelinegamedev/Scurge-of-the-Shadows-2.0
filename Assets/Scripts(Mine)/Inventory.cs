@@ -66,7 +66,6 @@ namespace Scurge.Player {
 		public int FirstOpenSlot;
 		public bool Full = false;
 		public int ActiveItem;
-		public Texture2D handTexture;
 		public GUISkin Skin;
 
 		public List<Item> Items;
@@ -76,6 +75,7 @@ namespace Scurge.Player {
 		public List<GameObject> ItemObjects;
 		public List<GameObject> ThrownObjects;
 		public List<Texture2D> InventoryTextures;
+		public List<Texture2D> EquippingEmptyTextures;
 		//Variables for other item types
 		public List<Ring> RingTypes;
 		public List<int> DefenseAmounts;
@@ -214,6 +214,14 @@ namespace Scurge.Player {
 
 		public void ApplyStats() {
 			//Ring stats application
+			//Temporary reset method
+			Stats.MaxHealth = 10;
+			if(Stats.Health >= Stats.MaxHealth) {
+				Stats.Health = Stats.MaxHealth;
+			}
+			Stats.Magic = 0;
+			Stats.Defense = 0;
+			Stats.Attack = 0;
 			for(int allRings = 0; allRings < RingTypes.Count; allRings++) {
 				if(RingTypes[allRings] != Ring.None) {
 					if(RingTypes[allRings] == Ring.Attack) {
@@ -221,32 +229,23 @@ namespace Scurge.Player {
 							Stats.Attack = StatsAmounts[allRings];
 						}
 					}
-					else {
-						Stats.Attack = 0;
-					}
 					if(RingTypes[allRings] == Ring.Defense) {
 						if(EquippedItems[2] == (Item)allRings) {
 							Stats.Defense = StatsAmounts[allRings];
 						}
-					}
-					else {
-						Stats.Defense = 0;
 					}
 					if(RingTypes[allRings] == Ring.Magic) {
 						if(EquippedItems[2] == (Item)allRings) {
 							Stats.Magic = StatsAmounts[allRings];
 						}
 					}
-					else {	
-						Stats.Magic = 0;
-					}
 					if(RingTypes[allRings] == Ring.Health) {
 						if(EquippedItems[2] == (Item)allRings) {
 							Stats.MaxHealth = StatsAmounts[allRings];
+							if(Stats.Health == Stats.MaxHealth) {
+								Stats.Health = StatsAmounts[allRings];
+							}
 						}
-					}
-					else {
-						Stats.MaxHealth = 10;
 					}
 				}
 			}
@@ -431,7 +430,19 @@ namespace Scurge.Player {
 					GUI.Label(new Rect(780 - SubtractionX, 420 - SubtractionY, 128, 64), "Gold: " + Stats.Gold);
 
 					if(EquippedItems[0] == Item.None) {
-			 			GUI.DrawTexture(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), handTexture);
+			 			GUI.DrawTexture(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[0]);
+					}
+					if(EquippedItems[1] == Item.None) {
+			 			GUI.DrawTexture(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[1]);
+					}
+					if(EquippedItems[2] == Item.None) {
+			 			GUI.DrawTexture(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[2]);
+					}
+					if(EquippedItems[3] == Item.None) {
+			 			GUI.DrawTexture(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[3]);
+					}
+					if(EquippedItems[4] == Item.None) {
+			 			GUI.DrawTexture(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[4]);
 					}
 
 					//Tooltips

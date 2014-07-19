@@ -12,9 +12,12 @@ using Scurge.AI;
 namespace Scurge.Environment {
 	public class NextFloor : MonoBehaviour {
 		public Dungeon Dungeon;
+		public Spawner Spawner;
 
 		void OnTriggerEnter(Collider collider) {
 			if(collider.gameObject.tag == "Player") {
+				Spawner.MinSpawns += 5;
+				Spawner.MaxSpawns += Random.Range(5, 10);
 				Dungeon.OutterGeneration();
 			}
 		}
