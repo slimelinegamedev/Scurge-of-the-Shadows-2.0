@@ -260,9 +260,6 @@ namespace Scurge.Player {
 				Screen.showCursor = true;
 				Screen.lockCursor = false;
 			}
-			if(Input.GetKeyDown(KeyCode.R)) {
-				ThrowItem(Item.SwordTough);
-			}
 			FindSlot();
 			EquipItems();
 			ApplyStats();

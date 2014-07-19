@@ -1,0 +1,13 @@
+Indev 0.1.1
+Fixed several bugs
+Added chests
+Added textures for inventory equipping slots when empty
+Added 2 new tiles
+Added naturally spawning glow blocks in tiles
+Added controls.txt to the games download folder
+Added changelog.txt to the games download folder
+Removed left over testing code from previous release
+Added 3 items
+
+Indev 0.1.0
+Initial game release

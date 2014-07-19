@@ -27,9 +27,6 @@ namespace Scurge.Enemy {
 				direction.y -= gravity * Time.deltaTime;
 			}
 			controller.Move(direction);
-			if(Input.GetKeyDown(KeyCode.P)) {
-				Wander();
-			}
 			if(FoundPlayer) {
 				Follow(Player);
 			}
