@@ -23,7 +23,7 @@ namespace Scurge.Environment {
 		public Item item;
 
 		void Start() {
-			item = (Item)Random.Range(1, ItemDescription.Count);
+			item = (Item)Random.Range(1, Inventory.ItemDescription.Count);
 		}
 		void OnTriggerEnter(Collider collider) {
 			if(collider.gameObject.tag == "Player") {

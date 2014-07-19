@@ -221,15 +221,24 @@ namespace Scurge.Player {
 							Stats.Attack = StatsAmounts[allRings];
 						}
 					}
+					else {
+						Stats.Attack = 0;
+					}
 					if(RingTypes[allRings] == Ring.Defense) {
 						if(EquippedItems[2] == (Item)allRings) {
 							Stats.Defense = StatsAmounts[allRings];
 						}
 					}
+					else {
+						Stats.Defense = 0;
+					}
 					if(RingTypes[allRings] == Ring.Magic) {
 						if(EquippedItems[2] == (Item)allRings) {
 							Stats.Magic = StatsAmounts[allRings];
 						}
+					}
+					else {	
+						Stats.Magic = 0;
 					}
 					if(RingTypes[allRings] == Ring.Health) {
 						if(EquippedItems[2] == (Item)allRings) {
@@ -382,28 +391,39 @@ namespace Scurge.Player {
 						SlotHandle(15, InventoryBar.Inventory);
 					}
 					//Equipping Row
-					//Equipping row first slot is replacing first slot in backpack for some reason.
 					if(GUI.Button(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[0]], TooltipText[16]))) {
 						print("The Target Is Moving The Item. I Repeat The Target Is Moving The Item");
 						SlotHandle(0, InventoryBar.Equipped);
 					}
 					if(GUI.Button(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[1]], TooltipText[17]))) {
-						if(curItemType == ItemType.Spell) {
+						if(Moving && curItemType == ItemType.Spell) {
+							SlotHandle(1, InventoryBar.Equipped);
+						}
+						else if(!Moving) {
 							SlotHandle(1, InventoryBar.Equipped);
 						}
 					}
 					if(GUI.Button(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[2]], TooltipText[18]))) {
-						if(curItemType == ItemType.Ring) {
+						if(Moving && curItemType == ItemType.Ring) {
+							SlotHandle(2, InventoryBar.Equipped);
+						}
+						else if(!Moving) {
 							SlotHandle(2, InventoryBar.Equipped);
 						}
 					}
 					if(GUI.Button(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[3]], TooltipText[19]))) {
-						if(curItemType == ItemType.Helmet) {
+						if(Moving && curItemType == ItemType.Helmet) {
+							SlotHandle(3, InventoryBar.Equipped);
+						}
+						else if(!Moving) {
 							SlotHandle(3, InventoryBar.Equipped);
 						}
 					}
 					if(GUI.Button(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[4]], TooltipText[20]))) {
-						if(curItemType == ItemType.Chestplate) {
+						if(Moving && curItemType == ItemType.Chestplate) {
+							SlotHandle(4, InventoryBar.Equipped);
+						}
+						else if(!Moving) {
 							SlotHandle(4, InventoryBar.Equipped);
 						}
 					}
