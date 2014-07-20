@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
-  HostType: 1
+  HostType: 2
   ServerAddress: app-us.exitgamescloud.com
   ServerPort: 5055
   AppID: 07c2a5ac-26e3-4fb5-a2f3-c32a271bf688
