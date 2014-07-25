@@ -1,3 +1,7 @@
+Indev 0.1.2
+Added Snake
+Added loading indicator for level generation
+
 Indev 0.1.1
 Fixed several bugs
 Added chests

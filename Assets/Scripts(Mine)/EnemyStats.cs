@@ -14,6 +14,7 @@ namespace Scurge.Enemy {
 		public Stats Stats;
 		public Music Music;
 		public Animator Anim;
+		public float DeathTimer = 0.0f;
 		public float AttackLength = 3;
 		public float MinAttackWait = 3;
 		public float MaxAttackWait = 5;
@@ -56,14 +57,14 @@ namespace Scurge.Enemy {
 		}
 		public void DealDamage(int damageAmount, bool RangeEffect = false) {
 			if(CanHit && RangeEffect) {
-				if(CurrentEnemyHealth >= 1) {
+				if(CurrentEnemyHealth > 0) {
 					CurrentEnemyHealth -= damageAmount;
 					Hurt.Play();
 					StartCoroutine(ParticleBlast(HurtParticle, 0.2f));
 					StartCoroutine(HurtFlash());
 				}
-				else if(CurrentEnemyHealth < 1) {
-					Die(Dead, 0.0f, DeathParticle);
+				else if(CurrentEnemyHealth <= 0) {
+					Die(Dead, DeathTimer, DeathParticle);
 				}
 			}
 			if(!RangeEffect) {

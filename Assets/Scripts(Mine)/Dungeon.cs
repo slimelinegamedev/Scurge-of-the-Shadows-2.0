@@ -139,7 +139,7 @@ namespace Scurge.Environment {
 	            	}
 
 	            	public IEnumerator BeginGeneration() {
-	            		GenerationText = "Floor " + Floor;
+	            		GenerationText = "Floor " + Floor + "\n\n<size=20>Loading...</size>";
 	            		Generating = true;
 	            		yield return new WaitForSeconds(1);
 			Generate();
@@ -149,7 +149,7 @@ namespace Scurge.Environment {
 
 	            	public IEnumerator Generation(float waiter) {
 	            		print("Generation");
-	            		GenerationText = "Floor " + Floor;
+	            		GenerationText = "Floor " + Floor + "\n\n<size=20>Loading...</size>";
 	            		Generating = true;
 	            		yield return new WaitForSeconds(waiter);
 			Generate();
