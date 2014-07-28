@@ -25,33 +25,48 @@ AnimationClip:
         tangentMode: 10
       - time: .166666672
         value: 1
-        inSlope: .394349784
-        outSlope: .394349784
+        inSlope: .806270599
+        outSlope: .806270599
+        tangentMode: 10
+      - time: .333333343
+        value: 1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 10
       - time: .5
-        value: .725386143
-        inSlope: -2.58807898
-        outSlope: -2.58807898
+        value: 1
+        inSlope: -1.39394462
+        outSlope: -1.39394462
         tangentMode: 10
       - time: .666666687
-        value: 0
-        inSlope: -1.97552013
-        outSlope: -1.97552013
+        value: .535351753
+        inSlope: -3.00000024
+        outSlope: -3.00000024
         tangentMode: 10
-      - time: 1.16666663
-        value: .200638086
-        inSlope: 1.79245257
-        outSlope: 1.79245257
+      - time: .833333313
+        value: 0
+        inSlope: -1.60605562
+        outSlope: -1.60605562
+        tangentMode: 10
+      - time: 1
+        value: 0
+        inSlope: .768072188
+        outSlope: .768072188
         tangentMode: 10
       - time: 1.33333337
+        value: .512048185
+        inSlope: 1.42565727
+        outSlope: 1.42565727
+        tangentMode: 10
+      - time: 1.5
         value: .731243134
-        inSlope: 3.18362904
-        outSlope: 3.18362904
+        inSlope: 1.31517005
+        outSlope: 1.31517005
         tangentMode: 10
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_Color.r
-    path: Attack Light
+    path: 
     classID: 108
     script: {fileID: 0}
   - curve:
@@ -59,43 +74,58 @@ AnimationClip:
       m_Curve:
       - time: 0
         value: .162126601
-        inSlope: -.969558477
-        outSlope: -.969558477
+        inSlope: -.972759604
+        outSlope: -.972759604
         tangentMode: 10
       - time: .166666672
-        value: .000533521175
-        inSlope: .904824972
-        outSlope: .904824972
+        value: 0
+        inSlope: .0446029902
+        outSlope: .0446029902
         tangentMode: 10
       - time: .333333343
-        value: .463734925
-        inSlope: 2.9983995
-        outSlope: 2.9983995
+        value: .176994264
+        inSlope: 2.37447762
+        outSlope: 2.37447762
         tangentMode: 10
       - time: .5
+        value: .791492522
+        inSlope: 2.46901727
+        outSlope: 2.46901727
+        tangentMode: 10
+      - time: .666666687
         value: 1
-        inSlope: 1.03425825
-        outSlope: 1.03425825
+        inSlope: .625522375
+        outSlope: .625522375
+        tangentMode: 10
+      - time: .833333313
+        value: 1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 10
       - time: 1
-        value: .425462961
-        inSlope: -1.84932625
-        outSlope: -1.84932625
+        value: 1
+        inSlope: -1.89993787
+        outSlope: -1.89993787
         tangentMode: 10
       - time: 1.16666663
-        value: .000533342361
-        inSlope: -.790009677
-        outSlope: -.790009677
+        value: .366687536
+        inSlope: -2.92771101
+        outSlope: -2.92771101
         tangentMode: 10
       - time: 1.33333337
+        value: .0240963697
+        inSlope: -.61368227
+        outSlope: -.61368227
+        tangentMode: 10
+      - time: 1.5
         value: .162126601
-        inSlope: .969559073
-        outSlope: .969559073
+        inSlope: .828181565
+        outSlope: .828181565
         tangentMode: 10
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_Color.g
-    path: Attack Light
+    path: 
     classID: 108
     script: {fileID: 0}
   - curve:
@@ -103,35 +133,45 @@ AnimationClip:
       m_Curve:
       - time: 0
         value: 1
-        inSlope: -3.43661427
-        outSlope: -3.43661427
+        inSlope: -2.80693245
+        outSlope: -2.80693245
         tangentMode: 10
       - time: .166666672
-        value: .427230954
+        value: .532177925
         inSlope: -3
         outSlope: -3
         tangentMode: 10
       - time: .333333343
         value: 0
-        inSlope: -1.1698873
-        outSlope: -1.1698873
+        inSlope: -1.59653378
+        outSlope: -1.59653378
+        tangentMode: 10
+      - time: .5
+        value: 0
+        inSlope: 0
+        outSlope: 0
         tangentMode: 10
       - time: .666666687
-        value: .0745370388
-        inSlope: 2.7115798
-        outSlope: 2.7115798
+        value: 0
+        inSlope: .625522792
+        outSlope: .625522792
         tangentMode: 10
       - time: .833333313
-        value: .941128254
-        inSlope: 2.7763896
-        outSlope: 2.7763896
+        value: .208507538
+        inSlope: 2.92927909
+        outSlope: 2.92927909
         tangentMode: 10
       - time: 1
-        value: 1
-        inSlope: .176615223
-        outSlope: .176615223
+        value: .976426363
+        inSlope: 2.37447715
+        outSlope: 2.37447715
         tangentMode: 10
-      - time: 1.33333337
+      - time: 1.16666663
+        value: 1
+        inSlope: .0707209259
+        outSlope: .0707209259
+        tangentMode: 10
+      - time: 1.5
         value: 1
         inSlope: 0
         outSlope: 0
@@ -139,7 +179,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_Color.b
-    path: Attack Light
+    path: 
     classID: 108
     script: {fileID: 0}
   - curve:
@@ -150,7 +190,12 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 10
-      - time: 1.33333337
+      - time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 10
+      - time: 1.5
         value: 1
         inSlope: 0
         outSlope: 0
@@ -158,36 +203,36 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_Color.a
-    path: Attack Light
+    path: 
     classID: 108
     script: {fileID: 0}
   m_PPtrCurves: []
   m_SampleRate: 60
-  m_WrapMode: 2
+  m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
     genericBindings:
-    - path: 2530382363
+    - path: 0
       attribute: 2526845255
       script: {fileID: 0}
       classID: 108
       customType: 0
       isPPtrCurve: 0
-    - path: 2530382363
+    - path: 0
       attribute: 4215373228
       script: {fileID: 0}
       classID: 108
       customType: 0
       isPPtrCurve: 0
-    - path: 2530382363
+    - path: 0
       attribute: 2334886179
       script: {fileID: 0}
       classID: 108
       customType: 0
       isPPtrCurve: 0
-    - path: 2530382363
+    - path: 0
       attribute: 304273561
       script: {fileID: 0}
       classID: 108
@@ -197,7 +242,7 @@ AnimationClip:
   m_AnimationClipSettings:
     serializedVersion: 2
     m_StartTime: 0
-    m_StopTime: 1.33333337
+    m_StopTime: 1.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -222,33 +267,48 @@ AnimationClip:
         tangentMode: 10
       - time: .166666672
         value: 1
-        inSlope: .394349784
-        outSlope: .394349784
+        inSlope: .806270599
+        outSlope: .806270599
+        tangentMode: 10
+      - time: .333333343
+        value: 1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 10
       - time: .5
-        value: .725386143
-        inSlope: -2.58807898
-        outSlope: -2.58807898
+        value: 1
+        inSlope: -1.39394462
+        outSlope: -1.39394462
         tangentMode: 10
       - time: .666666687
-        value: 0
-        inSlope: -1.97552013
-        outSlope: -1.97552013
+        value: .535351753
+        inSlope: -3.00000024
+        outSlope: -3.00000024
         tangentMode: 10
-      - time: 1.16666663
-        value: .200638086
-        inSlope: 1.79245257
-        outSlope: 1.79245257
+      - time: .833333313
+        value: 0
+        inSlope: -1.60605562
+        outSlope: -1.60605562
+        tangentMode: 10
+      - time: 1
+        value: 0
+        inSlope: .768072188
+        outSlope: .768072188
         tangentMode: 10
       - time: 1.33333337
+        value: .512048185
+        inSlope: 1.42565727
+        outSlope: 1.42565727
+        tangentMode: 10
+      - time: 1.5
         value: .731243134
-        inSlope: 3.18362904
-        outSlope: 3.18362904
+        inSlope: 1.31517005
+        outSlope: 1.31517005
         tangentMode: 10
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_Color.r
-    path: Attack Light
+    path: 
     classID: 108
     script: {fileID: 0}
   - curve:
@@ -256,43 +316,58 @@ AnimationClip:
       m_Curve:
       - time: 0
         value: .162126601
-        inSlope: -.969558477
-        outSlope: -.969558477
+        inSlope: -.972759604
+        outSlope: -.972759604
         tangentMode: 10
       - time: .166666672
-        value: .000533521175
-        inSlope: .904824972
-        outSlope: .904824972
+        value: 0
+        inSlope: .0446029902
+        outSlope: .0446029902
         tangentMode: 10
       - time: .333333343
-        value: .463734925
-        inSlope: 2.9983995
-        outSlope: 2.9983995
+        value: .176994264
+        inSlope: 2.37447762
+        outSlope: 2.37447762
         tangentMode: 10
       - time: .5
+        value: .791492522
+        inSlope: 2.46901727
+        outSlope: 2.46901727
+        tangentMode: 10
+      - time: .666666687
         value: 1
-        inSlope: 1.03425825
-        outSlope: 1.03425825
+        inSlope: .625522375
+        outSlope: .625522375
+        tangentMode: 10
+      - time: .833333313
+        value: 1
+        inSlope: 0
+        outSlope: 0
         tangentMode: 10
       - time: 1
-        value: .425462961
-        inSlope: -1.84932625
-        outSlope: -1.84932625
+        value: 1
+        inSlope: -1.89993787
+        outSlope: -1.89993787
         tangentMode: 10
       - time: 1.16666663
-        value: .000533342361
-        inSlope: -.790009677
-        outSlope: -.790009677
+        value: .366687536
+        inSlope: -2.92771101
+        outSlope: -2.92771101
         tangentMode: 10
       - time: 1.33333337
+        value: .0240963697
+        inSlope: -.61368227
+        outSlope: -.61368227
+        tangentMode: 10
+      - time: 1.5
         value: .162126601
-        inSlope: .969559073
-        outSlope: .969559073
+        inSlope: .828181565
+        outSlope: .828181565
         tangentMode: 10
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_Color.g
-    path: Attack Light
+    path: 
     classID: 108
     script: {fileID: 0}
   - curve:
@@ -300,35 +375,45 @@ AnimationClip:
       m_Curve:
       - time: 0
         value: 1
-        inSlope: -3.43661427
-        outSlope: -3.43661427
+        inSlope: -2.80693245
+        outSlope: -2.80693245
         tangentMode: 10
       - time: .166666672
-        value: .427230954
+        value: .532177925
         inSlope: -3
         outSlope: -3
         tangentMode: 10
       - time: .333333343
         value: 0
-        inSlope: -1.1698873
-        outSlope: -1.1698873
+        inSlope: -1.59653378
+        outSlope: -1.59653378
+        tangentMode: 10
+      - time: .5
+        value: 0
+        inSlope: 0
+        outSlope: 0
         tangentMode: 10
       - time: .666666687
-        value: .0745370388
-        inSlope: 2.7115798
-        outSlope: 2.7115798
+        value: 0
+        inSlope: .625522792
+        outSlope: .625522792
         tangentMode: 10
       - time: .833333313
-        value: .941128254
-        inSlope: 2.7763896
-        outSlope: 2.7763896
+        value: .208507538
+        inSlope: 2.92927909
+        outSlope: 2.92927909
         tangentMode: 10
       - time: 1
-        value: 1
-        inSlope: .176615223
-        outSlope: .176615223
+        value: .976426363
+        inSlope: 2.37447715
+        outSlope: 2.37447715
         tangentMode: 10
-      - time: 1.33333337
+      - time: 1.16666663
+        value: 1
+        inSlope: .0707209259
+        outSlope: .0707209259
+        tangentMode: 10
+      - time: 1.5
         value: 1
         inSlope: 0
         outSlope: 0
@@ -336,7 +421,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_Color.b
-    path: Attack Light
+    path: 
     classID: 108
     script: {fileID: 0}
   - curve:
@@ -347,7 +432,12 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 10
-      - time: 1.33333337
+      - time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 10
+      - time: 1.5
         value: 1
         inSlope: 0
         outSlope: 0
@@ -355,7 +445,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
     attribute: m_Color.a
-    path: Attack Light
+    path: 
     classID: 108
     script: {fileID: 0}
   m_EulerEditorCurves: []
