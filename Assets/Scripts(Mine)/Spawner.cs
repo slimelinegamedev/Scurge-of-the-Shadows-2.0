@@ -16,6 +16,8 @@ namespace Scurge.Enemy {
 		public GameObject LastEnemy;
 		public Vector3 SpawnPosition;
 
+		public GameObject Holder;
+
 		public List<GameObject> SpawnedEnemys;
 		public List<int> PosibleYPositions;
 
@@ -36,6 +38,7 @@ namespace Scurge.Enemy {
 				var LastEnemySpawned = (GameObject)Object.Instantiate(LastEnemy, SpawnPosition, transform.rotation);
 				LastEnemySpawned.SetActive(true);
 				SpawnedEnemys.Add(LastEnemySpawned);
+				LastEnemySpawned.transform.parent = Holder.transform;
 			}
 		}
  	}
