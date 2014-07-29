@@ -35,6 +35,7 @@ namespace Scurge.Player {
 		public Objects Objects;
 		public bool DestroyOnUse = false;
 		public bool LimitedUses = false;
+		public int MaxUses = 0;
 		public int Uses = 0;
 		public AudioSource DestroySound;
 		public GameObject Projectile;
@@ -49,6 +50,10 @@ namespace Scurge.Player {
 
 
 		void Update() {
+			//Appends forever. Append only when it changes, and delete old value
+			if(LimitedUses) {
+				Inventory.ItemDescription[(int)item] = Inventory.ItemDescription[(int)item] + "\n\n" + MaxUses + "/" + Uses;
+			}
 			if(ItemSide == Side.Right) {
 				if(Input.GetMouseButtonDown(1) && !Inventory.InventoryOpen) {
 					if(!Cooldown) {

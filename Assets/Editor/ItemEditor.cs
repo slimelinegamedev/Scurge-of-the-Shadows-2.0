@@ -150,7 +150,8 @@ namespace Scurge.Editor {
 					}
 					CurrentHeldItem.LimitedUses = EditorGUILayout.Toggle("Limited Uses", CurrentHeldItem.LimitedUses);
 					if(CurrentHeldItem.LimitedUses) {
-						CurrentHeldItem.Uses = EditorGUILayout.IntField("Uses", CurrentHeldItem.Uses);
+						CurrentHeldItem.Uses = EditorGUILayout.IntField("Uses Left", CurrentHeldItem.Uses);
+						CurrentHeldItem.MaxUses = EditorGUILayout.IntField("Max Uses", CurrentHeldItem.MaxUses);
 					}
 					CurrentHeldItem.Cooldown = EditorGUILayout.Toggle("Has Cooldown", CurrentHeldItem.Cooldown);
 					if(CurrentHeldItem.Cooldown) {
