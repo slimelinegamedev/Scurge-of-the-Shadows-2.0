@@ -28,6 +28,7 @@ namespace Scurge.Enemy {
 		public ParticleSystem DeathParticle;
 		public Light light;
 		public GameObject self;
+		public bool AttackEnemys = false;
 		public bool InRange = false;
 		public bool CanHit = false;
 		public bool CanAttack = false;

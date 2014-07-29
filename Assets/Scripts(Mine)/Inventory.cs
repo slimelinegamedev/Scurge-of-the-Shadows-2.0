@@ -78,7 +78,6 @@ namespace Scurge.Player {
 		public List<Texture2D> EquippingEmptyTextures;
 		//Variables for other item types
 		public List<Ring> RingTypes;
-		public List<int> DefenseAmounts;
 		public List<int> StatsAmounts;
 		public List<Potion> PotionTypes;
 		//End
@@ -94,6 +93,15 @@ namespace Scurge.Player {
 				else if(bar == InventoryBar.Equipped) {
 					EquippedItems[slot] = item;
 				}
+			}
+		}
+
+		public void Delete(int slot, InventoryBar bar) {
+			if(bar == InventoryBar.Equipped) {
+				EquippedItems[slot] = Item.None;
+			}
+			else if(bar == InventoryBar.Inventory) {
+				Items[slot] = Item.None;
 			}
 		}
 

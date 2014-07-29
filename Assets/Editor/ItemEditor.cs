@@ -71,29 +71,41 @@ namespace Scurge.Editor {
 
 						}
 						else if(Inventory.RingTypes[(int)itemsList] == Ring.Health) {
+							GUILayout.BeginHorizontal();
 							GUILayout.Label("Health Ring");
+							Inventory.StatsAmounts[(int)itemsList] = EditorGUILayout.IntField("Health", Inventory.StatsAmounts[(int)itemsList]);
+							GUILayout.EndHorizontal();
 						}
 						else if(Inventory.RingTypes[(int)itemsList] == Ring.Attack) {
+							GUILayout.BeginHorizontal();
 							GUILayout.Label("Attack Ring");
+							Inventory.StatsAmounts[(int)itemsList] = EditorGUILayout.IntField("Attack", Inventory.StatsAmounts[(int)itemsList]);
+							GUILayout.EndHorizontal();
 						}
 						else if(Inventory.RingTypes[(int)itemsList] == Ring.Defense) {
+							GUILayout.BeginHorizontal();
 							GUILayout.Label("Defense Ring");
+							Inventory.StatsAmounts[(int)itemsList] = EditorGUILayout.IntField("Defense", Inventory.StatsAmounts[(int)itemsList]);
+							GUILayout.EndHorizontal();
 						}
 						else if(Inventory.RingTypes[(int)itemsList] == Ring.Magic) {
+							GUILayout.BeginHorizontal();
 							GUILayout.Label("Magic Ring");
+							Inventory.StatsAmounts[(int)itemsList] = EditorGUILayout.IntField("Magic", Inventory.StatsAmounts[(int)itemsList]);
+							GUILayout.EndHorizontal();
 						}
 					}
 					else if(Inventory.Types[(int)itemsList] == ItemType.Spell) {
-							
+						
 					}
 					else if(Inventory.Types[(int)itemsList] == ItemType.Helmet) {
-							
+						
 					}
 					else if(Inventory.Types[(int)itemsList] == ItemType.Chestplate) {
-							
+						
 					}
 					else if(Inventory.Types[(int)itemsList] == ItemType.Potion) {
-							
+						
 					}
 					Inventory.ItemObjects[(int)itemsList] = (GameObject)EditorGUILayout.ObjectField("Item Held Object", Inventory.ItemObjects[(int)itemsList], typeof(GameObject));
 					Inventory.ThrownObjects[(int)itemsList] = (GameObject)EditorGUILayout.ObjectField("Item Thrown Object", Inventory.ThrownObjects[(int)itemsList], typeof(GameObject));
@@ -121,14 +133,24 @@ namespace Scurge.Editor {
 					CurrentHeldItem.ItemType = (Type)EditorGUILayout.EnumPopup("Item Type", CurrentHeldItem.ItemType);
 					CurrentHeldItem.ItemSide = (Side)EditorGUILayout.EnumPopup("Button To Use", CurrentHeldItem.ItemSide);
 					CurrentHeldItem.ItemCommand = (Command)EditorGUILayout.EnumPopup("Command To Call", CurrentHeldItem.ItemCommand);
+					CurrentHeldItem.item= (Item)EditorGUILayout.EnumPopup("What Item Am I", CurrentHeldItem.item);
 					if(CurrentHeldItem.ItemCommand == Command.Melee) {
-
+						CurrentHeldItem.DamageMin = EditorGUILayout.IntField("Minimum Damage", CurrentHeldItem.DamageMin);
+						CurrentHeldItem.DamageMax = EditorGUILayout.IntField("Maximum Damage", CurrentHeldItem.DamageMax);
 					}
 					if(CurrentHeldItem.ItemCommand == Command.Summon) {
 
 					}
 					else if(CurrentHeldItem.ItemCommand == Command.Projectile) {
 						CurrentHeldItem.Projectile = (GameObject)EditorGUILayout.ObjectField("Projectile Object", CurrentHeldItem.Projectile, typeof(GameObject));
+					}
+					CurrentHeldItem.DestroyOnUse = EditorGUILayout.Toggle("Destroy On Use", CurrentHeldItem.DestroyOnUse);
+					if(CurrentHeldItem.DestroyOnUse) {
+						CurrentHeldItem.DestroySound = (AudioSource)EditorGUILayout.ObjectField("Sound To Play On Destroy", CurrentHeldItem.DestroySound, typeof(AudioSource));
+					}
+					CurrentHeldItem.LimitedUses = EditorGUILayout.Toggle("Limited Uses", CurrentHeldItem.LimitedUses);
+					if(CurrentHeldItem.LimitedUses) {
+						CurrentHeldItem.Uses = EditorGUILayout.IntField("Uses", CurrentHeldItem.Uses);
 					}
 					CurrentHeldItem.Cooldown = EditorGUILayout.Toggle("Has Cooldown", CurrentHeldItem.Cooldown);
 					if(CurrentHeldItem.Cooldown) {
@@ -149,6 +171,9 @@ namespace Scurge.Editor {
 			if(Inventory != null) {
 				EditorUtility.SetDirty(Inventory.gameObject);
 			}
-		}	
+		}
+		void OnInspectorUpdate() {
+	    		Repaint();
+	    	}
 	}
 }

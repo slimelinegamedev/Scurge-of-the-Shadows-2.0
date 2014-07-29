@@ -30,8 +30,13 @@ namespace Scurge.Player {
 		public Type ItemType;
 		public Side ItemSide;
 		public Command ItemCommand;
+		public Item item;
 		public AudioSource Sound;
 		public Objects Objects;
+		public bool DestroyOnUse = false;
+		public bool LimitedUses = false;
+		public int Uses = 0;
+		public AudioSource DestroySound;
 		public GameObject Projectile;
 		public GameObject EnemyHit;
 		public int DamageMin = 1;
@@ -65,6 +70,24 @@ namespace Scurge.Player {
 					if(ItemCommand == Command.Projectile) {
 						ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
 					}
+					if(LimitedUses) {
+						if(Uses > 0) {
+							Uses -= 1;
+						}
+						else if(Uses <= 0) {
+							if(DestroySound != null) {
+								DestroySound.Play();
+							}
+							Inventory.Delete(0, InventoryBar.Equipped);
+						}
+					}
+					if(DestroyOnUse) {
+						if(DestroySound != null) {
+							DestroySound.Play();
+						}
+						Inventory.Delete(0, InventoryBar.Equipped);
+					}
+					EnemyStats = null;
 				}
 			}
 			if(ItemSide == Side.Left) {
@@ -87,6 +110,23 @@ namespace Scurge.Player {
 					}
 					if(ItemCommand == Command.Projectile) {
 						ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+					}
+					if(LimitedUses) {
+						if(Uses > 0) {
+							Uses -= 1;
+						}
+						else if(Uses <= 0) {
+							if(DestroySound != null) {
+								DestroySound.Play();
+							}
+							Inventory.Delete(0, InventoryBar.Equipped);
+						}
+					}
+					if(DestroyOnUse) {
+						if(DestroySound != null) {
+							DestroySound.Play();
+						}
+						Inventory.Delete(0, InventoryBar.Equipped);
 					}
 					EnemyStats = null;
 				}

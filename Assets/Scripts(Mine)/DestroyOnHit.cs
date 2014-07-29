@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Scurge.Player;
 using Scurge.Enemy;
 
@@ -9,8 +10,10 @@ namespace Scurge.Util {
 		public float TimeAfterDeath;
 		public bool HasExplosion = false;
 		public bool Hurt = true;
+		public bool Summon = false;
 		public ParticleSystem particle;
 		public AudioSource hit;
+		public List<GameObject> PossibleEnemys;
 		public EnemyStats EnemyStats;
 
 		public int MinDamage;
@@ -23,7 +26,13 @@ namespace Scurge.Util {
 		}
 
 		void OnCollisionEnter(Collision collision) {
-			if(collision.gameObject.tag == "Enemy") {
+			if(Summon) {
+				var spawnedEnemy = (GameObject)Instantiate(PossibleEnemys[Random.Range(0, PossibleEnemys.Count)], transform.position, transform.rotation);
+				EnemyStats enemyStats = spawnedEnemy.GetComponentInChildren<EnemyStats>();
+				enemyStats.AttackEnemys = true;
+				Destroy(gameObject, 0.5f);
+			}
+			else if(collision.gameObject.tag == "Enemy") {
 				if(HasExplosion && particle != null) {
 					particle.Play();
 					if(Hurt) {
