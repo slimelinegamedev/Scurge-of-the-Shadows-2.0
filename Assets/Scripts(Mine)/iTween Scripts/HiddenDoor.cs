@@ -21,7 +21,7 @@ namespace Scurge.Environment {
 		public bool Opened = false;
 
 		void OnMouseOver() {
-			if(InputManager.GetKeyDown("Interact")) {
+			if(InputManager.GetButtonDown("Interact")) {
 				if(!Opened) {
 					Open();
 				}

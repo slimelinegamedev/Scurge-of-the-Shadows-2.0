@@ -292,7 +292,7 @@ namespace Scurge.Player {
 				else {	
 					Screen.showCursor = false;
 					Screen.lockCursor = true;
-					Disable.EnableObj();
+					Disable.EnableObj(false);
 				}
 			}
 			//Give item tooltips

@@ -24,7 +24,7 @@ namespace Scurge.Util {
 				Objects.Inventory.enabled = false;
 			}
 		}
-		public void EnableObj() {
+		public void EnableObj(bool inventoryEnab) {
 			foreach (GameObject CurObj in Objects.Disables) {
 				CurObj.SetActive(true);
 			}
@@ -34,6 +34,9 @@ namespace Scurge.Util {
 			Objects.MouseX.enabled = true;
 			Objects.MouseY.enabled = true;
 			Objects.Controller.enabled = true;
+			if(inventoryEnab) {
+				Objects.Inventory.enabled = true;
+			}
 		}
 	}
 }

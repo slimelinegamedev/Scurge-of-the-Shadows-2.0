@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Scurge.Player;
 using Scurge.Util;
 using Scurge.Enemy;
+using TeamUtility.IO;
 
 namespace Scurge.Player {
 	public class DroppedItem : MonoBehaviour {
@@ -24,7 +25,7 @@ namespace Scurge.Player {
 		void Update() {
 			if(hoveringOver) {
 				text.gameObject.SetActive(true);
-				if(Input.GetKeyDown(KeyCode.Q) && !Inventory.Full) {
+				if(InputManager.GetButtonDown("Interact") && !Inventory.Full) {
 					Inventory.Give(type, Inventory.FirstOpenSlot, InventoryBar.Inventory);
 					pickup.Play();
 					Destroy(parent);

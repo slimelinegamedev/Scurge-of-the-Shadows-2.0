@@ -50,6 +50,7 @@ namespace Scurge.Player {
 		public float CooldownTime = 0.5f;
 		public bool HasAnimation;
 		public Animation SwingAnimation;
+		public Pause Pause;
 
 
 		void Update() {
@@ -59,86 +60,88 @@ namespace Scurge.Player {
 					ShowUses = true;
 				}
 			}
-			if(ItemSide == Side.Right) {
-				if(InputManager.GetButtonDown("Right") && !Inventory.InventoryOpen) {
-					if(!Cooldown) {
-						Sound.Play();
-						if(ItemType == Type.Melee) {
-							EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
-						}
-					}
-					if(HasAnimation && CanSwing) {
-						SwingAnimation.Play();
-						if(Cooldown) {
+			if(!Pause.Open) {
+				if(ItemSide == Side.Right) {
+					if(InputManager.GetButtonDown("Right") && !Inventory.InventoryOpen) {
+						if(!Cooldown) {
 							Sound.Play();
 							if(ItemType == Type.Melee) {
 								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+							}
+						}
+						if(HasAnimation && CanSwing) {
+							SwingAnimation.Play();
+							if(Cooldown) {
+								Sound.Play();
+								if(ItemType == Type.Melee) {
+									EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+								}
+								StartCoroutine(SwingCool(CooldownTime));
+							}
+						}
+						if(ItemCommand == Command.Projectile) {
+							ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+						}
+						if(LimitedUses) {
+							if(Uses > 0) {
+								Uses -= 1;
+							}
+							else if(Uses <= 0) {
+								if(DestroySound != null) {
+									DestroySound.Play();
+								}
+								Inventory.Delete(0, InventoryBar.Equipped);
+							}
+						}
+						if(DestroyOnUse) {
+							if(DestroySound != null) {
+								DestroySound.Play();
+							}
+							Inventory.Delete(0, InventoryBar.Equipped);
+						}
+						EnemyStats = null;
+					}
+				}
+				if(ItemSide == Side.Left) {
+					if(InputManager.GetButtonDown("Left") && !Inventory.InventoryOpen) {
+						if(!Cooldown) {
+							Sound.Play();
+							if(ItemType == Type.Melee) {
+								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+							}
+						}
+						if(HasAnimation && CanSwing) {
+							SwingAnimation.Play();
+							if(Cooldown) {
+								Sound.Play();
+								if(ItemType == Type.Melee) {
+									EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+								}
 							}
 							StartCoroutine(SwingCool(CooldownTime));
 						}
-					}
-					if(ItemCommand == Command.Projectile) {
-						ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
-					}
-					if(LimitedUses) {
-						if(Uses > 0) {
-							Uses -= 1;
+						if(ItemCommand == Command.Projectile) {
+							ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
 						}
-						else if(Uses <= 0) {
+						if(LimitedUses) {
+							if(Uses > 0) {
+								Uses -= 1;
+							}
+							else if(Uses <= 0) {
+								if(DestroySound != null) {
+									DestroySound.Play();
+								}
+								Inventory.Delete(0, InventoryBar.Equipped);
+							}
+						}
+						if(DestroyOnUse) {
 							if(DestroySound != null) {
 								DestroySound.Play();
 							}
 							Inventory.Delete(0, InventoryBar.Equipped);
 						}
+						EnemyStats = null;
 					}
-					if(DestroyOnUse) {
-						if(DestroySound != null) {
-							DestroySound.Play();
-						}
-						Inventory.Delete(0, InventoryBar.Equipped);
-					}
-					EnemyStats = null;
-				}
-			}
-			if(ItemSide == Side.Left) {
-				if(InputManager.GetButtonDown("Left") && !Inventory.InventoryOpen) {
-					if(!Cooldown) {
-						Sound.Play();
-						if(ItemType == Type.Melee) {
-							EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
-						}
-					}
-					if(HasAnimation && CanSwing) {
-						SwingAnimation.Play();
-						if(Cooldown) {
-							Sound.Play();
-							if(ItemType == Type.Melee) {
-								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
-							}
-						}
-						StartCoroutine(SwingCool(CooldownTime));
-					}
-					if(ItemCommand == Command.Projectile) {
-						ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
-					}
-					if(LimitedUses) {
-						if(Uses > 0) {
-							Uses -= 1;
-						}
-						else if(Uses <= 0) {
-							if(DestroySound != null) {
-								DestroySound.Play();
-							}
-							Inventory.Delete(0, InventoryBar.Equipped);
-						}
-					}
-					if(DestroyOnUse) {
-						if(DestroySound != null) {
-							DestroySound.Play();
-						}
-						Inventory.Delete(0, InventoryBar.Equipped);
-					}
-					EnemyStats = null;
 				}
 			}
 		}
