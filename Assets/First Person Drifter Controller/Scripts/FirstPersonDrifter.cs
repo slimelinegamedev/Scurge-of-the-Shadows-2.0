@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using System.Collections;
+using TeamUtility.IO;
 
 [RequireComponent (typeof (CharacterController))]
 public class FirstPersonDrifter: MonoBehaviour
@@ -64,8 +65,8 @@ public class FirstPersonDrifter: MonoBehaviour
     }
  
     void FixedUpdate() {
-        float inputX = Input.GetAxis("Horizontal");
-        float inputY = Input.GetAxis("Vertical");
+        float inputX = InputManager.GetAxis("Horizontal");
+        float inputY = InputManager.GetAxis("Vertical");
         // If both horizontal and vertical are used simultaneously, limit speed (if allowed), so the total doesn't exceed normal move speed
         float inputModifyFactor = (inputX != 0.0f && inputY != 0.0f && limitDiagonalSpeed)? .7071f : 1.0f;
  
@@ -94,7 +95,7 @@ public class FirstPersonDrifter: MonoBehaviour
  
             if( enableRunning )
             {
-            	speed = Input.GetButton("Run")? runSpeed : walkSpeed;
+            	speed = InputManager.GetButton("Run")? runSpeed : walkSpeed;
             }
  
             // If sliding (and it's allowed), or if we're on an object tagged "Slide", get a vector pointing down the slope we're on
@@ -113,7 +114,7 @@ public class FirstPersonDrifter: MonoBehaviour
             }
  
             // Jump! But only if the jump button has been released and player has been grounded for a given number of frames
-            if (!Input.GetButton("Jump"))
+            if (!InputManager.GetButton("Jump"))
                 jumpTimer++;
             else if (jumpTimer >= antiBunnyHopFactor) {
                 moveDirection.y = jumpSpeed;

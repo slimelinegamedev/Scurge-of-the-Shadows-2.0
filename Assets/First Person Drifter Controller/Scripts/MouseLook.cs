@@ -9,6 +9,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TeamUtility.IO;
 
 public class MouseLook : MonoBehaviour
 {
@@ -55,7 +56,7 @@ public class MouseLook : MonoBehaviour
 		{			
 			rotAverageX = 0f;
  
-			rotationX += Input.GetAxis("Mouse X") * sensitivityX * Time.timeScale;
+			rotationX += InputManager.GetAxis("Mouse X") * sensitivityX * Time.timeScale;
  
 			rotArrayX.Add(rotationX);
  
@@ -82,7 +83,7 @@ public class MouseLook : MonoBehaviour
  			{
  				invertFlag = -1f;
  			}
-			rotationY += Input.GetAxis("Mouse Y") * sensitivityY * invertFlag * Time.timeScale;
+			rotationY += InputManager.GetAxis("Mouse Y") * sensitivityY * invertFlag * Time.timeScale;
 			
 			rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
  	

@@ -134,6 +134,7 @@ namespace Scurge.Editor {
 					CurrentHeldItem.ItemSide = (Side)EditorGUILayout.EnumPopup("Button To Use", CurrentHeldItem.ItemSide);
 					CurrentHeldItem.ItemCommand = (Command)EditorGUILayout.EnumPopup("Command To Call", CurrentHeldItem.ItemCommand);
 					CurrentHeldItem.item= (Item)EditorGUILayout.EnumPopup("What Item Am I", CurrentHeldItem.item);
+					CurrentHeldItem.Skin = (GUISkin)EditorGUILayout.ObjectField("GUI Skin", CurrentHeldItem.Skin, typeof(GUISkin), true);
 					if(CurrentHeldItem.ItemCommand == Command.Melee) {
 						CurrentHeldItem.DamageMin = EditorGUILayout.IntField("Minimum Damage", CurrentHeldItem.DamageMin);
 						CurrentHeldItem.DamageMax = EditorGUILayout.IntField("Maximum Damage", CurrentHeldItem.DamageMax);

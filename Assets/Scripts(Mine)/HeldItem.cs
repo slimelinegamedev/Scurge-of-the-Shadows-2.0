@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using Scurge.Util;
 using Scurge.Player;
 using Scurge.Enemy;
+using TeamUtility.IO;
 
 namespace Scurge.Player {
 
@@ -31,12 +32,14 @@ namespace Scurge.Player {
 		public Side ItemSide;
 		public Command ItemCommand;
 		public Item item;
+		public GUISkin Skin;
 		public AudioSource Sound;
 		public Objects Objects;
 		public bool DestroyOnUse = false;
 		public bool LimitedUses = false;
 		public int MaxUses = 0;
 		public int Uses = 0;
+		public bool ShowUses = false;
 		public AudioSource DestroySound;
 		public GameObject Projectile;
 		public GameObject EnemyHit;
@@ -52,10 +55,12 @@ namespace Scurge.Player {
 		void Update() {
 			//Appends forever. Append only when it changes, and delete old value
 			if(LimitedUses) {
-				Inventory.ItemDescription[(int)item] = Inventory.ItemDescription[(int)item] + "\n\n" + MaxUses + "/" + Uses;
+				if(Inventory.HasEquipped(item)) {
+					ShowUses = true;
+				}
 			}
 			if(ItemSide == Side.Right) {
-				if(Input.GetMouseButtonDown(1) && !Inventory.InventoryOpen) {
+				if(InputManager.GetButtonDown("Right") && !Inventory.InventoryOpen) {
 					if(!Cooldown) {
 						Sound.Play();
 						if(ItemType == Type.Melee) {
@@ -96,7 +101,7 @@ namespace Scurge.Player {
 				}
 			}
 			if(ItemSide == Side.Left) {
-				if(Input.GetMouseButtonDown(0) && !Inventory.InventoryOpen) {
+				if(InputManager.GetButtonDown("Left") && !Inventory.InventoryOpen) {
 					if(!Cooldown) {
 						Sound.Play();
 						if(ItemType == Type.Melee) {
@@ -135,6 +140,13 @@ namespace Scurge.Player {
 					}
 					EnemyStats = null;
 				}
+			}
+		}
+
+		void OnGUI() {
+			GUI.skin = Skin;
+			if(ShowUses) {
+				GUI.Label(new Rect(1200, 690, 100, 25), Uses + " / " + MaxUses);
 			}
 		}
 

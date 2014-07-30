@@ -8,6 +8,7 @@ using Scurge.Util;
 using Scurge.Enemy;
 using Scurge.Audio;
 using Scurge.AI;
+using TeamUtility.IO;
 
 namespace Scurge.Environment {
 	public class HiddenDoor : MonoBehaviour {
@@ -20,7 +21,7 @@ namespace Scurge.Environment {
 		public bool Opened = false;
 
 		void OnMouseOver() {
-			if(Input.GetKeyDown(KeyCode.Q)) {
+			if(InputManager.GetKeyDown("Interact")) {
 				if(!Opened) {
 					Open();
 				}

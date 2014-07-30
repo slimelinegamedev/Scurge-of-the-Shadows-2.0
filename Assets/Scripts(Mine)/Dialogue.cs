@@ -8,6 +8,7 @@ using Scurge.Enemy;
 using Scurge.Audio;
 using Scurge.AI;
 using Scurge.Environment;
+using TeamUtility.IO;
 
 namespace Scurge.Environment {
 	public class Dialogue : MonoBehaviour {
@@ -29,7 +30,7 @@ namespace Scurge.Environment {
 
 		void Update() {
 			if(isOver) {
-				if(Input.GetKeyDown(KeyCode.Q)) {
+				if(Input.GetButton("Interact")) {
 					Speak();
 				}
 			}

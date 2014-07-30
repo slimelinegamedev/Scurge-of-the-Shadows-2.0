@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Scurge;
@@ -7,6 +7,7 @@ using Scurge.Util;
 using Scurge.Enemy;
 using Scurge.Audio;
 using Scurge.AI;
+using TeamUtility.IO;
 
 namespace Scurge.Player {
 
@@ -84,6 +85,15 @@ namespace Scurge.Player {
 		public List<string> TooltipText;
 
 		private bool HasFound = false;
+
+		public bool HasEquipped(Item item) {
+			if(EquippedItems[0] == item) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 
 		public void Give(Item item, int slot, InventoryBar bar) {
 			if(!Full) {
@@ -272,7 +282,7 @@ namespace Scurge.Player {
 			EquipItems();
 			ApplyStats();
 
-			if(Input.GetKeyDown(KeyCode.E) && !Moving) {
+			if(InputManager.GetButtonDown("Inventory") && !Moving) {
 				InventoryOpen = !InventoryOpen;
 				if(InventoryOpen) {
 					Screen.showCursor = true;

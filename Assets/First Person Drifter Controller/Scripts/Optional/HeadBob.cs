@@ -4,6 +4,7 @@
 
 using UnityEngine;
 using System.Collections;
+using TeamUtility.IO;
 
 public class HeadBob : MonoBehaviour
 {	
@@ -16,8 +17,8 @@ public class HeadBob : MonoBehaviour
 	void Update ()
 	{ 
 	    float waveslice = 0.0f; 
-	    float horizontal = Input.GetAxis("Horizontal"); 
-	    float vertical = Input.GetAxis("Vertical"); 
+	    float horizontal = InputManager.GetAxis("Horizontal"); 
+	    float vertical = InputManager.GetAxis("Vertical"); 
 	    
 	    if (Mathf.Abs(horizontal) == 0f && Mathf.Abs(vertical) == 0f)
 	    { 
