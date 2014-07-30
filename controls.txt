@@ -2,5 +2,7 @@ WASD - Move player
 Mouse movement - Look/move cursor
 Space - Jump
 Left click - Attack/Fire/Move item in inventory
+Left Shift - Run
 E - Inventory
 Q - Interact/Pick up item
+Escape - Pause
