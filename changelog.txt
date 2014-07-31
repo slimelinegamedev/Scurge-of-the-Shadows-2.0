@@ -1,6 +1,24 @@
-Indev 0.1.2
-Added Snake
+Indev 0.2.0 - A little bit of everything
 Added loading indicator for level generation
+Added input customization (thanks to daemon3000 on GitHub, for his plugin, InputManager)
+Added pause menu (Default escape)
+Added Snake
+Added Ghoul
+Added Sludge
+Added Skeletal warrior
+Added Assassin
+Added Goblin
+Added sensitivity options
+Added invert movement and mouse axis’
+Added more Item stuff, behind the scenes. Items can now have limited uses, or can be destroyed on use
+Added enemys “despawning” when falling out of the Dungeon (Esentially, more FPS)
+Increased lamp light intensity, suggested by waiwha and ndke on TigSource forums
+Added torches, suggested also by waiwha and ndke on TigSource forums
+Some optimizations for older machines, thanks to omg_ketchup on Reddit for reporting
+
+For developers
+New Unity version - Must Have Unity Version 4.5.2f1 or later to contribute
+Added new item creator window, for easy custom Item creation
 
 Indev 0.1.1
 Fixed several bugs
