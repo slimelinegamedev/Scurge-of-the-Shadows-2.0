@@ -44,6 +44,11 @@ namespace Scurge.Environment {
 		public bool entered = false;
 		public bool firstTime = true;
 
+		void Awake() {
+			//Pool all objects by doing a foreach loop on the Tiels array, then for each tile, call ObjectPool.CreatePool
+		
+		}
+
 		void Start() {
 			if(TileSize > 0){
 				if(FirstTime) {

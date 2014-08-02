@@ -8,8 +8,6 @@ using Scurge.Audio;
 
 namespace Scurge.Environment {
 	public class Tile : MonoBehaviour {
-		public List<GameObject> Doorways;
-		public List<Vector3> DoorwayRotations;
-		public TileType Type;
+		
 	}
 }

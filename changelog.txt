@@ -19,6 +19,7 @@ Some optimizations for older machines, thanks to omg_ketchup on Reddit for repor
 For developers
 New Unity version - Must Have Unity Version 4.5.2f1 or later to contribute
 Added new item creator window, for easy custom Item creation
+Meshes now combine in Editor, not during runtime
 
 Indev 0.1.1
 Fixed several bugs

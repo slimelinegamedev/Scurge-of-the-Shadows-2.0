@@ -5688,7 +5688,7 @@ MonoBehaviour:
     width: 200
     height: 100
   DevelopmentStage: Indev
-  GameVersion: 0.1.2
+  GameVersion: 0.2.0
   Enabled: 1
 --- !u!114 &1993980346
 MonoBehaviour:
