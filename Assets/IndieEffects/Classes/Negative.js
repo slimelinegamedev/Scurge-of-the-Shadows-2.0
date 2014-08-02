@@ -1,4 +1,5 @@
 ﻿#pragma strict
+import IndieEffects;
 /*
 
 				----------Negative----------
@@ -7,19 +8,19 @@ this effect by accident. enjoy!
 */
 @script RequireComponent (IndieEffects)
 @script AddComponentMenu ("Indie Effects/Negative")
-import IndieEffects;
+var fxRes : IndieEffects;
 
 private var ThermoMat : Material;
 var shader : Shader;
 var noise : float;
 
 function Start () {
+	fxRes = GetComponent(IndieEffects);
 	ThermoMat = new Material(shader);
 }
 
 function Update () {
-	ThermoMat.SetFloat("_Noise",noise);
-	ThermoMat.SetTexture("_MainTex", renderTexture);
+	ThermoMat.SetTexture("_MainTex", fxRes.RT);
 }
 
 function OnPostRender () {

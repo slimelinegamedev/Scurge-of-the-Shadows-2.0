@@ -1,5 +1,5 @@
 ﻿#pragma strict
-
+import IndieEffects;
 /*
 ---------- Anti-Aliasing Indie Effects----------
 
@@ -8,7 +8,8 @@ This is an adaption of Unity Pro's AA Script, done by TheBlur (me)
 */
 @script RequireComponent (IndieEffects)
 @script AddComponentMenu ("Indie Effects/Anti-Aliasing")
-import IndieEffects;
+//import IndieEffects;
+var fxRes : IndieEffects;
 
 enum AAMode {
 	FXAA2 = 0,
@@ -81,7 +82,7 @@ enum AAMode {
 	}
 
 	function Start () {
-			
+		fxRes = gameObject.GetComponent(IndieEffects);
 		materialFXAAPreset2 = new Material (shaderFXAAPreset2);
 		materialFXAAPreset3 = new Material (shaderFXAAPreset3);
 		materialFXAAII = new Material (shaderFXAAII);
@@ -92,13 +93,13 @@ enum AAMode {
 	}
 	
 	function Update () {
-	materialFXAAPreset2.mainTexture = renderTexture;
-	materialFXAAPreset3.mainTexture = renderTexture;
-	materialFXAAII.mainTexture = renderTexture;
-	materialFXAAIII.mainTexture = renderTexture;
-	nfaa.mainTexture = renderTexture;
-	ssaa.mainTexture = renderTexture;
-	dlaa.mainTexture = renderTexture;
+	materialFXAAPreset2.mainTexture = fxRes.RT;
+	materialFXAAPreset3.mainTexture = fxRes.RT;
+	materialFXAAII.mainTexture = fxRes.RT;
+	materialFXAAIII.mainTexture = fxRes.RT;
+	nfaa.mainTexture = fxRes.RT;
+	ssaa.mainTexture = fxRes.RT;
+	dlaa.mainTexture = fxRes.RT;
 	}
 	function OnPostRender() {
 
@@ -116,9 +117,9 @@ enum AAMode {
             FullScreenQuad(materialFXAAPreset3);
         }
         else if(mode == AAMode.FXAA1PresetA && materialFXAAPreset2 != null) {
-            renderTexture.anisoLevel = 4;
+            fxRes.RT.anisoLevel = 4;
             FullScreenQuad(materialFXAAPreset2);
-            renderTexture.anisoLevel = 0;
+            fxRes.RT.anisoLevel = 0;
         }
         else if(mode == AAMode.FXAA2 && materialFXAAII != null) {
             FullScreenQuad(materialFXAAII);
@@ -135,8 +136,8 @@ enum AAMode {
 		// .............................................................................
 		// DLAA antialiasing ...........................................................
 		
-			renderTexture.anisoLevel = 0;	
-			var interim = renderTexture;
+			fxRes.RT.anisoLevel = 0;	
+			var interim = fxRes.RT;
 			FullScreenQuad(dlaa);			
 			FullScreenQuad(dlaa);					
 		}
@@ -145,7 +146,7 @@ enum AAMode {
 		// .............................................................................
 		// nfaa antialiasing ..............................................
 			
-			renderTexture.anisoLevel = 0;	
+			fxRes.RT.anisoLevel = 0;	
 		
 			nfaa.SetFloat("_OffsetScale", offsetScale);
 			nfaa.SetFloat("_BlurRadius", blurRadius);

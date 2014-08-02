@@ -3,8 +3,8 @@ guid: b6f229beba8614a4fa698102dc00f50f
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - shader: {fileID: 4800000, guid: b3fb10043e7504d4ebf221ee89a74505, type: 3}
-  - texmonitor: {instanceID: 0}
+  - fxRes: {instanceID: 0}
+  - shader: {fileID: 4800000, guid: a93e6f1c206d4eb40a633cdc64ccbf53, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

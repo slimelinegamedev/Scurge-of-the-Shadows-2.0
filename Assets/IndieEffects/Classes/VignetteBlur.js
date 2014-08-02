@@ -1,6 +1,7 @@
 ﻿#pragma strict
 import IndieEffects;
 
+var fxRes : IndieEffects;
 @script RequireComponent(Camera);
 @script AddComponentMenu("Indie Effects/Vignette");
 
@@ -130,11 +131,12 @@ function RadialBlurQuad6 (renderMat : Material) {
 
 
 function Start () {
+	fxRes = GetComponent(IndieEffects);
 	sampleMat = new Material(shader);
 }
 
 function Update () {
-	sampleMat.SetTexture("_MainTex",renderTexture);
+	sampleMat.SetTexture("_MainTex",fxRes.RT);
 	sampleMat.SetTexture("_Vignette",Vignette);
 }
 

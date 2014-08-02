@@ -142,7 +142,7 @@ Shader "IndieEffects/ShaderDir/SimpleBloom" {
 	
 	SubShader {
 		Tags { "Queue"="Overlay" "RenderType"="Overlay"}
-		
+		blend SrcColor One
 		Pass {
 			ZTest Always Cull Off ZWrite Off
 			Fog { Mode off }
@@ -155,15 +155,6 @@ Shader "IndieEffects/ShaderDir/SimpleBloom" {
 			#pragma target 3.0
 			
 			ENDCG
-		}
-		Pass {
-			ZTest Always Cull Off ZWrite Off
-			Fog { Mode off }
-			Lighting Off
-			
-			SetTexture [_MainTex] {
-				Combine texture
-			}
 		}
 		Pass {
 			ZTest Always Cull Off ZWrite Off

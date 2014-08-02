@@ -86,7 +86,7 @@ MonoBehaviour:
       m_Background: {fileID: 0}
       m_TextColor: {r: 1, g: 1, b: 1, a: 1}
     m_OnNormal:
-      m_Background: {fileID: 2800000, guid: f14e7c1e8606645c4a3f26fe2a902935, type: 3}
+      m_Background: {fileID: 2800000, guid: 432c080b844854df48804f98b741754f, type: 3}
       m_TextColor: {r: .90196079, g: .90196079, b: .90196079, a: 1}
     m_OnHover:
       m_Background: {fileID: 2800000, guid: 432c080b844854df48804f98b741754f, type: 3}

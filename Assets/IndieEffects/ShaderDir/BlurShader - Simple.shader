@@ -25,25 +25,20 @@
 	v2f vert (appdata_img v)
 	{
 		v2f o;
-		
 		o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
-
 		o.uv = v.texcoord.xy;
-		
 		return o;
 	}
 	
 	v2f_off vertOff (appdata_img v)
 	{
 		v2f_off o;
-		
 		o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
 
 		float2 uv = v.texcoord.xy;
-				
 		float2 up = float2(0.0, _MainTex_TexelSize.y) * _Amount;
 		float2 right = float2(_MainTex_TexelSize.x, 0.0) * _Amount;	
-			
+		
 		o.uv[0].xy = uv + up;
 		o.uv[1].xy = uv - up;
 		o.uv[2].xy = uv + right;
@@ -54,13 +49,6 @@
 		o.uv[7].xy = uv + right -up;
 		
 		return o;
-	}
-	
-	half4 frag (v2f i) : COLOR
-	{
-		float4 col = tex2D(_MainTex, i.uv);
-		
-		return col;
 	}
 	
 	half4 fragOff (v2f_off i) : COLOR
@@ -85,13 +73,6 @@
 	
 	SubShader {
 		ZTest Always Cull Off ZWrite Off
-		pass {
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			#pragma target 3.0
-			ENDCG
-		}
 		pass {
 			CGPROGRAM
 			#pragma vertex vertOff

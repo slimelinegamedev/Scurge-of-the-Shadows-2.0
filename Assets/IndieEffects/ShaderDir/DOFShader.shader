@@ -1,8 +1,8 @@
-﻿Shader "Custom/DOFShader" {
+Shader "Custom/DOFShader" {
 	Properties {
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_Depth ("DepthTexture", 2D) = "black" {}
-		_FStop ("F-Stop", float) = 0.5
+		_FStop ("F-Stop", range(0,1)) = 0.5
 		_Amount ("Blur Amount", Range(0,3)) = 2
 	}
 	
@@ -42,32 +42,38 @@
 		
 		return o;
 	}
-	
+        		
 	half4 frag (v2f i) : COLOR
 	{
-		
+		float2 uv = (i.uv[0] + i.uv[1]) * 0.5;
 		float4 col = tex2D(_MainTex, (i.uv[0] + i.uv[1]) * 0.5);
-		float4 depth = tex2D(_Depth, (i.uv[0] + i.uv[1]) * 0.5);
+		float depth;
+		float3 viewNorm;
+		float4 depthnormal = tex2D(_Depth,uv);
+		DecodeDepthNormal (depthnormal, depth, viewNorm);
+		depth *= _ProjectionParams.z;
+		Linear01Depth(depth);
+		depth /= _FStop;
+		
 		float4 newCol;
 		newCol.rgb = (0,0,0);
 		int count = 1;
 		for (int pix = 0; pix < 8; pix ++) {
-			if (i.uv[pix].x <= 1.0 && i.uv[pix].y <= 1.0 && i.uv[pix].x >= 0.0 && i.uv[pix].y >= 0.0) {
+			if (i.uv[pix].x <= 1.0 && i.uv[pix].y <= 1.0 && i.uv[pix].x >= 0.0 && i.uv[pix].y >= 0.0) { //
 				newCol += tex2D(_MainTex, i.uv[pix]);
 				count ++;
 			}
 		}
-			
-		newCol = lerp(col,(newCol + col) / (count + 1), depth) * 1.2;
 		
+		newCol = lerp(col, newCol / (count + 1)*1.2, saturate(depth));
 		return newCol;
 	}
 	
 	ENDCG
 	
 	SubShader {
-		blend off
-		pass {
+		tags {"Queue" = "Overlay" "RenderType" = "Overlay"}
+		Pass {
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag

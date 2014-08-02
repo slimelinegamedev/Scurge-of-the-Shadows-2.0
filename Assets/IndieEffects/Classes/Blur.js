@@ -1,8 +1,9 @@
 ﻿#pragma strict
+import IndieEffects;
 
 @script RequireComponent (IndieEffects)
 @script AddComponentMenu ("Indie Effects/Blur")
-import IndieEffects;
+var fxRes : IndieEffects;
 
 private var blurMat : Material;
 var blurShader : Shader;
@@ -10,12 +11,12 @@ var blurShader : Shader;
 var blur : float;
 
 function Start () {
+	fxRes = GetComponent(IndieEffects);
 	blurMat = new Material(blurShader);
 }
 
 function Update () {
-	blurMat.SetTexture("_MainTex", renderTexture);
-	blurMat.SetFloat("_Threshold", 0);
+	blurMat.SetTexture("_MainTex", fxRes.RT);
 	blurMat.SetFloat("_Amount", blur);
 }
 

@@ -1,32 +1,26 @@
 ﻿#pragma strict
+import IndieEffects;
 
 @script RequireComponent(IndieEffects)
-@script RequireComponent(_Depth)
 @script AddComponentMenu("Indie Effects/Depth of Field")
-import IndieEffects;
-import _Depth;
+var fxRes : IndieEffects;
 
 var shader : Shader;
-var texmonitor : Texture2D;
 private var DOFMat : Material;
-@range (0,20)
+@range (0,10)
 var FStop : float;
 @range (0,5)
 var BlurAmount : float;
 
-
 function Start () {
+	fxRes = GetComponent(IndieEffects);
 	DOFMat = new Material(shader);
 }
 
-function Update () {
-	DOFMat.SetTexture("_MainTex",renderTexture);
-	DOFMat.SetTexture("_Depth",DepthTex);
-	DOFMat.SetFloat ("_FStop", FStop/10);
-	DOFMat.SetFloat ("_Amount", BlurAmount);
-}
-
 function OnPostRender () {
+	DOFMat.SetTexture("_MainTex",fxRes.RT);
+	DOFMat.SetTexture("_Depth",fxRes.DNBuffer);
+	DOFMat.SetFloat ("_FStop", FStop*10);
+	DOFMat.SetFloat ("_Amount", BlurAmount);
 	FullScreenQuad(DOFMat);
-	texmonitor = DepthTex;
 }

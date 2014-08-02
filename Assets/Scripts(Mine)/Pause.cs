@@ -164,6 +164,13 @@ namespace Scurge.Util {
 				SelectedMoveOptions = GUI.SelectionGrid(new Rect(425, 410 + 20, 400, 50), SelectedMoveOptions, MoveOptionsGridText, 2);
 				InputManager.GetAxisConfiguration("Default", "Horizontal").invert  = GUI.Toggle(new Rect(425, 470 + 20, 400, 30), InputManager.GetAxisConfiguration("Default", "Horizontal").invert, "Invert Movement X");
 				InputManager.GetAxisConfiguration("Default", "Vertical").invert  = GUI.Toggle(new Rect(425, 500 + 20, 400, 30), InputManager.GetAxisConfiguration("Default", "Vertical").invert, "Invert Movement Y");
+
+				if(GUI.Button(new Rect(425, 570, 217.5f, 50), "Save Config")) {
+					InputManager.Save();
+				}
+				if(GUI.Button(new Rect(637.5f, 570, 217.5f, 50), "Load Config")) {
+					InputManager.Load();
+				}
 			}
 			if(Open && ShowControlsOptions) {
 				//11 Controls
@@ -234,11 +241,17 @@ namespace Scurge.Util {
 						GUI.Label(new Rect(425, 510 + 10, 215, 50), "<size=15>Mouse Left</size>", "Center Label");
 						GUI.Label(new Rect(425, 570 + 10, 215, 50), "<size=15>Mouse Right</size>", "Center Label");
 					}
-					else if(!Mouse) {
+					else if(Keyboard) {
 						GUI.Label(new Rect(425, 390 + 10, 215, 50), "<size=15>" + InputManager.GetAxisConfiguration("Default", "Mouse Y").positive.ToString() + "</size>", "Center Label");
 						GUI.Label(new Rect(425, 450 + 10, 215, 50), "<size=15>" + InputManager.GetAxisConfiguration("Default", "Mouse Y").negative.ToString() + "</size>", "Center Label");
 						GUI.Label(new Rect(425, 510 + 10, 215, 50), "<size=15>" + InputManager.GetAxisConfiguration("Default", "Mouse X").negative.ToString() + "</size>", "Center Label");
 						GUI.Label(new Rect(425, 570 + 10, 215, 50), "<size=15>" + InputManager.GetAxisConfiguration("Default", "Mouse X").positive.ToString() + "</size>", "Center Label");
+					}
+					else if(Joystick) {
+						GUI.Label(new Rect(425, 390 + 10, 215, 50), "<size=15>Joystick1Up</size>", "Center Label");
+						GUI.Label(new Rect(425, 450 + 10, 215, 50), "<size=15>Joystick1Down</size>", "Center Label");
+						GUI.Label(new Rect(425, 510 + 10, 215, 50), "<size=15>Joystick1Left</size>", "Center Label");
+						GUI.Label(new Rect(425, 570 + 10, 215, 50), "<size=15>Joystick1Right</size>", "Center Label");
 					}
 					/*GUI.Label(new Rect(425, 390, 215, 50), "<size=15>" + InputManager.GetAxisConfiguration("Default", "Mouse Y").positive.ToString() + "</size>", "Center Label");
 					GUI.Label(new Rect(425, 450, 215, 50), "<size=15>" + InputManager.GetAxisConfiguration("Default", "Mouse Y").negative.ToString() + "</size>", "Center Label");

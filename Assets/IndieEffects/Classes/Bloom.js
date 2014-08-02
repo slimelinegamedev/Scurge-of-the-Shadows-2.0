@@ -1,52 +1,27 @@
 ﻿#pragma strict
  
 @script RequireComponent (IndieEffects)
-@script AddComponentMenu ("Indie Effects/Blur_CurveLens")
- 
+@script AddComponentMenu ("Indie Effects/Image Bloom")
+import IndieEffects;
+var fxRes : IndieEffects;
+
 private var bloomMat : Material;
-var bloomShaderCurve : Shader;
-var bloomColor : Color;
-var dirtyLensTex : Texture2D;
-@range(0,10)
-var intensity : float;
-@range(0,1)
+var bloomShader : Shader;
 var threshold : float;
-@range(0,0.02)
-var radius : float;
-@Range(0, 2)
-var downsample : int = 1;
-@range(0,1)
-var lensIntensity : float;
+var amount : float;
 var newTex : Texture2D;
  
 function Start () {
-newTex = new Texture2D(camera.pixelWidth, camera.pixelHeight, TextureFormat.RGB24, false);
-bloomMat = new Material(bloomShaderCurve);
+fxRes = GetComponent(IndieEffects);
+newTex = new Texture2D(fxRes.textureSize, fxRes.textureSize, TextureFormat.RGB24, false);
+newTex.wrapMode = TextureWrapMode.Clamp;
+bloomMat = new Material(bloomShader);
 }
- 
-function Update () {
-bloomMat.SetTexture("_MainTex", renderTexture);
-bloomMat.SetTexture("_LensTex", dirtyLensTex);
-bloomMat.SetTexture("_BlurTex", renderTexture);
-bloomMat.SetColor("_BloomColor", bloomColor);
-bloomMat.SetFloat("_Amount", intensity);
-bloomMat.SetFloat("_Threshold", threshold);
-bloomMat.SetFloat("_Radius", radius);
-}
- 
-function OnPostRender () {
 
-	bloomMat.SetTexture("_BlurTex", renderTexture);
-	FullScreenQuadPass(bloomMat, 1);
-	newTex.Resize(camera.pixelWidth,camera.pixelHeight,TextureFormat.RGB24,false);
-	newTex.ReadPixels(Rect(camera.pixelRect.x, camera.pixelRect.y,camera.pixelWidth, camera.pixelHeight), 0,0);
-	bloomMat.SetTexture("_BlurTex", newTex);
-	newTex.Apply();
-	FullScreenQuadPass(bloomMat, 2);
-	bloomMat.SetTexture("_MainTex", renderTexture);
-	bloomMat.SetTexture("_LensTex", dirtyLensTex);
-	bloomMat.SetFloat("_LensAmount", lensIntensity);
-	newTex.ReadPixels(Rect(camera.pixelRect.x, camera.pixelRect.y,camera.pixelWidth, camera.pixelHeight), 0,0);
-	newTex.Apply();
-	FullScreenQuadPass(bloomMat, 3);
+function OnGUI() {
+	bloomMat.SetFloat("_Threshold", threshold);
+	bloomMat.SetFloat("_Amount", amount);
+	bloomMat.SetTexture("_MainTex", fxRes.RT);
+	bloomMat.SetTexture("_BlurTex", fxRes.RT);
+	FullScreenQuad(bloomMat);
 }

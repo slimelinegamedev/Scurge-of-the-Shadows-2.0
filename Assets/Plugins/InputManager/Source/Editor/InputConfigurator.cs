@@ -764,7 +764,6 @@ namespace TeamUtility.Editor
 			axisConfig.type = (InputType)EditorGUILayout.EnumPopup("Type", axisConfig.type);
 			axisConfig.axis = EditorGUILayout.Popup("Axis", axisConfig.axis, _axisOptions);
 			axisConfig.joystick = EditorGUILayout.Popup("Joystick", axisConfig.joystick, _joystickOptions);
-			
 			GUILayout.EndScrollView();
 			GUILayout.EndArea();
 		}
@@ -794,15 +793,12 @@ namespace TeamUtility.Editor
 		[MenuItem("Window/Input Manager")]
 		public static void OpenWindow()
 		{
-			if(!IsOpen)
+			if(UnityEngine.Object.FindObjectOfType(typeof(InputManager)) == null)
 			{
-				if(UnityEngine.Object.FindObjectOfType(typeof(InputManager)) == null)
-				{
-					GameObject gameObject = new GameObject("InputManager");
-					gameObject.AddComponent<InputManager>();
-				}
-				EditorWindow.GetWindow<InputConfigurator>("Input");
+				GameObject gameObject = new GameObject("InputManager");
+				gameObject.AddComponent<InputManager>();
 			}
+			EditorWindow.GetWindow<InputConfigurator>("Input");
 		}
 		
 		public static void OpenWindow(InputManager target)
