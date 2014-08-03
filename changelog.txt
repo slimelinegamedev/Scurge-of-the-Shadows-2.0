@@ -11,7 +11,7 @@ Added Goblin
 Added sensitivity options
 Added invert movement and mouse axis’
 Added more Item stuff, behind the scenes. Items can now have limited uses, or can be destroyed on use
-Added enemys “despawning” when falling out of the Dungeon (Esentially, more FPS)
+Added enemys “despawning” when falling out of the Dungeon
 Increased lamp light intensity, suggested by waiwha and ndke on TigSource forums
 Added torches, suggested also by waiwha and ndke on TigSource forums
 Some optimizations for older machines, thanks to omg_ketchup on Reddit for reporting

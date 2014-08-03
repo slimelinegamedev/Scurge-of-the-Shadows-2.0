@@ -15,6 +15,7 @@ namespace Scurge.Enemy {
 		public float MaxWander;
 		public float followSpeed;
 
+		public bool WantsToKillYou = true;
 		public bool FoundPlayer = false;
 		public GameObject Player;
 
@@ -32,7 +33,7 @@ namespace Scurge.Enemy {
 			}
 		}
 		void OnTriggerEnter(Collider collider) {
-			if(collider.gameObject.tag == "Player") {
+			if(collider.gameObject.tag == "Player" && WantsToKillYou) {
 				Follow(collider.gameObject);
 				Player = collider.gameObject;
 			}

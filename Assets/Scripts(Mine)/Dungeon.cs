@@ -46,7 +46,7 @@ namespace Scurge.Environment {
 
 		void Awake() {
 			//Pool all objects by doing a foreach loop on the Tiels array, then for each tile, call ObjectPool.CreatePool
-		
+			
 		}
 
 		void Start() {

@@ -13,6 +13,7 @@ using Scurge.AI;
 namespace Scurge.Enemy {
 	public class Spawner : MonoBehaviour {
 		public List<GameObject> Enemys;
+		public List<GameObject> NPCs;
 		public GameObject LastEnemy;
 		public Vector3 SpawnPosition;
 
@@ -32,13 +33,25 @@ namespace Scurge.Enemy {
 				}
 			}
 			SpawnedEnemys = new List<GameObject>(0);
+			int WhichType = 0;
 			for(Spawned = 0; Spawned < Random.Range(MinSpawns, MaxSpawns); Spawned++) {
-				LastEnemy = Enemys[Random.Range(0, Enemys.Count)];
-				SpawnPosition = new Vector3(Random.Range(-20, 90), PosibleYPositions[Random.Range(0, PosibleYPositions.Count)], Random.Range(-20, 85));
-				var LastEnemySpawned = (GameObject)Object.Instantiate(LastEnemy, SpawnPosition, transform.rotation);
-				LastEnemySpawned.SetActive(true);
-				SpawnedEnemys.Add(LastEnemySpawned);
-				LastEnemySpawned.transform.parent = Holder.transform;
+				WhichType = Random.Range(0, 40);
+				if(WhichType == 40) {
+					LastEnemy = NPCs[Random.Range(0, NPCs.Count)];
+					SpawnPosition = new Vector3(Random.Range(-20, 90), PosibleYPositions[Random.Range(0, PosibleYPositions.Count)], Random.Range(-20, 85));
+					var LastEnemySpawned = (GameObject)Object.Instantiate(LastEnemy, SpawnPosition, transform.rotation);
+					LastEnemySpawned.SetActive(true);
+					SpawnedEnemys.Add(LastEnemySpawned);
+					LastEnemySpawned.transform.parent = Holder.transform;
+				}
+				else {
+					LastEnemy = Enemys[Random.Range(0, Enemys.Count)];
+					SpawnPosition = new Vector3(Random.Range(-20, 90), PosibleYPositions[Random.Range(0, PosibleYPositions.Count)], Random.Range(-20, 85));
+					var LastEnemySpawned = (GameObject)Object.Instantiate(LastEnemy, SpawnPosition, transform.rotation);
+					LastEnemySpawned.SetActive(true);
+					SpawnedEnemys.Add(LastEnemySpawned);
+					LastEnemySpawned.transform.parent = Holder.transform;
+				}
 			}
 		}
  	}
