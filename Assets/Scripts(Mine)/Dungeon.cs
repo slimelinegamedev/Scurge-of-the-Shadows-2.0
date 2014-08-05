@@ -22,6 +22,7 @@ namespace Scurge.Environment {
 		public Spawner Spawner;
 
 		public List<GameObject> Tiles;
+		public List<GameObject> BossTiles;
 		public List<GameObject> WaysDown;
 		public List<GameObject> SpawnedTiles;
 		public GameObject Wall;
@@ -69,6 +70,7 @@ namespace Scurge.Environment {
 		}
 
 		public void Generate() {
+			int Type = Random.Range(0, 1000);
 			if(SpawnedTiles.Count > 0) {
 			                foreach (GameObject curTileDestroying in SpawnedTiles) {
 			                	Destroy(curTileDestroying);
@@ -78,11 +80,21 @@ namespace Scurge.Environment {
 		            	for (int x = 0; x < SizeX * TileSize; x += TileSize) {
 		               		for (int y = 0; y < SizeZ * TileSize; y += TileSize) {
 		               			if(y > 0 || x > 0) {
-			                		PieceNumber = Random.Range(0, Tiles.Count);
-			                		CurrentPiece = Tiles[PieceNumber];
-			                		var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);
-			                		CurTile.transform.parent = Holder.transform;
-			                		SpawnedTiles.Add(CurTile);
+		               				Type = Random.Range(0, 10);
+		               				if(Type < 10) {
+		               					PieceNumber = Random.Range(0, Tiles.Count);
+				                		CurrentPiece = Tiles[PieceNumber];
+				                		var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);
+				                		CurTile.transform.parent = Holder.transform;
+				                		SpawnedTiles.Add(CurTile);
+				                	}
+				                	else {	
+				                		PieceNumber = Random.Range(0, BossTiles.Count);
+				                		CurrentPiece = BossTiles[PieceNumber];
+				                		var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);
+				                		CurTile.transform.parent = Holder.transform;
+				                		SpawnedTiles.Add(CurTile);
+				                	}
 			                	}
 			                	else {
 			                		PieceNumber = Random.Range(0, WaysDown.Count);
