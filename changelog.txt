@@ -15,11 +15,14 @@ Added enemys “despawning” when falling out of the Dungeon
 Increased lamp light intensity, suggested by waiwha and ndke on TigSource forums
 Added torches, suggested also by waiwha and ndke on TigSource forums
 Some optimizations for older machines, thanks to omg_ketchup on Reddit for reporting
+Load times almost instant on decent machines
+Reduced draw calls for tiles
+Added fog, so you can’t see forever
 
 For developers
 New Unity version - Must Have Unity Version 4.5.2f1 or later to contribute
 Added new item creator window, for easy custom Item creation
-Meshes now combine in Editor, not during runtime
+Meshes now combine in Editor, not during runtime. except for one :D
 
 Indev 0.1.1
 Fixed several bugs

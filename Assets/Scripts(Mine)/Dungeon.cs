@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Scurge;
@@ -27,6 +27,7 @@ namespace Scurge.Environment {
 		public List<GameObject> SpawnedTiles;
 		public GameObject Wall;
 		public GameObject Holder;
+		public GameObject meshHolder;
 		public float WaitTime;
 		public GUISkin Skin;
 		private bool FirstTime = true;
@@ -76,12 +77,17 @@ namespace Scurge.Environment {
 			                	Destroy(curTileDestroying);
 			                }
 			}
+			foreach(Transform child in meshHolder.transform) {
+				if(child != null) {
+					Destroy(child.gameObject);
+				}
+    			}
 			SpawnedTiles = new List<GameObject>(0);
 		            	for (int x = 0; x < SizeX * TileSize; x += TileSize) {
 		               		for (int y = 0; y < SizeZ * TileSize; y += TileSize) {
 		               			if(y > 0 || x > 0) {
-		               				Type = Random.Range(0, 10);
-		               				if(Type < 10) {
+		               				Type = Random.Range(0, 1000);
+		               				if(Type < 999) {
 		               					PieceNumber = Random.Range(0, Tiles.Count);
 				                		CurrentPiece = Tiles[PieceNumber];
 				                		var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);

@@ -16,8 +16,6 @@ namespace Scurge.Environment {
 
 		void OnTriggerEnter(Collider collider) {
 			if(collider.gameObject.tag == "Player") {
-				Spawner.MinSpawns += 5;
-				Spawner.MaxSpawns += Random.Range(5, 10);
 				Dungeon.OutterGeneration();
 			}
 		}
