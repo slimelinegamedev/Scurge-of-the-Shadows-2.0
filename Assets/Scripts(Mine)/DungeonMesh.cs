@@ -10,16 +10,18 @@ using Scurge.Audio;
 using Scurge.AI;
 using TeamUtility.IO;
 
-public class DungeonMesh : MonoBehaviour {
+namespace Scurge.Environment {
+	public class DungeonMesh : MonoBehaviour {
 
-	public GameObject Holder;
-	public int WaitTime;
-	public MeshCombine MeshCombine;
+		public GameObject Holder;
+		public int WaitTime;
+		public MeshCombine MeshCombine;
 
-	public IEnumerator Start() {
-		yield return new WaitForSeconds(WaitTime);
-		gameObject.transform.parent = Holder.transform;
-		MeshCombine.CombineMesh(MeshCombine.transform.gameObject, MeshCombine.wait);
+		public IEnumerator Start() {
+			yield return new WaitForSeconds(WaitTime);
+			gameObject.transform.parent = Holder.transform;
+			MeshCombine.CombineMesh(MeshCombine.transform.gameObject, MeshCombine.wait);
+		}
+		
 	}
-	
 }

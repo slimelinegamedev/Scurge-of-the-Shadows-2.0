@@ -121,7 +121,7 @@ namespace Scurge.Player {
 							StartCoroutine(SwingCool(CooldownTime));
 						}
 						if(ItemCommand == Command.Projectile) {
-							ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+							ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
 						}
 						if(LimitedUses) {
 							if(Uses > 0) {

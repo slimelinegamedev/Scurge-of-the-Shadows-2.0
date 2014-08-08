@@ -17,7 +17,6 @@ namespace Scurge.UI {
 		public bool optionsVisible = false;
 
 		public float playX = 10;
-		public float optionsX = 10;
 		public float quitX = 10;
 
 		public string saveOne;
@@ -27,19 +26,12 @@ namespace Scurge.UI {
 		void Update() {
 			if(visible) {
 				if(!savesVisible && !optionsVisible) {
-					if(new Rect(10, 540, 200, 50).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
+					if(new Rect(10, 600, 200, 50).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
 						print("Inside Play Button!");
 						playX = 30;
 					}
 					else {
 						playX = 10;
-					}
-					if(new Rect(10, 600, 200, 50).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
-						print("Inside Options Button!");
-						optionsX = 30;
-					}
-					else {
-						optionsX = 10;
 					}
 					if(new Rect(10, 660, 200, 50).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
 						print("Inside Quit Button!");
@@ -63,11 +55,8 @@ namespace Scurge.UI {
 			if(visible) {
 				GUI.Label(new Rect(640, 10, 10, 200), "<size=60>Scurge of the Shadows 2.0</size>", "Center Label");
 				if(!savesVisible && !optionsVisible) {
-					if(GUI.Button(new Rect(playX, 540, 200, 50), "<size=40>Play</size>", "Menu Button")) {
+					if(GUI.Button(new Rect(playX, 600, 200, 50), "<size=40>Play</size>", "Menu Button")) {
 						ShowSaves(true);
-					}
-					if(GUI.Button(new Rect(optionsX, 600, 200, 50), "<size=40>Options</size>", "Menu Button")) {
-						ShowOptions();
 					}
 					if(GUI.Button(new Rect(quitX, 660, 200, 50), "<size=40>Exit</size>", "Menu Button")) {
 						if(Application.isEditor) {

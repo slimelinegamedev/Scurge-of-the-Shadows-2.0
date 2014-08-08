@@ -1,4 +1,4 @@
-Indev 0.2.0 - A little bit of everything
+Indev 0.2.0 - Version Assassin
 Added loading indicator for level generation
 Added input customization (thanks to daemon3000 on GitHub, for his plugin, InputManager)
 Added pause menu (Default escape)
@@ -18,6 +18,8 @@ Some optimizations for older machines, thanks to omg_ketchup on Reddit for repor
 Load times almost instant on decent machines
 Reduced draw calls for tiles
 Added fog, so you can’t see forever
+Added Occlusion Culling, less draw calls, more frames!
+Removed options from startup menu, now in pause menu (default escape)
 
 For developers
 New Unity version - Must Have Unity Version 4.5.2f1 or later to contribute

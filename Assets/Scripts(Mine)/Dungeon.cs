@@ -86,8 +86,8 @@ namespace Scurge.Environment {
 		            	for (int x = 0; x < SizeX * TileSize; x += TileSize) {
 		               		for (int y = 0; y < SizeZ * TileSize; y += TileSize) {
 		               			if(y > 0 || x > 0) {
-		               				Type = Random.Range(0, 1000);
-		               				if(Type < 999) {
+		               				Type = Random.Range(0, 50);
+		               				if(Type < 49) {
 		               					PieceNumber = Random.Range(0, Tiles.Count);
 				                		CurrentPiece = Tiles[PieceNumber];
 				                		var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);

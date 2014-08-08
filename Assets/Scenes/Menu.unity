@@ -5650,7 +5650,6 @@ MonoBehaviour:
   savesVisible: 0
   optionsVisible: 0
   playX: 10
-  optionsX: 10
   quitX: 10
   saveOne: EMPTY
   saveTwo: EMPTY
@@ -5684,11 +5683,12 @@ MonoBehaviour:
   rect:
     serializedVersion: 2
     x: 1150
-    y: 680
+    y: 670
     width: 200
     height: 100
   DevelopmentStage: Indev
   GameVersion: 0.2.0
+  CodeName: Version Assassin
   Enabled: 1
 --- !u!114 &1993980346
 MonoBehaviour:
