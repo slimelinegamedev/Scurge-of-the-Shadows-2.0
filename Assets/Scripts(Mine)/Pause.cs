@@ -118,12 +118,12 @@ namespace Scurge.Util {
 					ShowOptions = false;
 				}
 				if(Open) {
-					Disable.DisableObj(true);
+					Disable.DisableObj(true, false);
 					Time.timeScale = 0;
 					Screen.showCursor = true;
 				}
 				else if(!Open) {
-					Disable.EnableObj(true);
+					Disable.EnableObj(true, false);
 					Time.timeScale = 1;
 					Screen.showCursor = false;
 				}
@@ -135,7 +135,7 @@ namespace Scurge.Util {
 				GUI.Box(new Rect(420, 297.5f, 440, 125), "Paused");
 				if(GUI.Button(new Rect(500- 70, 327.5f, 140, 85), "Resume")) {
 					Open = !Open;
-					Disable.EnableObj(true);
+					Disable.EnableObj(true, false);
 					Time.timeScale = 1;
 					Screen.showCursor = false;
 				}

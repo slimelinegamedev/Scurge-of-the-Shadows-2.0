@@ -10,7 +10,7 @@ namespace Scurge.Util {
 
 		public Objects Objects;
 
-		public void DisableObj(bool inventoryDisab) {
+		public void DisableObj(bool inventoryDisab, bool DisablePlayer) {
 			foreach (GameObject CurObj in Objects.Disables) {
 				CurObj.SetActive(false);
 			}
@@ -20,11 +20,14 @@ namespace Scurge.Util {
 			Objects.MouseX.enabled = false;
 			Objects.MouseY.enabled = false;
 			Objects.Controller.enabled = false;
+			if(DisablePlayer) {
+				Objects.Player.SetActive(false);
+			}
 			if(inventoryDisab) {
 				Objects.Inventory.enabled = false;
 			}
 		}
-		public void EnableObj(bool inventoryEnab) {
+		public void EnableObj(bool inventoryEnab, bool EnablePlayer) {
 			foreach (GameObject CurObj in Objects.Disables) {
 				CurObj.SetActive(true);
 			}
@@ -34,6 +37,9 @@ namespace Scurge.Util {
 			Objects.MouseX.enabled = true;
 			Objects.MouseY.enabled = true;
 			Objects.Controller.enabled = true;
+			if(EnablePlayer) {
+				Objects.Player.SetActive(true);
+			}
 			if(inventoryEnab) {
 				Objects.Inventory.enabled = true;
 			}

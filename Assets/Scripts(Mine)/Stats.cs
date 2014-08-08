@@ -91,7 +91,7 @@ namespace Scurge.Player {
 
 		public void Die() {
 			Dead = true;
-			Disable.DisableObj(true);
+			Disable.DisableObj(true, false);
 			Highscore.add("Player1", Dungeon.Floor, Gold, "SOMETHING");
 			Objects.Player.transform.position = new Vector3(-1000000, -1000000, -1000000);
 		}

@@ -287,12 +287,12 @@ namespace Scurge.Player {
 				if(InventoryOpen) {
 					Screen.showCursor = true;
 					Screen.lockCursor = false;
-					Disable.DisableObj(false);
+					Disable.DisableObj(false, false);
 				}
 				else {	
 					Screen.showCursor = false;
 					Screen.lockCursor = true;
-					Disable.EnableObj(false);
+					Disable.EnableObj(false, false);
 				}
 			}
 			//Give item tooltips

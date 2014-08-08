@@ -56,7 +56,7 @@ namespace Scurge.Environment {
 			if(CloseEnough) {
 				if(Input.GetKeyDown(KeyCode.Q)) {
 					Interacting = true;
-					Disable.DisableObj(true);
+					Disable.DisableObj(true, false);
 				}
 			}
 			if(Interacting) {
@@ -72,7 +72,7 @@ namespace Scurge.Environment {
 			if(Interacting) {
 				GUI.Box(new Rect(415, 110, 450, 500), "Trades");
 				if(GUI.Button(new Rect(425, 140, 430, 50), "Exit")) {
-					Disable.EnableObj(true);
+					Disable.EnableObj(true, false);
 					Screen.showCursor = false;
 					Screen.lockCursor = true;
 					Interacting = false;

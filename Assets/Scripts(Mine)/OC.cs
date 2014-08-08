@@ -19,29 +19,41 @@ namespace Scurge.Util {
 
 		void Start() {
 			foreach(Renderer curRender in Renderers) {
-				curRender.enabled = false;
+				if(curRender != null) {
+					curRender.enabled = false;
+				}
 			}
 			foreach(Light curLight in Lights) {
-				curLight.enabled = false;
+				if(curLight != null) {
+					curLight.enabled = false;
+				}
 			}
 		}
 		void OnTriggerEnter(Collider collider) {
 			if(collider.gameObject.tag == "Player") {
 				foreach(Renderer curRender in Renderers) {
-					curRender.enabled = true;
+					if(curRender != null) {
+						curRender.enabled = true;
+					}
 				}
 				foreach(Light curLight in Lights) {
-					curLight.enabled = true;
+					if(curLight != null) {
+						curLight.enabled = true;
+					}
 				}
 			}
 		}
 		void OnTriggerExit(Collider collider) {
 			if(collider.gameObject.tag == "Player" && DisableOnExit) {
 				foreach(Renderer curRender in Renderers) {
-					curRender.enabled = false;
+					if(curRender != null) {
+						curRender.enabled = false;
+					}
 				}
 				foreach(Light curLight in Lights) {
-					curLight.enabled = false;
+					if(curLight != null) {
+						curLight.enabled = false;
+					}
 				}
 			}
 		}
