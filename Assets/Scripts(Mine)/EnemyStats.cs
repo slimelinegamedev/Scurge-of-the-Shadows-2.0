@@ -28,6 +28,11 @@ namespace Scurge.Enemy {
 		public ParticleSystem DeathParticle;
 		public Light light;
 		public GameObject self;
+		public bool SummonMinions = false;
+		public bool CanSummonMinions;
+		public List<GameObject> Minions;
+		public int MinMinionSpawnInterval;
+		public int MaxMinionSpawnInterval;
 		public bool AttackEnemys = false;
 		public bool InRange = false;
 		public bool CanHit = false;
@@ -37,6 +42,7 @@ namespace Scurge.Enemy {
 			HurtParticle.Stop();
 			DeathParticle.Stop();
 			StartCoroutine(CanHurt());
+			StartCoroutine(SpawnMinions());
 		}
 
 		void Update() {
@@ -110,6 +116,15 @@ namespace Scurge.Enemy {
 			light.gameObject.SetActive(true);
 			yield return new WaitForSeconds(0.1f);
 			light.gameObject.SetActive(false);
+		}
+		IEnumerator SpawnMinions() {
+			while(true) {
+				print("Trying To Spawn!");
+				if(CanSummonMinions) {
+					Instantiate(Minions[Random.Range(0, Minions.Count)], transform.position + new Vector3(Random.Range(-3, 3), 0, Random.Range(-3, 3)), transform.rotation);
+				}
+				yield return new WaitForSeconds(Random.Range(MinMinionSpawnInterval, MaxMinionSpawnInterval));
+			}
 		}
 	}
 }
