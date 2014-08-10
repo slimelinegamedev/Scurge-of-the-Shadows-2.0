@@ -19,6 +19,17 @@ namespace Scurge.Environment {
 		TiltedCircleAround,
 		TiltedTopBottomCutoff
 	}
+	[System.Serializable]
+	public class Speach {
+		public string header;
+		public string text;
+		public Texture2D face;
+		public bool shakeCamera;
+		public Side FaceSide;
+		public Side TextSide = Side.Right;
+		public AudioSource TalkSound;
+		public int PrintTime;
+	}
 	public class Cinematic : MonoBehaviour {
 
 		public Disable Disable;
@@ -32,6 +43,12 @@ namespace Scurge.Environment {
 		public Look BossLook;
 		public float BeginWaitTime;
 		public float CinematicLength;
+		public GUISkin Skin;
+		public List<Speach> Dialogue;
+
+		void OnGUI() {
+			GUI.skin = Skin;
+		}
 
 		void Start() {
 			BossEnemyStats.CanSummonMinions = false;
