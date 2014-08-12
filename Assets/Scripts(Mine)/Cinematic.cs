@@ -28,7 +28,7 @@ namespace Scurge.Environment {
 		public Side FaceSide;
 		public Side TextSide = Side.Right;
 		public AudioSource TalkSound;
-		public int PrintTime;
+		public float PrintTime;
 	}
 	public class Cinematic : MonoBehaviour {
 
@@ -38,6 +38,7 @@ namespace Scurge.Environment {
 		public Camera CinemaCamera;
 		public Camera DarkBack;
 		public bool Tripped = false;
+		public bool PlayedAudio = false;
 		public Scurge.Enemy.AI BossAI;
 		public EnemyStats BossEnemyStats;
 		public Look BossLook;
@@ -51,6 +52,7 @@ namespace Scurge.Environment {
 		}
 
 		void Start() {
+			StartCoroutine(Speak(Dialogue));
 			BossEnemyStats.CanSummonMinions = false;
 			CinemaCamera.gameObject.SetActive(false);
 			DarkBack.gameObject.SetActive(false);
@@ -80,6 +82,22 @@ namespace Scurge.Environment {
 			CinemaCamera.gameObject.SetActive(false);
 			Disable.EnableObj(true, true);
 			BossLook.camera = Objects.Camera.GetComponent<Camera>();
+		}
+		public IEnumerator Speak(List<Speach> dialogue) {
+			while(true) {
+				foreach(Speach speach in dialogue) {
+					GUI.DrawTexture(new Rect(1220, 400, 75, 75), speach.face, ScaleMode.ScaleToFit, true, 10.0F);
+					GUI.Label(new Rect(1220, 400, 600, 75), speach.header);
+					GUI.Label(new Rect(1240, 400, 600, 75), speach.text);
+					if(!PlayedAudio) {
+						speach.TalkSound.Play();
+						PlayedAudio = true;
+					}
+					print("Talking...");
+					yield return new WaitForSeconds(speach.PrintTime);
+					PlayedAudio = false;
+				}
+			}
 		}
 	}
 }

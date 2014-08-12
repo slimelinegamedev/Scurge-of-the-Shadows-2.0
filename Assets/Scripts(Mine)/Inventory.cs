@@ -38,7 +38,8 @@ namespace Scurge.Player {
 		StaffBasic = 2,
 		SwordTough = 3,
 		AxeBattle = 4,
-		RingRed = 5
+		RingRed = 5,
+		DaggerThrowing = 6
 	}
 
 	public enum Ring {

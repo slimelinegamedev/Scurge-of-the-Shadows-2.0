@@ -17,7 +17,6 @@ public class CinematicEditor : Editor {
 	public bool ShowAssignmentFold = false;
 	public bool ShowDebugFold = false;
 	public bool ShowDialogue = false;
-
 	public int RemoveIndex = 0;
 
 	public override void OnInspectorGUI() {
@@ -69,6 +68,12 @@ public class CinematicEditor : Editor {
 		ShowDialogue = EditorGUILayout.Foldout(ShowDialogue, "Dialogue");
 		if(ShowDialogue) {
 			foreach(Speach speach in Cinematic.Dialogue) {
+				if(speach.TextSide == Side.Right && speach.FaceSide == Side.Right) {
+					speach.FaceSide = Side.Left;
+				}
+				if(speach.TextSide == Side.Left && speach.FaceSide == Side.Left) {
+					speach.FaceSide = Side.Right;
+				}
 				GUILayout.BeginHorizontal();
 					if(speach.TextSide == Side.Left) {
 						GUILayout.BeginVertical();
@@ -91,6 +96,9 @@ public class CinematicEditor : Editor {
 				GUILayout.EndHorizontal();
 				speach.FaceSide = (Side)EditorGUILayout.EnumPopup("Face Side", speach.FaceSide);
 				speach.TextSide = (Side)EditorGUILayout.EnumPopup("Text Side", speach.TextSide);
+				speach.TalkSound = (AudioSource)EditorGUILayout.ObjectField("Talking Sound", speach.TalkSound, typeof(AudioSource), true);
+				speach.PrintTime = EditorGUILayout.FloatField("Time Till Next Dialogue", speach.PrintTime);
+				speach.shakeCamera = EditorGUILayout.Toggle("Shake When Talking", speach.shakeCamera);
 			}
 			GUILayout.Space(15);
 			if(GUILayout.Button("Add Dialogue")) {
@@ -104,12 +112,21 @@ public class CinematicEditor : Editor {
 				}
 				RemoveIndex = EditorGUILayout.IntField(RemoveIndex);
 			GUILayout.EndHorizontal();
+			GUILayout.BeginHorizontal();
+				if(GUILayout.Button("Reset Dialogue")) {
+					Cinematic.Dialogue = new List<Speach>(0);
+				}
+			GUILayout.EndHorizontal();
 		}
 		ShowDebugFold = EditorGUILayout.Foldout(ShowDebugFold, "Debug Variables");
 		if(ShowDebugFold) {
 			GUILayout.BeginHorizontal();
 				GUILayout.Space(15);
 				Cinematic.Tripped = EditorGUILayout.Toggle("Has Activated", Cinematic.Tripped);
+			GUILayout.EndHorizontal();
+			GUILayout.BeginHorizontal();
+				GUILayout.Space(15);
+				Cinematic.PlayedAudio = EditorGUILayout.Toggle("Has Audio Played", Cinematic.PlayedAudio);
 			GUILayout.EndHorizontal();
 		}
 	}
