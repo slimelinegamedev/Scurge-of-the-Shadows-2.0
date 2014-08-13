@@ -22,8 +22,6 @@ namespace Scurge.Environment {
 		public Item item;
 		[Tooltip("The amount of the item they have")]
 		public int amount;
-		[Tooltip("The rectangle for the button")]
-		public Rect rectangle;
 	}
 
 	public class NPC : MonoBehaviour {
@@ -77,17 +75,22 @@ namespace Scurge.Environment {
 					Screen.lockCursor = true;
 					Interacting = false;
 				}
+				GUILayout.BeginArea(new Rect(425, 200, 430, 410));
+				GUILayout.BeginVertical();
 				foreach(Trade curTrade in trades) {
 					if(curTrade.amount > 0) {
-						if(GUI.Button(curTrade.rectangle, curTrade.name + " For " + curTrade.cost.ToString() + " Gold, " + curTrade.amount.ToString() + " Left")) {
+						if(GUILayout.Button(curTrade.name + " For " + curTrade.cost.ToString() + " Gold, " + curTrade.amount.ToString() + " Left", GUILayout.Height(50))) {
 							if(Stats.Gold >= curTrade.cost) {
 								Inventory.Give(curTrade.item, Inventory.FirstOpenSlot, InventoryBar.Inventory);
 								Stats.Gold -= curTrade.cost;
 								curTrade.amount -= 1;
 							}
 						}
+						GUILayout.Space(5);
 					}
 				}
+				GUILayout.EndVertical();
+				GUILayout.EndArea();
 			}
 		}
 	}

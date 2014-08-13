@@ -8,13 +8,17 @@ using Scurge.Util;
 using Scurge.Enemy;
 using Scurge.Audio;
 using Scurge.AI;
+using Holoville.HOEditorUtils;
 
 namespace Scurge.Editor {
 	public class ItemEditor : EditorWindow {
 
+		public static EditorWindow window;
+
 		public Inventory Inventory;
 		public HeldItem CurrentHeldItem;
 		public bool selected = false;
+		public static Texture2D icon;
 
 		public bool SelectingHeldItem = false;
 
@@ -22,11 +26,12 @@ namespace Scurge.Editor {
 
 		[MenuItem ("Window/Item Editor %#e")]
 		static void Init () {
-			EditorWindow window = EditorWindow.GetWindow(typeof (ItemEditor));
-			window.title = "Item Creator";
+			window = EditorWindow.GetWindow(typeof (ItemEditor));
+			HOPanelUtils.SetWindowTitle(window, icon, "Item Editor");
 		}
 
 		void Update() {
+			icon = (Texture2D)Resources.Load("Inventory Icon", typeof(Texture2D));
 			if(Inventory != null) {
 				selected = true;
 			}

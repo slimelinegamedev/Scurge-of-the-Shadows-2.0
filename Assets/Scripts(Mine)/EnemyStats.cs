@@ -28,6 +28,9 @@ namespace Scurge.Enemy {
 		public ParticleSystem DeathParticle;
 		public Light light;
 		public GameObject self;
+		public int GoldAmount;
+		public List<GameObject> Drops;
+		public List<GameObject> RareDrops;
 		public bool SummonMinions = false;
 		public bool CanSummonMinions;
 		public List<GameObject> Minions;
@@ -87,6 +90,19 @@ namespace Scurge.Enemy {
 			}
 		}
 		public void Die(AudioSource sound, float timer, ParticleSystem particle) {
+
+			foreach(GameObject curDrop in Drops) {
+				for(int DropGold = 0; DropGold < GoldAmount; DropGold++) {
+					Instantiate(curDrop, transform.position, Quaternion.identity);
+				}
+			}
+			foreach(GameObject curRareDrop in RareDrops) {
+				int drop = Random.Range(0, 50);
+				if(drop > 45) {
+					Instantiate(curRareDrop, transform.position, Quaternion.identity);
+				}
+			}
+
 			sound.Play();
 			particle.Play();
 			

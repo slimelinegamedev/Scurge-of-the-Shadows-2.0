@@ -96,6 +96,10 @@ namespace Scurge.Player {
 			Objects.Player.transform.position = new Vector3(-1000000, -1000000, -1000000);
 		}
 
+		public void GiveGold(int amount) {
+			Gold += amount;
+		}
+
 		void OnGUI() {
 			GUI.skin = Skin;
 			GUI.depth = 2;
