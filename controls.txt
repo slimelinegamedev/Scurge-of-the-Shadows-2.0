@@ -1,3 +1,5 @@
+(These are the DEFAULT keys)
+
 WASD - Move player
 Mouse movement - Look/move cursor
 Space - Jump

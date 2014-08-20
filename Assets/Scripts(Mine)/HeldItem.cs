@@ -62,7 +62,7 @@ namespace Scurge.Player {
 			}
 			if(!Pause.Open) {
 				if(ItemSide == Side.Right) {
-					if(InputManager.GetButtonDown("Right") && !Inventory.InventoryOpen) {
+					if(cInput.GetKeyDown("Attack/Fire 2") && !Inventory.InventoryOpen) {
 						if(!Cooldown) {
 							Sound.Play();
 							if(ItemType == Type.Melee) {
@@ -103,7 +103,7 @@ namespace Scurge.Player {
 					}
 				}
 				if(ItemSide == Side.Left) {
-					if(InputManager.GetButtonDown("Left") && !Inventory.InventoryOpen) {
+					if(cInput.GetKeyDown("Attack/Fire 1") && !Inventory.InventoryOpen) {
 						if(!Cooldown) {
 							Sound.Play();
 							if(ItemType == Type.Melee) {

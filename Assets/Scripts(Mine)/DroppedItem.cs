@@ -25,7 +25,7 @@ namespace Scurge.Player {
 		void Update() {
 			if(hoveringOver) {
 				text.gameObject.SetActive(true);
-				if(InputManager.GetButtonDown("Interact") && !Inventory.Full) {
+				if(cInput.GetKeyDown("Interact") && !Inventory.Full) {
 					Inventory.Give(type, Inventory.FirstOpenSlot, InventoryBar.Inventory);
 					pickup.Play();
 					Destroy(parent);

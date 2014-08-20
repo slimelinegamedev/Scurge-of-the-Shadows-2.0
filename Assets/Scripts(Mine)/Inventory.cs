@@ -283,7 +283,7 @@ namespace Scurge.Player {
 			EquipItems();
 			ApplyStats();
 
-			if(InputManager.GetButtonDown("Inventory") && !Moving) {
+			if(cInput.GetKeyDown("Inventory") && !Moving) {
 				InventoryOpen = !InventoryOpen;
 				if(InventoryOpen) {
 					Screen.showCursor = true;

@@ -1,6 +1,7 @@
-Indev 0.2.0 - Version Assassin
-Added loading indicator for level generation
-Added input customization (thanks to daemon3000 on GitHub, for his plugin, InputManager)
+Alpha 0.2.0 - Version Assassin
+Changed Indev to Alpha, Indev was not the word to be using in development
+Added loading indicator for level generation (Suggested by omg_ketchup on reddit)
+Added input customization (Thanks to cMonkeys for cInput)
 Added pause menu (Default escape)
 Added Snake
 Added Ghoul
@@ -8,6 +9,9 @@ Added Sludge
 Added Skeletal warrior
 Added Assassin
 Added Goblin
+Added Gold
+Added new items (Play to find them!)
+Added enemy drops
 Added sensitivity options
 Added invert movement and mouse axis’
 Added more Item stuff, behind the scenes. Items can now have limited uses, or can be destroyed on use
@@ -25,6 +29,8 @@ For developers
 New Unity version - Must Have Unity Version 4.5.2f1 or later to contribute
 Added new item creator window, for easy custom Item creation
 Meshes now combine in Editor, not during runtime. except for one :D
+Item Editor window now has an icon
+Added HOEditorUtils
 
 Indev 0.1.1
 Fixed several bugs
