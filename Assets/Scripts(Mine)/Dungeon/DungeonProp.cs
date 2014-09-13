@@ -19,6 +19,7 @@ namespace Scurge.Environment {
 		public Dungeon Dungeon;
 		public GameObject propObj;
 		public PropSize size;
+		public bool Hanging = false;
 		#endregion
 	}
 }

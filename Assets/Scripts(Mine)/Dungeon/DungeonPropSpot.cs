@@ -18,6 +18,7 @@ namespace Scurge.Environment {
 		#region vars
 		public Dungeon Dungeon;
 		public PropSize size;
+		public bool Hanging = false;
 		#endregion
 
 		void OnEnable() {
@@ -29,7 +30,7 @@ namespace Scurge.Environment {
 				prop = Dungeon.Props[Random.Range(0, Dungeon.Props.Count)];
 				yield return new WaitForSeconds(0.1f);
 			}
-			if(prop.size == size) {
+			if(prop.size == size && prop.Hanging == Hanging) {
 				var lastClonedProp = (GameObject)Instantiate(prop.gameObject, transform.position, Quaternion.identity);
 			}
 		}

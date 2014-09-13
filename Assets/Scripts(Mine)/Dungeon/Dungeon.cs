@@ -27,6 +27,8 @@ namespace Scurge.Environment {
 	}
 	#endregion
 
+	//TODO: Decrease boss tile spawn rates before release
+
 	public class Dungeon : MonoBehaviour {
 
 		public Objects Objects;
