@@ -60,10 +60,10 @@ namespace Scurge.UI {
 					}
 					if(GUI.Button(new Rect(quitX, 660, 200, 50), "<size=40>Exit</size>", "Menu Button")) {
 						if(Application.isEditor) {
-							Application.Quit();
+							print("Youre in the editor! Exit play mode!");
 						}
 						else {
-							print("Youre in the editor! Exit play mode!");
+							Application.Quit();
 						}
 					}
 				}

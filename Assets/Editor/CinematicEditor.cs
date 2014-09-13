@@ -17,7 +17,9 @@ public class CinematicEditor : Editor {
 	public bool ShowAssignmentFold = false;
 	public bool ShowDebugFold = false;
 	public bool ShowDialogue = false;
-	public int RemoveIndex = 0;
+	public bool ShowActivatorObjects = false;
+	public int ObjectRemoveIndex = 0;
+	public int ObjectObjectRemoveIndex = 0;
 
 	public override void OnInspectorGUI() {
 		Cinematic Cinematic = (Cinematic)target;
@@ -65,6 +67,29 @@ public class CinematicEditor : Editor {
 				Cinematic.CinematicLength = EditorGUILayout.FloatField("The Length Of The Cinematic", Cinematic.CinematicLength);
 			GUILayout.EndHorizontal();
 		}
+		ShowActivatorObjects = EditorGUILayout.Foldout(ShowActivatorObjects, "Objects To Activate");
+		if(ShowActivatorObjects) {
+			for(int iterateObjects = 0; iterateObjects < Cinematic.ObjectsToActivate.Count; iterateObjects++) {
+				Cinematic.ObjectsToActivate[iterateObjects] = (GameObject)EditorGUILayout.ObjectField("Game Object", Cinematic.ObjectsToActivate[iterateObjects], typeof(GameObject), true);
+			}
+			if(GUILayout.Button("Add Object")) {
+				Cinematic.ObjectsToActivate.Add(null);
+				ObjectRemoveIndex = Cinematic.ObjectsToActivate.Count - 1;
+			}
+			GUILayout.BeginHorizontal();
+				if(GUILayout.Button("Remove Object")) {
+					Cinematic.ObjectsToActivate.RemoveAt(ObjectRemoveIndex);
+					ObjectRemoveIndex--;
+				}
+				ObjectRemoveIndex = EditorGUILayout.IntField(ObjectRemoveIndex);
+			GUILayout.EndHorizontal();
+			GUILayout.BeginHorizontal();
+				if(GUILayout.Button("Reset Objects")) {
+					Cinematic.ObjectsToActivate = new List<GameObject>(0);
+				}
+			GUILayout.EndHorizontal();
+			Cinematic.sound = (AudioSource)EditorGUILayout.ObjectField("Sound", Cinematic.sound, typeof(AudioSource), true);
+		}
 		ShowDialogue = EditorGUILayout.Foldout(ShowDialogue, "Dialogue");
 		if(ShowDialogue) {
 			foreach(Speach speach in Cinematic.Dialogue) {
@@ -103,14 +128,14 @@ public class CinematicEditor : Editor {
 			GUILayout.Space(15);
 			if(GUILayout.Button("Add Dialogue")) {
 				Cinematic.Dialogue.Add(null);
-				RemoveIndex = Cinematic.Dialogue.Count - 1;
+				ObjectRemoveIndex = Cinematic.Dialogue.Count - 1;
 			}
 			GUILayout.BeginHorizontal();
 				if(GUILayout.Button("Remove Dialogue")) {
-					Cinematic.Dialogue.RemoveAt(RemoveIndex);
-					RemoveIndex--;
+					Cinematic.Dialogue.RemoveAt(ObjectRemoveIndex);
+					ObjectRemoveIndex--;
 				}
-				RemoveIndex = EditorGUILayout.IntField(RemoveIndex);
+				ObjectRemoveIndex = EditorGUILayout.IntField(ObjectRemoveIndex);
 			GUILayout.EndHorizontal();
 			GUILayout.BeginHorizontal();
 				if(GUILayout.Button("Reset Dialogue")) {
@@ -127,6 +152,10 @@ public class CinematicEditor : Editor {
 			GUILayout.BeginHorizontal();
 				GUILayout.Space(15);
 				Cinematic.PlayedAudio = EditorGUILayout.Toggle("Has Audio Played", Cinematic.PlayedAudio);
+			GUILayout.EndHorizontal();
+			GUILayout.BeginHorizontal();
+				GUILayout.Space(15);
+				Cinematic.HasTripped = EditorGUILayout.Toggle("Has Tripped", Cinematic.HasTripped);
 			GUILayout.EndHorizontal();
 		}
 	}

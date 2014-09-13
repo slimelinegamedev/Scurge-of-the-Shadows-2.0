@@ -69,7 +69,6 @@ namespace Scurge.Player {
 		public bool Full = false;
 		public int ActiveItem;
 		public GUISkin Skin;
-
 		public List<Item> Items;
 		public List<Item> EquippedItems;
 		public List<ItemType> Types;

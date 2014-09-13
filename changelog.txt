@@ -3,19 +3,17 @@ Changed Indev to Alpha, Indev was not the word to be using in development
 Added loading indicator for level generation (Suggested by omg_ketchup on reddit)
 Added input customization (Thanks to cMonkeys for cInput)
 Added pause menu (Default escape)
-Added Snake
-Added Ghoul
-Added Sludge
-Added Skeletal warrior
-Added Assassin
-Added Goblin
+Added new enemys
 Added Gold
 Added new items (Play to find them!)
 Added enemy drops
 Added sensitivity options
 Added invert movement and mouse axis’
-Added more Item stuff, behind the scenes. Items can now have limited uses, or can be destroyed on use
 Added enemys “despawning” when falling out of the Dungeon
+Added First Boss, Skeleton King
+Added props to the dungeon, now can have even more randomness
+Necromancer in start screen now moves
+Fixed sprite billboard script, now dont rotate upwards
 Increased lamp light intensity, suggested by waiwha and ndke on TigSource forums
 Added torches, suggested also by waiwha and ndke on TigSource forums
 Some optimizations for older machines, thanks to omg_ketchup on Reddit for reporting
@@ -29,8 +27,14 @@ For developers
 New Unity version - Must Have Unity Version 4.5.2f1 or later to contribute
 Added new item creator window, for easy custom Item creation
 Meshes now combine in Editor, not during runtime. except for one :D
+All tiles combine into one large tile at runtime
 Item Editor window now has an icon
 Added HOEditorUtils
+Items can now have limited uses, or can be destroyed on use
+Working on documentation for code, will take quite a while!
+Added open scene tab in editor
+Added the ability to have a enemy spawn minions
+Switched from ST3 to MonoDevelop
 
 Indev 0.1.1
 Fixed several bugs

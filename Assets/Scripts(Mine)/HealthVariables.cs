@@ -5,7 +5,6 @@ using Scurge.Player;
 using Scurge.Enemy;
 
 namespace Scurge.Enemy {
-
 	public enum HeldType {
 		Null,
 		EnemyEnemyStats
@@ -27,11 +26,11 @@ namespace Scurge.Enemy {
 				ItemEnemyStats(HeldItem, HeldType.EnemyEnemyStats);
 			}	
 		}
+
 		void OnMouseExit() {
 			EnemyStats.CanHit = false;
 			ItemEnemyStats(HeldItem, HeldType.Null);
 		}
-
 
 		public void ItemEnemyStats(HeldItem[] curHeldItem, HeldType type) {
 			if(type == HeldType.EnemyEnemyStats) {

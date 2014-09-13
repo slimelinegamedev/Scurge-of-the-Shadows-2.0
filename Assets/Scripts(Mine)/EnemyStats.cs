@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Scurge.Player;
-using Scurge.Util;
-using Scurge.Enemy;
+using Scurge;
+using Scurge.AI;
 using Scurge.Audio;
+using Scurge.Enemy;
+using Scurge.Environment;
+using Scurge.Networking;
+using Scurge.Player;
+using Scurge.Scoreboard;
+using Scurge.UI;
+using Scurge.Util;
 
 namespace Scurge.Enemy {
 	public class EnemyStats : MonoBehaviour {
@@ -34,6 +40,7 @@ namespace Scurge.Enemy {
 		public bool SummonMinions = false;
 		public bool CanSummonMinions;
 		public List<GameObject> Minions;
+		public GameObject SpawnEmitter;
 		public int MinMinionSpawnInterval;
 		public int MaxMinionSpawnInterval;
 		public bool AttackEnemys = false;
@@ -137,7 +144,11 @@ namespace Scurge.Enemy {
 			while(true) {
 				print("Trying To Spawn!");
 				if(CanSummonMinions) {
-					Instantiate(Minions[Random.Range(0, Minions.Count)], transform.position + new Vector3(Random.Range(-3, 3), 0, Random.Range(-3, 3)), transform.rotation);
+					Vector3 lastSpawnPos = transform.position + new Vector3(Random.Range(-3, 3), 1, Random.Range(-3, 3));
+					var lastMinion = (GameObject)Instantiate(Minions[Random.Range(0, Minions.Count)], lastSpawnPos, transform.rotation);
+					lastMinion.SetActive(true);
+					var lastParticle = (GameObject)Instantiate(SpawnEmitter, lastSpawnPos, Quaternion.identity);
+					lastParticle.SetActive(true);
 				}
 				yield return new WaitForSeconds(Random.Range(MinMinionSpawnInterval, MaxMinionSpawnInterval));
 			}

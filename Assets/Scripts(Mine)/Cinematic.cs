@@ -45,6 +45,9 @@ namespace Scurge.Environment {
 		public float BeginWaitTime;
 		public float CinematicLength;
 		public GUISkin Skin;
+		public List<GameObject> ObjectsToActivate;
+		public bool HasTripped = false;
+		public AudioSource sound;
 		public List<Speach> Dialogue;
 
 		void OnGUI() {
@@ -56,6 +59,15 @@ namespace Scurge.Environment {
 			BossEnemyStats.CanSummonMinions = false;
 			CinemaCamera.gameObject.SetActive(false);
 			DarkBack.gameObject.SetActive(false);
+		}
+		void Update() {
+			if(BossEnemyStats == null && !HasTripped) {
+				foreach (GameObject curObj in ObjectsToActivate) {
+					curObj.SetActive(true);
+				}
+				sound.Play();
+				HasTripped = true;
+			}
 		}
 		IEnumerator OnTriggerEnter(Collider collider) {
 			if(collider.gameObject.tag == "Player") {

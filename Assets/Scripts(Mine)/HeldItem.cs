@@ -52,9 +52,9 @@ namespace Scurge.Player {
 		public Animation SwingAnimation;
 		public Pause Pause;
 
+		//TODO: Make cooldown work when not hitting the enemy
 
 		void Update() {
-			//Appends forever. Append only when it changes, and delete old value
 			if(LimitedUses) {
 				if(Inventory.HasEquipped(item)) {
 					ShowUses = true;
@@ -68,19 +68,24 @@ namespace Scurge.Player {
 							if(ItemType == Type.Melee) {
 								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
 							}
-						}
-						if(HasAnimation && CanSwing) {
-							SwingAnimation.Play();
-							if(Cooldown) {
-								Sound.Play();
-								if(ItemType == Type.Melee) {
-									EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
-								}
-								StartCoroutine(SwingCool(CooldownTime));
+							else if(ItemCommand == Command.Projectile) {
+								ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
 							}
 						}
-						if(ItemCommand == Command.Projectile) {
-							ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+						else if(Cooldown) {
+							Sound.Play();
+							if(ItemType == Type.Melee) {
+								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+							}
+							else if(ItemCommand == Command.Projectile) {
+								ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+							}
+							StartCoroutine(SwingCool(CooldownTime));
+						}
+						if(HasAnimation) {
+							if(CanSwing) {
+								SwingAnimation.Play();
+							}
 						}
 						if(LimitedUses) {
 							if(Uses > 0) {
@@ -109,19 +114,24 @@ namespace Scurge.Player {
 							if(ItemType == Type.Melee) {
 								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
 							}
+							else if(ItemCommand == Command.Projectile) {
+								ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+							}
 						}
-						if(HasAnimation && CanSwing) {
-							SwingAnimation.Play();
-							if(Cooldown) {
-								Sound.Play();
-								if(ItemType == Type.Melee) {
-									EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
-								}
+						else if(Cooldown) {
+							Sound.Play();
+							if(ItemType == Type.Melee) {
+								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+							}
+							else if(ItemCommand == Command.Projectile) {
+								ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
 							}
 							StartCoroutine(SwingCool(CooldownTime));
 						}
-						if(ItemCommand == Command.Projectile) {
-							ShootProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+						if(HasAnimation) {
+							if(CanSwing) {
+								SwingAnimation.Play();
+							}
 						}
 						if(LimitedUses) {
 							if(Uses > 0) {
