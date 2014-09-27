@@ -10,12 +10,12 @@ using Scurge.AI;
 using TeamUtility.IO;
 
 namespace Scurge.Player {
-
 	public enum Potion {
 		None = 0,
 		Health = 1,
 		Damage = 2
 	}
+
 	public enum ItemType {
 		None = 0,
 		Blade = 1,
@@ -39,7 +39,8 @@ namespace Scurge.Player {
 		SwordTough = 3,
 		AxeBattle = 4,
 		RingRed = 5,
-		DaggerThrowing = 6
+		DaggerThrowing = 6,
+		SpellRedGlow = 7
 	}
 
 	public enum Ring {
@@ -48,6 +49,21 @@ namespace Scurge.Player {
 		Defense = 2,
 		Magic = 3,
 		Health = 4
+	}
+
+	public enum SpellType {
+		Projectile = 0,
+		Heal = 1,
+		Nothing = 2
+	}
+
+	[System.Serializable]
+	public struct Spell {
+		public string name ;
+		public GameObject particle;
+		public AudioSource sound;
+		public SpellType spellType;
+		public int ManaCost;
 	}
 
 	public class Inventory : MonoBehaviour {
@@ -69,8 +85,10 @@ namespace Scurge.Player {
 		public bool Full = false;
 		public int ActiveItem;
 		public GUISkin Skin;
+		public HeldItem curStaff;
 		public List<Item> Items;
 		public List<Item> EquippedItems;
+		public List<HeldItem> heldItems;
 		public List<ItemType> Types;
 		public List<string> ItemDescription;
 		public List<GameObject> ItemObjects;
@@ -81,56 +99,57 @@ namespace Scurge.Player {
 		public List<Ring> RingTypes;
 		public List<int> StatsAmounts;
 		public List<Potion> PotionTypes;
+		public List<Spell> spells;
 		//End
 		public List<string> TooltipText;
-
 		private bool HasFound = false;
+		//All enemys proximity detectors
+		public List<HealthVariables> enemyProximities;
 
 		public bool HasEquipped(Item item) {
-			if(EquippedItems[0] == item) {
+			if(EquippedItems [0] == item) {
 				return true;
 			}
 			else {
 				return false;
 			}
 		}
-
 		public void Give(Item item, int slot, InventoryBar bar) {
 			if(!Full) {
 				if(bar == InventoryBar.Inventory) {
-					Items[slot] = item;
+					Items [slot] = item;
 				}
 				else if(bar == InventoryBar.Equipped) {
-					EquippedItems[slot] = item;
+					EquippedItems [slot] = item;
 				}
 			}
 		}
 
 		public void Delete(int slot, InventoryBar bar) {
 			if(bar == InventoryBar.Equipped) {
-				EquippedItems[slot] = Item.None;
+				EquippedItems [slot] = Item.None;
 			}
 			else if(bar == InventoryBar.Inventory) {
-				Items[slot] = Item.None;
+				Items [slot] = Item.None;
 			}
 		}
 
-		public void Move(Item curItem, Texture2D curItemTex,  int slot, InventoryBar bar, ItemType type) {
+		public void Move(Item curItem, Texture2D curItemTex, int slot, InventoryBar bar, ItemType type) {
 			print("Moving");
 			if(bar == InventoryBar.Inventory && Moving == false) {
 				print("Moving : Made It Past Checkup");
 				lastMovedItem = curItem;
-				Items[slot] = Item.None;
+				Items [slot] = Item.None;
 				Moving = true;
 				movingTex = curItemTex;
 				movingItem = curItem;
 				curItemType = type;
 			}
-			else if(bar == InventoryBar.Equipped && !Moving){
+			else if(bar == InventoryBar.Equipped && !Moving) {
 				print("InventoryBar.Equipped");
 				print("Moving : Made It Past Checkup");
 				lastMovedItem = curItem;
-				EquippedItems[slot] = Item.None;
+				EquippedItems [slot] = Item.None;
 				Moving = true;
 				movingTex = curItemTex;
 				movingItem = curItem;
@@ -140,19 +159,19 @@ namespace Scurge.Player {
 
 		public void EquipItems() {
 
-			ItemObjects[(int)EquippedItems[0]].SetActive(true);
+			ItemObjects [(int)EquippedItems [0]].SetActive(true);
 
-			ActiveItem = (int)EquippedItems[0];
+			ActiveItem = (int)EquippedItems [0];
 
 			for(int allItemsCycle = 0; allItemsCycle < ItemObjects.Count; allItemsCycle++) {
 				if(allItemsCycle != ActiveItem) {
-					ItemObjects[allItemsCycle].SetActive(false);
+					ItemObjects [allItemsCycle].SetActive(false);
 				}
 			}
 		}
 
 		public void ThrowItem(Item thrower) {
-			var ThrownItem = (GameObject)Instantiate(ThrownObjects[(int)thrower], transform.position, transform.rotation);
+			var ThrownItem = (GameObject)Instantiate(ThrownObjects [(int)thrower], transform.position, transform.rotation);
 			ThrownItem.transform.rigidbody.AddForce(Objects.Camera.transform.TransformDirection(Vector3.forward) * 500);
 		}
 
@@ -170,7 +189,7 @@ namespace Scurge.Player {
 			if(bar == InventoryBar.Inventory) {
 				print("Placing InventoryBar.Inventory[" + slot.ToString() + "]");
 				lastMovedItem = Item.None;
-				Items[slot] = movingItem;
+				Items [slot] = movingItem;
 				Moving = false;
 				movingItem = Item.None;
 				movingTex = null;
@@ -178,7 +197,7 @@ namespace Scurge.Player {
 			else if(bar == InventoryBar.Equipped) {
 				print("Placing InventoryBar.Equipped[" + slot.ToString() + "]");
 				lastMovedItem = Item.None;
-				EquippedItems[slot] = movingItem;
+				EquippedItems [slot] = movingItem;
 				Moving = false;
 				movingItem = Item.None;
 				movingTex = null;
@@ -187,43 +206,43 @@ namespace Scurge.Player {
 
 		public void Swap(int slot, InventoryBar bar) {
 			if(bar == InventoryBar.Inventory) {
-				movingItem = Items[slot];
-				movingTex = InventoryTextures[(int)Items[slot]];
-				Items[slot] = lastMovedItem;
+				movingItem = Items [slot];
+				movingTex = InventoryTextures [(int)Items [slot]];
+				Items [slot] = lastMovedItem;
 			}
 			else if(bar == InventoryBar.Equipped) {
 				print("InventoryBar.Equipped");
-				movingItem = EquippedItems[slot];
-				movingTex = InventoryTextures[(int)EquippedItems[slot]];
-				EquippedItems[slot] = lastMovedItem;
+				movingItem = EquippedItems [slot];
+				movingTex = InventoryTextures [(int)EquippedItems [slot]];
+				EquippedItems [slot] = lastMovedItem;
 			}
 		}
 
 		public void SlotHandle(int slot, InventoryBar barbar) {
 			if(barbar == InventoryBar.Inventory) {
 				print("Picked up on InventoryBar.Inventory");
-				if(Moving == false && Items[slot] != Item.None) {
-					Move(Items[slot], InventoryTextures[(int)Items[slot]], slot, InventoryBar.Inventory, Types[(int)Items[slot]]);
+				if(Moving == false && Items [slot] != Item.None) {
+					Move(Items [slot], InventoryTextures [(int)Items [slot]], slot, InventoryBar.Inventory, Types [(int)Items [slot]]);
 				}
-				else if(Moving && Items[slot] == Item.None) {
+				else if(Moving && Items [slot] == Item.None) {
 					print("Placed Item On InventoryBar.Inventory");
 					Place(slot, InventoryBar.Inventory);
 				}
-				else if(Moving && Items[0] != Item.None) {
+				else if(Moving && Items [0] != Item.None) {
 					print("Swapped Item For First Time On InventoryBar.Inventory");
 					Swap(slot, InventoryBar.Inventory);
 				}
 			}
 			else if(barbar == InventoryBar.Equipped) {
 				print("Picked up on InventoryBar.Equipped");
-				if(!Moving && EquippedItems[slot] != Item.None) {
-					Move(EquippedItems[slot], InventoryTextures[(int)EquippedItems[slot]], slot, InventoryBar.Equipped, Types[(int)EquippedItems[slot]]);
+				if(!Moving && EquippedItems [slot] != Item.None) {
+					Move(EquippedItems [slot], InventoryTextures [(int)EquippedItems [slot]], slot, InventoryBar.Equipped, Types [(int)EquippedItems [slot]]);
 				}
-				else if(Moving && EquippedItems[slot] == Item.None) {
+				else if(Moving && EquippedItems [slot] == Item.None) {
 					print("Placed Item On InventoryBar.Equipped");
 					Place(slot, InventoryBar.Equipped);
 				}
-				else if(Moving && EquippedItems[slot] != Item.None) {
+				else if(Moving && EquippedItems [slot] != Item.None) {
 					print("Swapped Item For First Time On InventoryBar.Equipped");
 					Swap(slot, InventoryBar.Equipped);
 				}
@@ -237,31 +256,30 @@ namespace Scurge.Player {
 			if(Stats.Health >= Stats.MaxHealth) {
 				Stats.Health = Stats.MaxHealth;
 			}
-			Stats.Magic = 0;
 			Stats.Defense = 0;
 			Stats.Attack = 0;
 			for(int allRings = 0; allRings < RingTypes.Count; allRings++) {
-				if(RingTypes[allRings] != Ring.None) {
-					if(RingTypes[allRings] == Ring.Attack) {
-						if(EquippedItems[2] == (Item)allRings) {
-							Stats.Attack = StatsAmounts[allRings];
+				if(RingTypes [allRings] != Ring.None) {
+					if(RingTypes [allRings] == Ring.Attack) {
+						if(EquippedItems [2] == (Item)allRings) {
+							Stats.Attack = StatsAmounts [allRings];
 						}
 					}
-					if(RingTypes[allRings] == Ring.Defense) {
-						if(EquippedItems[2] == (Item)allRings) {
-							Stats.Defense = StatsAmounts[allRings];
+					if(RingTypes [allRings] == Ring.Defense) {
+						if(EquippedItems [2] == (Item)allRings) {
+							Stats.Defense = StatsAmounts [allRings];
 						}
 					}
-					if(RingTypes[allRings] == Ring.Magic) {
-						if(EquippedItems[2] == (Item)allRings) {
-							Stats.Magic = StatsAmounts[allRings];
+					if(RingTypes [allRings] == Ring.Magic) {
+						if(EquippedItems [2] == (Item)allRings) {
+
 						}
 					}
-					if(RingTypes[allRings] == Ring.Health) {
-						if(EquippedItems[2] == (Item)allRings) {
-							Stats.MaxHealth = StatsAmounts[allRings];
+					if(RingTypes [allRings] == Ring.Health) {
+						if(EquippedItems [2] == (Item)allRings) {
+							Stats.MaxHealth = StatsAmounts [allRings];
 							if(Stats.Health == Stats.MaxHealth) {
-								Stats.Health = StatsAmounts[allRings];
+								Stats.Health = StatsAmounts [allRings];
 							}
 						}
 					}
@@ -296,28 +314,28 @@ namespace Scurge.Player {
 				}
 			}
 			//Give item tooltips
-			TooltipText[0] = ItemDescription[(int)Items[0]];
-			TooltipText[1] = ItemDescription[(int)Items[1]];
-			TooltipText[2] = ItemDescription[(int)Items[2]];
-			TooltipText[3] = ItemDescription[(int)Items[3]];
-			TooltipText[4] = ItemDescription[(int)Items[4]];
-			TooltipText[5] = ItemDescription[(int)Items[5]];
-			TooltipText[6] = ItemDescription[(int)Items[6]];
-			TooltipText[7] = ItemDescription[(int)Items[7]];
-			TooltipText[8] = ItemDescription[(int)Items[8]];
-			TooltipText[9] = ItemDescription[(int)Items[9]];
-			TooltipText[10] = ItemDescription[(int)Items[10]];
-			TooltipText[11] = ItemDescription[(int)Items[11]];
-			TooltipText[12] = ItemDescription[(int)Items[12]];
-			TooltipText[13] = ItemDescription[(int)Items[13]];
-			TooltipText[14] = ItemDescription[(int)Items[14]];
-			TooltipText[15] = ItemDescription[(int)Items[15]];
+			TooltipText [0] = ItemDescription [(int)Items [0]];
+			TooltipText [1] = ItemDescription [(int)Items [1]];
+			TooltipText [2] = ItemDescription [(int)Items [2]];
+			TooltipText [3] = ItemDescription [(int)Items [3]];
+			TooltipText [4] = ItemDescription [(int)Items [4]];
+			TooltipText [5] = ItemDescription [(int)Items [5]];
+			TooltipText [6] = ItemDescription [(int)Items [6]];
+			TooltipText [7] = ItemDescription [(int)Items [7]];
+			TooltipText [8] = ItemDescription [(int)Items [8]];
+			TooltipText [9] = ItemDescription [(int)Items [9]];
+			TooltipText [10] = ItemDescription [(int)Items [10]];
+			TooltipText [11] = ItemDescription [(int)Items [11]];
+			TooltipText [12] = ItemDescription [(int)Items [12]];
+			TooltipText [13] = ItemDescription [(int)Items [13]];
+			TooltipText [14] = ItemDescription [(int)Items [14]];
+			TooltipText [15] = ItemDescription [(int)Items [15]];
 			//Equipped
-			TooltipText[16] = ItemDescription[(int)EquippedItems[0]];
-			TooltipText[17] = ItemDescription[(int)EquippedItems[1]];
-			TooltipText[18] = ItemDescription[(int)EquippedItems[2]];
-			TooltipText[19] = ItemDescription[(int)EquippedItems[3]];
-			TooltipText[20] = ItemDescription[(int)EquippedItems[4]];
+			TooltipText [16] = ItemDescription [(int)EquippedItems [0]];
+			TooltipText [17] = ItemDescription [(int)EquippedItems [1]];
+			TooltipText [18] = ItemDescription [(int)EquippedItems [2]];
+			TooltipText [19] = ItemDescription [(int)EquippedItems [3]];
+			TooltipText [20] = ItemDescription [(int)EquippedItems [4]];
 		}
 
 		void OnGUI() {
@@ -325,7 +343,7 @@ namespace Scurge.Player {
 
 			if(Visible) {
 				if(!InventoryOpen) {
-					GUI.DrawTexture(new Rect(Screen.width/2,Screen.height/2 - 50, 20, 20), Crosshair);
+					GUI.DrawTexture(new Rect(Screen.width / 2, Screen.height / 2 - 50, 20, 20), Crosshair);
 				}
 				else {
 					//Throw Button
@@ -353,71 +371,72 @@ namespace Scurge.Player {
 					GUI.Box(new Rect(438 - SubtractionX, 410 - SubtractionY, 340, 84), "");
 
 					//First Row
-					if(GUI.Button(new Rect(480 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[0]], TooltipText[0]))) {
+					if(GUI.Button(new Rect(480 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [0]], TooltipText [0]))) {
 						SlotHandle(0, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(544 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[1]], TooltipText[1]))) {
+					if(GUI.Button(new Rect(544 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [1]], TooltipText [1]))) {
 						SlotHandle(1, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(608 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[2]], TooltipText[2]))) {
+					if(GUI.Button(new Rect(608 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [2]], TooltipText [2]))) {
 						SlotHandle(2, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(672 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[3]], TooltipText[3]))) {
+					if(GUI.Button(new Rect(672 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [3]], TooltipText [3]))) {
 						SlotHandle(3, InventoryBar.Inventory);
 					}
 					//Second Row
-					if(GUI.Button(new Rect(480 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[4]], TooltipText[4]))) {
+					if(GUI.Button(new Rect(480 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [4]], TooltipText [4]))) {
 						SlotHandle(4, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(544 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[5]], TooltipText[5]))) {
+					if(GUI.Button(new Rect(544 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [5]], TooltipText [5]))) {
 						SlotHandle(5, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(608 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[6]], TooltipText[6]))) {
+					if(GUI.Button(new Rect(608 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [6]], TooltipText [6]))) {
 						SlotHandle(6, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(672 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[7]], TooltipText[7]))) {
+					if(GUI.Button(new Rect(672 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [7]], TooltipText [7]))) {
 						SlotHandle(7, InventoryBar.Inventory);
 					}
 					//Third Row
-					if(GUI.Button(new Rect(480 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[8]], TooltipText[8]))) {
+					if(GUI.Button(new Rect(480 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [8]], TooltipText [8]))) {
 						SlotHandle(8, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(544 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[9]], TooltipText[9]))) {
+					if(GUI.Button(new Rect(544 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [9]], TooltipText [9]))) {
 						SlotHandle(9, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(608 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[10]], TooltipText[10]))) {
+					if(GUI.Button(new Rect(608 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [10]], TooltipText [10]))) {
 						SlotHandle(10, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(672 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[11]], TooltipText[11]))) {
+					if(GUI.Button(new Rect(672 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [11]], TooltipText [11]))) {
 						SlotHandle(11, InventoryBar.Inventory);
 					}
 					//Fourth Row
-					if(GUI.Button(new Rect(480 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[12]], TooltipText[12]))) {
+					if(GUI.Button(new Rect(480 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [12]], TooltipText [12]))) {
 						SlotHandle(12, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(544 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[13]], TooltipText[13]))) {
+					if(GUI.Button(new Rect(544 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [13]], TooltipText [13]))) {
 						SlotHandle(13, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(608 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[14]], TooltipText[14]))) {
+					if(GUI.Button(new Rect(608 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [14]], TooltipText [14]))) {
 						SlotHandle(14, InventoryBar.Inventory);
 					}
-					if(GUI.Button(new Rect(672 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)Items[15]], TooltipText[15]))) {
+					if(GUI.Button(new Rect(672 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [15]], TooltipText [15]))) {
 						SlotHandle(15, InventoryBar.Inventory);
 					}
 					//Equipping Row
-					if(GUI.Button(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[0]], TooltipText[16]))) {
+					if(GUI.Button(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [0]], TooltipText [16]))) {
 						print("The Target Is Moving The Item. I Repeat The Target Is Moving The Item");
 						SlotHandle(0, InventoryBar.Equipped);
 					}
-					if(GUI.Button(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[1]], TooltipText[17]))) {
+					if(GUI.Button(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [1]], TooltipText [17]))) {
 						if(Moving && curItemType == ItemType.Spell) {
 							SlotHandle(1, InventoryBar.Equipped);
 						}
 						else if(!Moving) {
 							SlotHandle(1, InventoryBar.Equipped);
 						}
+
 					}
-					if(GUI.Button(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[2]], TooltipText[18]))) {
+					if(GUI.Button(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [2]], TooltipText [18]))) {
 						if(Moving && curItemType == ItemType.Ring) {
 							SlotHandle(2, InventoryBar.Equipped);
 						}
@@ -425,7 +444,7 @@ namespace Scurge.Player {
 							SlotHandle(2, InventoryBar.Equipped);
 						}
 					}
-					if(GUI.Button(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[3]], TooltipText[19]))) {
+					if(GUI.Button(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [3]], TooltipText [19]))) {
 						if(Moving && curItemType == ItemType.Helmet) {
 							SlotHandle(3, InventoryBar.Equipped);
 						}
@@ -433,7 +452,7 @@ namespace Scurge.Player {
 							SlotHandle(3, InventoryBar.Equipped);
 						}
 					}
-					if(GUI.Button(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures[(int)EquippedItems[4]], TooltipText[20]))) {
+					if(GUI.Button(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [4]], TooltipText [20]))) {
 						if(Moving && curItemType == ItemType.Chestplate) {
 							SlotHandle(4, InventoryBar.Equipped);
 						}
@@ -444,20 +463,20 @@ namespace Scurge.Player {
 
 					GUI.Label(new Rect(780 - SubtractionX, 420 - SubtractionY, 128, 64), "Gold: " + Stats.Gold);
 
-					if(EquippedItems[0] == Item.None) {
-			 			GUI.DrawTexture(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[0]);
+					if(EquippedItems [0] == Item.None) {
+						GUI.DrawTexture(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [0]);
 					}
-					if(EquippedItems[1] == Item.None) {
-			 			GUI.DrawTexture(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[1]);
+					if(EquippedItems [1] == Item.None) {
+						GUI.DrawTexture(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [1]);
 					}
-					if(EquippedItems[2] == Item.None) {
-			 			GUI.DrawTexture(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[2]);
+					if(EquippedItems [2] == Item.None) {
+						GUI.DrawTexture(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [2]);
 					}
-					if(EquippedItems[3] == Item.None) {
-			 			GUI.DrawTexture(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[3]);
+					if(EquippedItems [3] == Item.None) {
+						GUI.DrawTexture(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [3]);
 					}
-					if(EquippedItems[4] == Item.None) {
-			 			GUI.DrawTexture(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures[4]);
+					if(EquippedItems [4] == Item.None) {
+						GUI.DrawTexture(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [4]);
 					}
 
 					//Tooltips

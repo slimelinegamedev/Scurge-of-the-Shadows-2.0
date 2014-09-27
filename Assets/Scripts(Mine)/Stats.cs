@@ -10,30 +10,30 @@ using Scurge.Environment;
 namespace Scurge.Player {
 	public class Stats : MonoBehaviour {
 
+		#region Vars
 		public Objects Objects;
 		public Disable Disable;
 		public Inventory Inventory;
 		public Dungeon Dungeon;
 		public Highscore Highscore;
-
 		public int Health;
 		public int Gold;
 		public int Defense;
 		public int Attack;
-		public int Magic;
+		public int Mana = 100;
 		public int Experience;
-		
-		public int Level;		
-
+		public int Level;
 		public int ExperienceLevel;
 		public int MaxHealth;
-
+		public int MaxMana = 100;
 		public AudioSource LevelUpSound;
 		public AudioSource HurtSound;
 		public bool Dead = false;
 		public int Countdown = 10;
 		public GUISkin Skin;
+		#endregion
 
+		#region Unity Methods
 		void Start() {
 			Highscore = GameObject.Find("Highscore").GetComponent<Highscore>();
 		}
@@ -53,7 +53,53 @@ namespace Scurge.Player {
 				}
 			}
 		}
+		#endregion
 
+		#region Upgrading
+		public void AddDefense(int amount) {
+			Defense += amount;
+		}
+		public void LevelUp() {
+			ExpUpgrade(0, ExperienceLevel+50);
+			ManaUpgrade(0, MaxMana+25);
+			LevelUpSound.Play();
+		}
+		public void ManaUpgrade(int ManaSet, int MaxManaSet) {
+			Mana = ManaSet;
+			MaxMana = MaxManaSet;
+		}
+		public void ExpUpgrade(int ExperienceSet, int ExperienceLevelSet) {
+			Experience = ExperienceSet;
+			ExperienceLevel = ExperienceLevelSet;
+		}
+		#endregion
+
+		#region Giving/Restoring
+		public void GiveGold(int amount) {
+			Gold += amount;
+		}
+		public void GiveExperience(int amount) {
+			if(Experience < ExperienceLevel) {
+				Experience += amount;
+			}
+			else if(Experience >= ExperienceLevel) {
+				LevelUp();
+			}
+		}
+		public void RestoreMana(int amount) {
+			if(amount < MaxMana) {
+				Mana += amount;
+			}
+			if(Mana > MaxMana) {
+				Mana = MaxMana;
+			}
+		}
+		public void UseMana(int amount) {
+
+		}
+		#endregion
+
+		#region Dying/Hurting
 		public void Hurt(int damage) {
 			print("Ouch!");
 			if(Health > 0) {
@@ -66,45 +112,21 @@ namespace Scurge.Player {
 			}
 		}
 
-		public void GiveExperience(int amount) {
-			if(Experience < ExperienceLevel) {
-				Experience += amount;
-			}
-			else if(Experience >= ExperienceLevel) {
-				LevelUp();
-			}
-		}
-
-		public void AddDefense(int amount) {
-			Defense += amount;
-		}
-
-		public void AddMagic(int amount) {
-			Magic += amount;
-		}
-
-		public void LevelUp() {
-			Experience = 0;
-			ExperienceLevel += 50;
-			LevelUpSound.Play();
-		}
-
 		public void Die() {
 			Dead = true;
 			Disable.DisableObj(true, false);
 			Highscore.add("Player1", Dungeon.Floor, Gold, "SOMETHING");
 			Objects.Player.transform.position = new Vector3(-1000000, -1000000, -1000000);
 		}
+		#endregion
 
-		public void GiveGold(int amount) {
-			Gold += amount;
-		}
-
+		#region Script Space Takers
 		void OnGUI() {
 			GUI.skin = Skin;
 			GUI.depth = 2;
 			if(!Inventory.InventoryOpen) {
 				GUI.Label(new Rect(10, 690, 100, 25), Health + " / " + MaxHealth, "Health");
+				GUI.Label(new Rect(10, 665, 100, 25), Mana + " / " + MaxMana, "Mana");
 			}
 			if(Dead) {
 				GUI.Box(new Rect(0, 0, 1280, 720), "", "DeathBox");
@@ -115,7 +137,6 @@ namespace Scurge.Player {
 				}
 			}
 		}
-
 		IEnumerator CountdownTimer() {
 			if(true) {
 				yield return new WaitForSeconds(1);
@@ -140,5 +161,6 @@ namespace Scurge.Player {
 				Countdown = 0;
 			}
 		}
+		#endregion
 	}
 }

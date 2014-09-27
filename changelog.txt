@@ -1,5 +1,6 @@
 Alpha 0.2.0 - Version Assassin
 Changed Indev to Alpha, Indev was not the word to be using in development
+Staffs now use spell items for casting spells
 Added loading indicator for level generation (Suggested by omg_ketchup on reddit)
 Added input customization (Thanks to cMonkeys for cInput)
 Added pause menu (Default escape)

@@ -27,8 +27,6 @@ namespace Scurge.Environment {
 	}
 	#endregion
 
-	//TODO: Decrease boss tile spawn rates before release
-
 	public class Dungeon : MonoBehaviour {
 
 		public Objects Objects;
@@ -93,8 +91,8 @@ namespace Scurge.Environment {
 			for(int x = 0; x < SizeX * TileSize; x += TileSize) {
 				for(int y = 0; y < SizeZ * TileSize; y += TileSize) {
 					if(y > 0 || x > 0) {
-						Type = Random.Range(0, 50);
-						if(Type < 49) {
+						Type = Random.Range(0, 1000);
+						if(Type < 999) {
 							PieceNumber = Random.Range(0, Tiles.Count);
 							CurrentPiece = Tiles [PieceNumber];
 							var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);

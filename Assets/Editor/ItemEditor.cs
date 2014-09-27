@@ -22,22 +22,25 @@ namespace Scurge.Editor {
 
 		public bool SelectingHeldItem = false;
 
+		public SpellType spellTypes;
+
 		public Item itemsList;
 
 		[MenuItem ("Window/Item Editor %#e")]
 		static void Init () {
 			window = EditorWindow.GetWindow(typeof (ItemEditor));
+			icon = (Texture2D)Resources.Load("Inventory Icon", typeof(Texture2D));
 			HOPanelUtils.SetWindowTitle(window, icon, "Item Editor");
 		}
 
 		void Update() {
-			icon = (Texture2D)Resources.Load("Inventory Icon", typeof(Texture2D));
 			if(Inventory != null) {
 				selected = true;
 			}
 			else {
 				selected = false;
 			}
+			CurrentHeldItem = Inventory.heldItems[(int)itemsList];
 		}
 
 		void OnGUI() {
@@ -76,32 +79,40 @@ namespace Scurge.Editor {
 
 						}
 						else if(Inventory.RingTypes[(int)itemsList] == Ring.Health) {
-							GUILayout.BeginHorizontal();
-							GUILayout.Label("Health Ring");
+							EditorGUI.indentLevel++;
+							EditorGUILayout.LabelField("Health Ring");
 							Inventory.StatsAmounts[(int)itemsList] = EditorGUILayout.IntField("Health", Inventory.StatsAmounts[(int)itemsList]);
-							GUILayout.EndHorizontal();
+							EditorGUI.indentLevel--;
 						}
 						else if(Inventory.RingTypes[(int)itemsList] == Ring.Attack) {
-							GUILayout.BeginHorizontal();
-							GUILayout.Label("Attack Ring");
+							EditorGUI.indentLevel++;
+							EditorGUILayout.LabelField("Attack Ring");
 							Inventory.StatsAmounts[(int)itemsList] = EditorGUILayout.IntField("Attack", Inventory.StatsAmounts[(int)itemsList]);
-							GUILayout.EndHorizontal();
+							EditorGUI.indentLevel--;
 						}
 						else if(Inventory.RingTypes[(int)itemsList] == Ring.Defense) {
-							GUILayout.BeginHorizontal();
-							GUILayout.Label("Defense Ring");
+							EditorGUI.indentLevel++;
+							EditorGUILayout.LabelField("Defense Ring");
 							Inventory.StatsAmounts[(int)itemsList] = EditorGUILayout.IntField("Defense", Inventory.StatsAmounts[(int)itemsList]);
-							GUILayout.EndHorizontal();
+							EditorGUI.indentLevel--;
 						}
 						else if(Inventory.RingTypes[(int)itemsList] == Ring.Magic) {
-							GUILayout.BeginHorizontal();
-							GUILayout.Label("Magic Ring");
+							EditorGUI.indentLevel++;
+							EditorGUILayout.LabelField("Magic Ring");
 							Inventory.StatsAmounts[(int)itemsList] = EditorGUILayout.IntField("Magic", Inventory.StatsAmounts[(int)itemsList]);
-							GUILayout.EndHorizontal();
+							EditorGUI.indentLevel--;
 						}
 					}
 					else if(Inventory.Types[(int)itemsList] == ItemType.Spell) {
-						
+						EditorGUI.indentLevel++;
+						CurrentHeldItem.spell.name = EditorGUILayout.TextField("Spell Name", CurrentHeldItem.spell.name);
+						CurrentHeldItem.spell.particle = (GameObject)EditorGUILayout.ObjectField("Particle Object", CurrentHeldItem.spell.particle, typeof(GameObject), true);
+						CurrentHeldItem.spell.spellType = (SpellType)EditorGUILayout.EnumPopup("Spell Type", spellTypes);
+						CurrentHeldItem.spell.ManaCost = EditorGUILayout.IntField("Mana Cost", CurrentHeldItem.spell.ManaCost);
+						CurrentHeldItem.spell.sound = (AudioSource)EditorGUILayout.ObjectField("Spell Sound", CurrentHeldItem.spell.sound, typeof(AudioSource), true);
+						EditorGUI.indentLevel--;
+
+						CurrentHeldItem.spell.spellType = spellTypes;
 					}
 					else if(Inventory.Types[(int)itemsList] == ItemType.Helmet) {
 						
@@ -122,6 +133,13 @@ namespace Scurge.Editor {
 						Inventory.ItemObjects.Add(null);
 						Inventory.ThrownObjects.Add(null);
 						Inventory.RingTypes.Add(Ring.None);
+						Inventory.StatsAmounts.Add(0);
+						Inventory.PotionTypes.Add(Potion.None);
+						Inventory.spells.Add(new Spell());
+						foreach(HealthVariables curHealthVariables in Inventory.enemyProximities) {
+							curHealthVariables.HeldItems.Add(CurrentHeldItem);
+						}
+						Inventory.heldItems.Add(CurrentHeldItem);
 					}
 					if(GUILayout.Button("Delete Item")) {
 						Inventory.ItemDescription.RemoveAt((int)itemsList);
@@ -130,42 +148,60 @@ namespace Scurge.Editor {
 						Inventory.ItemObjects.RemoveAt((int)itemsList);
 						Inventory.ThrownObjects.RemoveAt((int)itemsList);
 						Inventory.RingTypes.RemoveAt((int)itemsList);
+						Inventory.StatsAmounts.RemoveAt((int)itemsList);
+						Inventory.PotionTypes.RemoveAt((int)itemsList);
+						Inventory.spells.RemoveAt((int)itemsList);
+						foreach(HealthVariables curHealthVariables in Inventory.enemyProximities) {
+							curHealthVariables.HeldItems.RemoveAt((int)itemsList);
+						}
+						Inventory.heldItems.RemoveAt((int)itemsList);
 					}
 				}
 				else {
 					GUILayout.Space(40);
-					CurrentHeldItem = Inventory.ItemObjects[(int)itemsList].GetComponent<HeldItem>();
 					CurrentHeldItem.ItemType = (Type)EditorGUILayout.EnumPopup("Item Type", CurrentHeldItem.ItemType);
 					CurrentHeldItem.ItemSide = (Side)EditorGUILayout.EnumPopup("Button To Use", CurrentHeldItem.ItemSide);
 					CurrentHeldItem.ItemCommand = (Command)EditorGUILayout.EnumPopup("Command To Call", CurrentHeldItem.ItemCommand);
 					CurrentHeldItem.item= (Item)EditorGUILayout.EnumPopup("What Item Am I", CurrentHeldItem.item);
 					CurrentHeldItem.Skin = (GUISkin)EditorGUILayout.ObjectField("GUI Skin", CurrentHeldItem.Skin, typeof(GUISkin), true);
 					if(CurrentHeldItem.ItemCommand == Command.Melee) {
+						EditorGUI.indentLevel++;
 						CurrentHeldItem.DamageMin = EditorGUILayout.IntField("Minimum Damage", CurrentHeldItem.DamageMin);
 						CurrentHeldItem.DamageMax = EditorGUILayout.IntField("Maximum Damage", CurrentHeldItem.DamageMax);
+						EditorGUI.indentLevel--;
 					}
-					if(CurrentHeldItem.ItemCommand == Command.Summon) {
+					else if(CurrentHeldItem.ItemCommand == Command.Throw) {
+						EditorGUI.indentLevel++;
+						CurrentHeldItem.Projectile = (GameObject)EditorGUILayout.ObjectField("Object To Throw", CurrentHeldItem.Projectile, typeof(GameObject));
+						EditorGUI.indentLevel--;
+					}
+					else if(CurrentHeldItem.ItemCommand == Command.Spell) {
 
-					}
-					else if(CurrentHeldItem.ItemCommand == Command.Projectile) {
-						CurrentHeldItem.Projectile = (GameObject)EditorGUILayout.ObjectField("Projectile Object", CurrentHeldItem.Projectile, typeof(GameObject));
 					}
 					CurrentHeldItem.DestroyOnUse = EditorGUILayout.Toggle("Destroy On Use", CurrentHeldItem.DestroyOnUse);
 					if(CurrentHeldItem.DestroyOnUse) {
+						EditorGUI.indentLevel++;
 						CurrentHeldItem.DestroySound = (AudioSource)EditorGUILayout.ObjectField("Sound To Play On Destroy", CurrentHeldItem.DestroySound, typeof(AudioSource));
+						EditorGUI.indentLevel--;
 					}
 					CurrentHeldItem.LimitedUses = EditorGUILayout.Toggle("Limited Uses", CurrentHeldItem.LimitedUses);
 					if(CurrentHeldItem.LimitedUses) {
+						EditorGUI.indentLevel++;
 						CurrentHeldItem.Uses = EditorGUILayout.IntField("Uses Left", CurrentHeldItem.Uses);
 						CurrentHeldItem.MaxUses = EditorGUILayout.IntField("Max Uses", CurrentHeldItem.MaxUses);
+						EditorGUI.indentLevel--;
 					}
 					CurrentHeldItem.Cooldown = EditorGUILayout.Toggle("Has Cooldown", CurrentHeldItem.Cooldown);
 					if(CurrentHeldItem.Cooldown) {
+						EditorGUI.indentLevel++;
 						CurrentHeldItem.CooldownTime = EditorGUILayout.FloatField("Cooldown Timer", CurrentHeldItem.CooldownTime);
+						EditorGUI.indentLevel--;
 					}
 					CurrentHeldItem.HasAnimation = EditorGUILayout.Toggle("Has Animation", CurrentHeldItem.HasAnimation);
 					if(CurrentHeldItem.HasAnimation) {
+						EditorGUI.indentLevel++;
 						CurrentHeldItem.SwingAnimation = (Animation)EditorGUILayout.ObjectField("Animation Clip", CurrentHeldItem.SwingAnimation, typeof(Animation));
+						EditorGUI.indentLevel--;
 					}
 					CurrentHeldItem.Sound = (AudioSource)EditorGUILayout.ObjectField("Sound To Play", CurrentHeldItem.Sound, typeof(AudioSource));
 				}
@@ -180,7 +216,7 @@ namespace Scurge.Editor {
 			}
 		}
 		void OnInspectorUpdate() {
-	    		Repaint();
+	    		this.Repaint();
 	    	}
 	}
 }
