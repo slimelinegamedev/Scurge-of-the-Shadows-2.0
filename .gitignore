@@ -20,6 +20,11 @@ ExportedObj/
 *.unityproj
 *.booproj
 
+#=======================#
+#cInput 2, Cant Redistribute#
+#========================#
+Assets/cMonkeys/
+
 # ============ #
 # OS generated #
 # ============ #

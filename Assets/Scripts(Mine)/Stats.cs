@@ -26,19 +26,49 @@ namespace Scurge.Player {
 		public int ExperienceLevel;
 		public int MaxHealth;
 		public int MaxMana = 100;
+		public float ManaRegenWait = 5;
+		public int ManaRegenAmount = 10;
 		public AudioSource LevelUpSound;
 		public AudioSource HurtSound;
 		public bool Dead = false;
 		public int Countdown = 10;
 		public GUISkin Skin;
+
+		public bool CanUseSpell(int ManaCost) {
+			if(Mana  - ManaCost >= 0) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		IEnumerator ManaRegen() {
+			while(1 == 1) {
+				RegenMana(ManaRegenAmount);
+				yield return new WaitForSeconds(ManaRegenWait);
+			}
+		}
 		#endregion
 
 		#region Unity Methods
 		void Start() {
 			Highscore = GameObject.Find("Highscore").GetComponent<Highscore>();
+			StartCoroutine(ManaRegen());
 		}
 
 		void Update() {
+			if(Mana <= 0) {
+				Mana = 0;
+			}
+			if(Mana > MaxMana) {
+				Mana = MaxMana;
+			}
+			if(Health <= 0) {
+				Die();
+			}
+			if(Health > MaxHealth) {
+				Health = MaxHealth;
+			}
 			if(Dead) {
 				bool HasDied = false;
 				Screen.showCursor = true;
@@ -56,6 +86,9 @@ namespace Scurge.Player {
 		#endregion
 
 		#region Upgrading
+		public void UpgradeManaRegenWait(float amount) {
+			ManaRegenWait = amount;
+		}
 		public void AddDefense(int amount) {
 			Defense += amount;
 		}
@@ -75,6 +108,11 @@ namespace Scurge.Player {
 		#endregion
 
 		#region Giving/Restoring
+		public void RegenMana(int amount) {
+			if(Mana < MaxMana) {
+				Mana += amount;
+			}
+		}
 		public void GiveGold(int amount) {
 			Gold += amount;
 		}
@@ -95,7 +133,20 @@ namespace Scurge.Player {
 			}
 		}
 		public void UseMana(int amount) {
-
+			if(Mana > 0) {
+				Mana -= amount;
+			}
+			else if(Mana <= 0) {
+				Debug.LogError("Not Enough Mana");
+			}
+		}
+		public void Heal(int amount) {
+			if(Health < MaxHealth) {
+				Health += amount;
+			}
+			else if(Health > MaxHealth) {
+				Debug.LogError("Trying To Restore Too Much Health");
+			}
 		}
 		#endregion
 
@@ -127,6 +178,7 @@ namespace Scurge.Player {
 			if(!Inventory.InventoryOpen) {
 				GUI.Label(new Rect(10, 690, 100, 25), Health + " / " + MaxHealth, "Health");
 				GUI.Label(new Rect(10, 665, 100, 25), Mana + " / " + MaxMana, "Mana");
+				GUI.Label(new Rect(10, 640, 100, 25), "Gold: " + Gold, "Gold");
 			}
 			if(Dead) {
 				GUI.Box(new Rect(0, 0, 1280, 720), "", "DeathBox");

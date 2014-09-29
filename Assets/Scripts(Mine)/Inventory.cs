@@ -40,7 +40,9 @@ namespace Scurge.Player {
 		AxeBattle = 4,
 		RingRed = 5,
 		DaggerThrowing = 6,
-		SpellRedGlow = 7
+		SpellRedGlow = 7,
+		SpellRepair = 8,
+		SpellDeflection = 9
 	}
 
 	public enum Ring {
@@ -54,15 +56,28 @@ namespace Scurge.Player {
 	public enum SpellType {
 		Projectile = 0,
 		Heal = 1,
-		Nothing = 2
+		ExpandingSphere = 2,
+		Nothing = 3
 	}
 
 	[System.Serializable]
 	public struct Spell {
 		public string name ;
+		public bool hasParticle;
 		public GameObject particle;
 		public AudioSource sound;
 		public SpellType spellType;
+		#region Spell Type Variables, Most Arent Used
+		public int healAmount;
+
+		public GameObject projectile;
+
+		public SphereCollider sphereToExpand;
+		public int radiusToExpand;
+		public float deflectionDuration;
+		#endregion
+		public bool attachParticleToPlayer;
+		public Vector3 positionAdder;
 		public int ManaCost;
 	}
 
@@ -252,22 +267,22 @@ namespace Scurge.Player {
 		public void ApplyStats() {
 			//Ring stats application
 			//Temporary reset method
-			Stats.MaxHealth = 10;
-			if(Stats.Health >= Stats.MaxHealth) {
-				Stats.Health = Stats.MaxHealth;
-			}
-			Stats.Defense = 0;
-			Stats.Attack = 0;
 			for(int allRings = 0; allRings < RingTypes.Count; allRings++) {
 				if(RingTypes [allRings] != Ring.None) {
 					if(RingTypes [allRings] == Ring.Attack) {
 						if(EquippedItems [2] == (Item)allRings) {
 							Stats.Attack = StatsAmounts [allRings];
 						}
+						else {
+							Stats.Attack = 0;
+						}
 					}
 					if(RingTypes [allRings] == Ring.Defense) {
 						if(EquippedItems [2] == (Item)allRings) {
 							Stats.Defense = StatsAmounts [allRings];
+						}
+						else {
+							Stats.Defense = 0;
 						}
 					}
 					if(RingTypes [allRings] == Ring.Magic) {
@@ -282,9 +297,16 @@ namespace Scurge.Player {
 								Stats.Health = StatsAmounts [allRings];
 							}
 						}
+						else {
+							Stats.MaxHealth = 10;
+						}
 					}
 				}
 			}
+		}
+
+		void Start() {
+			curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
 		}
 
 		void Update() {
@@ -295,6 +317,12 @@ namespace Scurge.Player {
 			else {
 				Screen.showCursor = true;
 				Screen.lockCursor = false;
+				if(EquippedItems[1] == Item.None) {
+					curStaff.ChangeSpell(new Spell());
+				}
+				if(EquippedItems[1] != Item.None) {
+					curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
+				}
 			}
 			FindSlot();
 			EquipItems();
@@ -434,7 +462,6 @@ namespace Scurge.Player {
 						else if(!Moving) {
 							SlotHandle(1, InventoryBar.Equipped);
 						}
-
 					}
 					if(GUI.Button(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [2]], TooltipText [18]))) {
 						if(Moving && curItemType == ItemType.Ring) {
@@ -460,8 +487,6 @@ namespace Scurge.Player {
 							SlotHandle(4, InventoryBar.Equipped);
 						}
 					}
-
-					GUI.Label(new Rect(780 - SubtractionX, 420 - SubtractionY, 128, 64), "Gold: " + Stats.Gold);
 
 					if(EquippedItems [0] == Item.None) {
 						GUI.DrawTexture(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [0]);

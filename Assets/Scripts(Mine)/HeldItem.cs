@@ -69,8 +69,12 @@ namespace Scurge.Player {
 			if(!Pause.Open) {
 				if(ItemSide == Side.Right) {
 					if(cInput.GetKeyDown("Attack/Fire 2") && !Inventory.InventoryOpen) {
-						if(!Cooldown) {
+
+						if(ItemCommand != Command.Spell) {
 							Sound.Play();
+						}
+
+						if(!Cooldown) {
 							if(ItemType == Type.Melee) {
 								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
 							}
@@ -82,7 +86,6 @@ namespace Scurge.Player {
 							}
 						}
 						else if(Cooldown) {
-							Sound.Play();
 							if(ItemType == Type.Melee) {
 								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
 							}
@@ -121,8 +124,12 @@ namespace Scurge.Player {
 				}
 				if(ItemSide == Side.Left) {
 					if(cInput.GetKeyDown("Attack/Fire 1") && !Inventory.InventoryOpen) {
-						if(!Cooldown) {
+
+						if(ItemCommand != Command.Spell) {
 							Sound.Play();
+						}
+
+						if(!Cooldown) {
 							if(ItemType == Type.Melee) {
 								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
 							}
@@ -134,7 +141,6 @@ namespace Scurge.Player {
 							}
 						}
 						else if(Cooldown) {
-							Sound.Play();
 							if(ItemType == Type.Melee) {
 								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
 							}
@@ -186,10 +192,51 @@ namespace Scurge.Player {
 			NewProjectile.transform.rigidbody.AddForce(Direction * Power);
 		}
 
+		public GameObject lastSpawnedParticle;
+
 		public void UseSpell(Spell spellToUse) {
-			spellToUse.sound.Play();
-			Stats.UseMana(spell.ManaCost);
-			print("Using Spell!");
+			if(Stats.CanUseSpell(spellToUse.ManaCost)) {
+				spellToUse.sound.Play();
+				Stats.UseMana(spell.ManaCost);
+
+				if(spellToUse.hasParticle) {
+					lastSpawnedParticle = (GameObject)Instantiate(spellToUse.particle, transform.position + spellToUse.positionAdder, Quaternion.identity);
+					lastSpawnedParticle.SetActive(true);
+					if(spellToUse.attachParticleToPlayer) {
+						lastSpawnedParticle.transform.parent = Objects.Player.transform;
+					}
+				}
+
+				#region Spell Type Dependent
+				if(spellToUse.spellType == SpellType.Heal) {
+					Stats.Heal(spell.healAmount);
+				}
+				if(spellToUse.spellType == SpellType.Projectile) {
+					ThrowProjectile(spell.projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+				}
+				if(spellToUse.spellType == SpellType.ExpandingSphere) {
+					var lastSphere = (GameObject)Instantiate(spellToUse.particle, Objects.Player.transform.position, Quaternion.identity);
+					spellToUse.sphereToExpand = lastSpawnedParticle.GetComponent<SphereCollider>();
+					while(spellToUse.sphereToExpand.radius < spellToUse.radiusToExpand) {
+						spellToUse.sphereToExpand.radius++;
+					}
+					if(spellToUse.attachParticleToPlayer) {
+						lastSphere.transform.parent = Objects.Player.transform;
+					}
+					lastSphere.SetActive(true);
+					spellToUse.particle.GetComponent<ParticleSystem>().startLifetime = spellToUse.deflectionDuration - 2;
+					lastSphere.GetComponent<DestroyAfterWait>().wait = spellToUse.deflectionDuration;
+				}
+				if(spellToUse.spellType == SpellType.Nothing) {
+					Debug.Log("Spell " + spell.name + " Has No Type");
+				}
+				#endregion
+				print("Using Spell!");
+			}
+		}
+
+		IEnumerator Wait(float time) {
+			yield return new WaitForSeconds(time);
 		}
 
 		IEnumerator SwingCool(float Wait) {

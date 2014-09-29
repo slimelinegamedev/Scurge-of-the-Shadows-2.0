@@ -22,8 +22,6 @@ namespace Scurge.Editor {
 
 		public bool SelectingHeldItem = false;
 
-		public SpellType spellTypes;
-
 		public Item itemsList;
 
 		[MenuItem ("Window/Item Editor %#e")]
@@ -106,13 +104,38 @@ namespace Scurge.Editor {
 					else if(Inventory.Types[(int)itemsList] == ItemType.Spell) {
 						EditorGUI.indentLevel++;
 						CurrentHeldItem.spell.name = EditorGUILayout.TextField("Spell Name", CurrentHeldItem.spell.name);
-						CurrentHeldItem.spell.particle = (GameObject)EditorGUILayout.ObjectField("Particle Object", CurrentHeldItem.spell.particle, typeof(GameObject), true);
-						CurrentHeldItem.spell.spellType = (SpellType)EditorGUILayout.EnumPopup("Spell Type", spellTypes);
-						CurrentHeldItem.spell.ManaCost = EditorGUILayout.IntField("Mana Cost", CurrentHeldItem.spell.ManaCost);
+						CurrentHeldItem.spell.spellType = (SpellType)EditorGUILayout.EnumPopup("Spell Type", CurrentHeldItem.spell.spellType);
+						#region Spell Type Variables
+						EditorGUI.indentLevel++;
+						if(CurrentHeldItem.spell.spellType == SpellType.Heal) {
+							CurrentHeldItem.spell.healAmount = EditorGUILayout.IntField("Healing Amount", CurrentHeldItem.spell.healAmount);
+						}
+						else if(CurrentHeldItem.spell.spellType == SpellType.Projectile) {
+							CurrentHeldItem.spell.projectile = (GameObject)EditorGUILayout.ObjectField("Projectile GameObject", CurrentHeldItem.spell.projectile, typeof(GameObject), true);
+						}
+						else if(CurrentHeldItem.spell.spellType == SpellType.ExpandingSphere) {
+							CurrentHeldItem.spell.hasParticle = true;
+						
+							EditorGUILayout.LabelField("Sphere Gets Assigned At Runtime");
+							CurrentHeldItem.spell.radiusToExpand = EditorGUILayout.IntSlider("Max Size", CurrentHeldItem.spell.radiusToExpand, 0, 100);
+							CurrentHeldItem.spell.deflectionDuration = EditorGUILayout.FloatField("Duration", CurrentHeldItem.spell.deflectionDuration);
+						}
+						else if(CurrentHeldItem.spell.spellType == SpellType.Nothing) {
+							
+						}
+						EditorGUI.indentLevel--;
+						#endregion
+						CurrentHeldItem.spell.hasParticle = EditorGUILayout.Toggle("Has Particle", CurrentHeldItem.spell.hasParticle);
+						if(CurrentHeldItem.spell.hasParticle) {
+							EditorGUI.indentLevel++;
+							CurrentHeldItem.spell.particle = (GameObject)EditorGUILayout.ObjectField("Particle Object", CurrentHeldItem.spell.particle, typeof(GameObject), true);
+							CurrentHeldItem.spell.attachParticleToPlayer = EditorGUILayout.Toggle("Attach To Player", CurrentHeldItem.spell.attachParticleToPlayer);
+							EditorGUI.indentLevel--;
+						}
+						CurrentHeldItem.spell.positionAdder = EditorGUILayout.Vector3Field("Particle Position Adder", CurrentHeldItem.spell.positionAdder);
+						CurrentHeldItem.spell.ManaCost = EditorGUILayout.IntSlider("Mana Cost", CurrentHeldItem.spell.ManaCost, 0, 500);
 						CurrentHeldItem.spell.sound = (AudioSource)EditorGUILayout.ObjectField("Spell Sound", CurrentHeldItem.spell.sound, typeof(AudioSource), true);
 						EditorGUI.indentLevel--;
-
-						CurrentHeldItem.spell.spellType = spellTypes;
 					}
 					else if(Inventory.Types[(int)itemsList] == ItemType.Helmet) {
 						
