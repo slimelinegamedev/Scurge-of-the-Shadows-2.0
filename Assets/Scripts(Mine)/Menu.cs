@@ -7,6 +7,14 @@ using Scurge.Enemy;
 using Scurge.Audio;
 using Scurge.AI;
 
+using GUILayout = transfluent.guiwrapper.GUILayout;
+using GUI = transfluent.guiwrapper.GUI;
+using transfluent;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Scurge.UI {
 	public class Menu : MonoBehaviour {
 		public GUISkin Skin;
@@ -15,9 +23,11 @@ namespace Scurge.UI {
 		public bool visible = true;
 		public bool savesVisible = false;
 		public bool optionsVisible = false;
+		public bool languageVisible = false;
 
 		public float playX = 10;
 		public float quitX = 10;
+		public float languageX = 10;
 
 		public string saveOne;
 		public string saveTwo;
@@ -26,12 +36,19 @@ namespace Scurge.UI {
 		void Update() {
 			if(visible) {
 				if(!savesVisible && !optionsVisible) {
-					if(new Rect(10, 600, 200, 50).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
+					if(new Rect(10, 540, 200, 50).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
 						print("Inside Play Button!");
 						playX = 30;
 					}
 					else {
 						playX = 10;
+					}
+					if(new Rect(10, 600, 200, 50).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
+						print("Inside Language Button!");
+						languageX = 30;
+					}
+					else {
+						languageX = 10;
 					}
 					if(new Rect(10, 660, 200, 50).Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))) {
 						print("Inside Quit Button!");
@@ -54,17 +71,24 @@ namespace Scurge.UI {
 			GUI.skin = Skin;
 			if(visible) {
 				GUI.Label(new Rect(640, 10, 10, 200), "<size=60>Scurge of the Shadows 2.0</size>", "Center Label");
-				if(!savesVisible && !optionsVisible) {
-					if(GUI.Button(new Rect(playX, 600, 200, 50), "<size=40>Play</size>", "Menu Button")) {
+				if(!savesVisible && !optionsVisible && !languageVisible) {
+					if(GUI.Button(new Rect(playX, 540, 200, 50), "<size=40>Play</size>", "Menu Button")) {
 						ShowSaves(true);
 					}
+					if(GUI.Button(new Rect(languageX, 600, 200, 50), "<size=40>Language</size>", "Menu Button")) {
+						ShowLanguage();
+					}
 					if(GUI.Button(new Rect(quitX, 660, 200, 50), "<size=40>Exit</size>", "Menu Button")) {
-						if(Application.isEditor) {
-							print("Youre in the editor! Exit play mode!");
-						}
-						else {
-							Application.Quit();
-						}
+						#if UNITY_EDITOR
+						EditorApplication.isPlaying = false;
+						#else
+						Application.Quit();
+						#endif
+					}
+				}
+				if(languageVisible) {
+					if(GUI.Button(new Rect(10, 660, 200, 50), "<size=40>Cancel</size>", "Menu Button")) {
+						ShowLanguage();
 					}
 				}
 				if(savesVisible) {
@@ -82,6 +106,10 @@ namespace Scurge.UI {
 					
 				}
 			}
+		}
+		public void ShowLanguage() {
+			languageVisible = !languageVisible;
+			print("Selecting Language");
 		}
 		public void ShowSaves(bool autoPlay) {
 			if(!autoPlay) {

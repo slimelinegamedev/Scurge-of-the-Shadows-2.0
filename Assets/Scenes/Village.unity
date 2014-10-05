@@ -5263,10 +5263,11 @@ MonoBehaviour:
   FirstOpenSlot: 0
   Full: 0
   ActiveItem: 0
-  handTexture: {fileID: 0}
   Skin: {fileID: 11400000, guid: dbac05ad7b5dd4800a77dcd8f3f4a102, type: 2}
+  curStaff: {fileID: 0}
   Items: 01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   EquippedItems: 0200000000000000000000000000000000000000
+  heldItems: []
   Types: 00000000010000000200000001000000
   ItemDescription:
   - 
@@ -5294,10 +5295,11 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 7ecbb2ce03f90412087843ab6f58e74f, type: 3}
   - {fileID: 2800000, guid: 094dcd712f1cd4040b02237c3c27918c, type: 3}
   - {fileID: 2800000, guid: 57b7c217ea31c40f9b46337d06794901, type: 3}
+  EquippingEmptyTextures: []
   RingTypes: 
-  DefenseAmounts: 
   StatsAmounts: 
   PotionTypes: 
+  spells: []
   TooltipText:
   - 
   - 
@@ -5320,6 +5322,7 @@ MonoBehaviour:
   - 
   - 
   - 
+  enemyProximities: []
 --- !u!114 &2028455845
 MonoBehaviour:
   m_ObjectHideFlags: 0

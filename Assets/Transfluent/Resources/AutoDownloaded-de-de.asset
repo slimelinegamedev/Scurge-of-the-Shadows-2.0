@@ -1,0 +1,212 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7775ae55018724856ba88658385affd3, type: 3}
+  m_Name: AutoDownloaded-de-de
+  m_EditorClassIdentifier: 
+  allTranslations:
+  - groupid: 
+    translations:
+    - key: HELLO_WORLD_TEXT_KEY
+      value: Das ist Beispieltext 0.1122621.
+    - key: UNITY_TEST_TRANSLATION_KEY
+      value: Das ist Testtext.
+    - key: TEST_KEY_2
+      value: this is test text
+    - key: 1
+      value: Ein
+    - key: 2
+      value: _2_
+    - key: 3
+      value: Drei
+    - key: 4
+      value: 4
+    - key: cows
+      value: "K\xFChe"
+    - key: goat simulator
+      value: Ziegen-Simulator
+    - key: potions aquired
+      value: "Zaubertr\xE4nke erlangt"
+    - key: options
+      value: Optionen
+    - key: configuration
+      value: Konfiguration
+    - key: power up
+      value: einschalten
+    - key: Start Game
+      value: Spiel beginnen
+    - key: Begin!
+      value: Beginnen!
+    - key: Play Again?
+      value: 'Noch einmal spielen? '
+    - key: Hi there!
+      value: Hallo!
+    - key: Rocks
+      value: 'Felsen '
+    - key: STRANGE
+      value: "MERKW\xDCRDIG"
+    - key: Prepare for level
+      value: 'Auf Level vorbereiten '
+    - key: 'Score:'
+      value: 'Punktestand: '
+    - key: 'Level:'
+      value: 'Level:'
+    - key: Game Over!
+      value: Game over!
+    - key: German
+      value: Deutsch
+    - key: French
+      value: "Franz\xF6sisch"
+    - key: English
+      value: Englisch
+    - key: Backwards
+      value: "R\xFCckw\xE4rts"
+    - key: Return to game
+      value: "Zum Spiel zur\xFCckkehren"
+    - key: Language Select
+      value: Sprachauswahl
+    - key: 'Last Score: {0}'
+      value: 'Letzte Punktzahl: {0}'
+    - key: Start Level {0}
+      value: Starte Level {0}
+    - key: 'Score: {0}'
+      value: 'Punktzahl: {0}'
+    - key: 'Lives remaining: {0}'
+      value: 'Verbleibende Leben: {0}'
+    - key: Play Again
+      value: Nochmal spielen
+    - key: 'Final Score: {0}'
+      value: 'Endpunktzahl: {0}'
+    - key: 'Escape: [[[{0}]]]'
+      value: 'Flucht: [[[{0}]]]'
+    - key: Yes
+      value: JA
+    - key: No
+      value: NEIN
+    - key: Yeah
+      value: Jawoll
+    - key: Nope
+      value: Nee
+    - key: Press Start
+      value: "Start dr\xFCcken"
+    - key: Press Start to continue
+      value: "Start dr\xFCcken zum Fortfahren"
+    - key: Press any key
+      value: "Eine Taste dr\xFCcken"
+    - key: Press any key to continue
+      value: "Zum Fortsetzen eine Taste dr\xFCcken"
+    - key: New Game
+      value: Neues Spiel
+    - key: Continue
+      value: Fortsetzen
+    - key: Continue?
+      value: Fortsetzen?
+    - key: Load
+      value: Laden
+    - key: Load Game
+      value: Spiel laden
+    - key: Loading...
+      value: Lade...
+    - key: Please wait...
+      value: Bitte warten...
+    - key: Save
+      value: Speichern
+    - key: Save Game
+      value: Spiel speichern
+    - key: Saving...
+      value: Speichere...
+    - key: Exit
+      value: Beenden
+    - key: Exit?
+      value: Beenden?
+    - key: Exit to Desktop
+      value: "Zur\xFCck zum Desktop"
+    - key: Exit to Desktop?
+      value: "Zur\xFCck zum Desktop?"
+    - key: Quit
+      value: Beenden
+    - key: Quit?
+      value: Beenden?
+    - key: Pause
+      value: Pause
+    - key: Are you sure you want to quit?
+      value: "Bist du sicher, das du beenden m\xF6chtest?"
+    - key: Return
+      value: "Zur\xFCck"
+    - key: Main Menu
+      value: "Hauptmen\xFC"
+    - key: Return to Main Menu
+      value: "Zur\xFCck zum Hauptmen\xFC"
+    - key: Return to Main Menu?
+      value: "Zur\xFCck zum Hauptmen\xFC?"
+    - key: Sound Options
+      value: Tonoptionen
+    - key: Sound
+      value: Ton
+    - key: Volume
+      value: "Lautst\xE4rke"
+    - key: Graphics Options
+      value: Grafikoptionen
+    - key: Video Options
+      value: Video-Optionen
+    - key: Quality
+      value: "Qualit\xE4t"
+    - key: Gameplay Options
+      value: Spieloptionen
+    - key: Network Options
+      value: Netzwerkoptionen
+    - key: Difficulty Options
+      value: Schwierigkeitsstufen
+    - key: Difficulty
+      value: Schwierigkeit
+    - key: Very Easy
+      value: Sehr leicht
+    - key: Easy
+      value: Leicht
+    - key: Medium
+      value: Mittel
+    - key: Hard
+      value: Schwer
+    - key: Very Hard
+      value: Sehr schwer
+    - key: Insane
+      value: Wahnsinnig
+    - key: Impossible
+      value: "Unm\xF6glich"
+    - key: Thank you!
+      value: Danke!
+    - key: Goodbye!
+      value: Auf Wiedersehen!
+    - key: Are you sure?
+      value: Bist du sicher?
+    - key: Single player
+      value: Einzelspieler
+    - key: Multiplayer
+      value: Mehrspieler
+    - key: Online Multiplayer
+      value: Online-Mehrspieler
+    - key: Local Multiplayer
+      value: Lokale Mehrspieler
+    - key: Splitscreen
+      value: Splitscreen
+    - key: Co-op
+      value: Kooperativ
+    - key: Cooperative
+      value: Kooperativ
+    - key: Versus
+      value: Gegen
+  - groupid: TEST
+    translations:
+    - key: sprechen sie deutsch
+      value: What are you saying?
+  language:
+    name: German
+    code: de-de
+    id: 3

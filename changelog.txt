@@ -38,6 +38,7 @@ Added open scene tab in editor
 Added the ability to have a enemy spawn minions
 Switched from ST3 to MonoDevelop
 Improved Item Editor window
+Exit buton in main menu now works in editor
 
 Indev 0.1.1
 Fixed several bugs

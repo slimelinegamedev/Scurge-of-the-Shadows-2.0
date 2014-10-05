@@ -26,6 +26,7 @@ namespace Scurge.Player {
 	}
 
 	public class HeldItem : MonoBehaviour {
+
 		public Inventory Inventory;
 		public Stats Stats;
 		public EnemyStats EnemyStats;

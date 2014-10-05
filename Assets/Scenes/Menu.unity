@@ -8892,8 +8892,10 @@ MonoBehaviour:
   visible: 1
   savesVisible: 0
   optionsVisible: 0
+  languageVisible: 0
   playX: 10
   quitX: 10
+  languageX: 10
   saveOne: EMPTY
   saveTwo: EMPTY
   saveThree: EMPTY

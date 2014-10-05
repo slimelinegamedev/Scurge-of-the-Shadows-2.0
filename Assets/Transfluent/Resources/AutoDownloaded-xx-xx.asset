@@ -1,0 +1,224 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7775ae55018724856ba88658385affd3, type: 3}
+  m_Name: AutoDownloaded-xx-xx
+  m_EditorClassIdentifier: 
+  allTranslations:
+  - groupid: 
+    translations:
+    - key: HELLO_WORLD_TEXT_KEY
+      value: 1236311.0etxet ed elpmexe nu iciov
+    - key: UNITY_TEST_TRANSLATION_KEY
+      value: tset ed etxet nu tse icec
+    - key: TEST_CREATION_OF_A_KEY
+      value: rotide morf etaerc tset
+    - key: TEST_CREATION_OF_A_KEY2
+      value: detaerc osla saw siht
+    - key: TEST_TEXT
+      value: DLROW OLLEH
+    - key: THIS IS FROM THE EDITOR
+      value: ereht ih
+    - key: hello world
+      value: ffuts
+    - key: TEST_KEY_2
+      value: txet tset si siht
+    - key: 1
+      value: nU
+    - key: 2
+      value: __2__
+    - key: 3
+      value: siorT
+    - key: 4
+      value: 4
+    - key: cows
+      value: sehcav
+    - key: goat simulator
+      value: "erv\xE8hc ed ruetalumis"
+    - key: potions aquired
+      value: seunetbo snoitop
+    - key: options
+      value: snoitpo
+    - key: configuration
+      value: noitarugifnoc
+    - key: power up
+      value: sunob
+    - key: Start Game
+      value: "uej el rerram\xE9D"
+    - key: Begin!
+      value: "!\_recnemmoC"
+    - key: Play Again?
+      value: "?\_reuojeR"
+    - key: Hi there!
+      value: "!\_ruojnoB"
+    - key: Rocks
+      value: serreiP
+    - key: STRANGE
+      value: ERRAZIB
+    - key: Prepare for level
+      value: "uaevin el ruop suov-zerap\xE9rP"
+    - key: 'Score:'
+      value: ":\_erocS"
+    - key: 'Level:'
+      value: ': uaeviN'
+    - key: Game Over!
+      value: "!\_e\xE9nimret eitraP"
+    - key: German
+      value: dnamellA
+    - key: French
+      value: "sia\xE7narF"
+    - key: English
+      value: sialgnA
+    - key: Backwards
+      value: "srevne'l \xC0"
+    - key: Return to game
+      value: uej ua ruoteR
+    - key: Language Select
+      value: eugnal al ed xiohC
+    - key: 'Last Score: {0}'
+      value: '{0} : erocs reinreD'
+    - key: Start Level {0}
+      value: "{0} uaevin el rerram\xE9D"
+    - key: 'Score: {0}'
+      value: '{0} : erocS'
+    - key: 'Lives remaining: {0}'
+      value: '{0} : setnatser seiV'
+    - key: Play Again
+      value: reuojeR
+    - key: 'Final Score: {0}'
+      value: '{0} : lanif erocS'
+    - key: 'Escape: [[[{0}]]]'
+      value: ']]]{0}[[[ :suov-zeppahcE'
+    - key: Yes
+      value: IUO
+    - key: No
+      value: NON
+    - key: Yeah
+      value: siauO
+    - key: Nope
+      value: naN
+    - key: Press Start
+      value: tratS rus zeyuppA
+    - key: Press Start to continue
+      value: reunitnoc ruop tratS rus zeyuppA
+    - key: Press any key
+      value: ehcuot elleuq etropmi'n rus zeyuppA
+    - key: Press any key to continue
+      value: reunitnoc ruop ehcuot elleuq etropmi'n rus zeyuppA
+    - key: New Game
+      value: eitrap ellevuon enu recnemmoC
+    - key: Continue
+      value: reunitnoC
+    - key: Continue?
+      value: ?reunitnoc suov-zeluoV
+    - key: Load
+      value: regrahC
+    - key: Load Game
+      value: eitrap al regrahC
+    - key: Loading...
+      value: tnemegrahC
+    - key: Please wait...
+      value: "..t\xEEalp suov li's zetneitaP"
+    - key: Save
+      value: redragevuaS
+    - key: Save Game
+      value: eitrap al redragevuaS
+    - key: Saving...
+      value: '...sruoc ne edragevuaS'
+    - key: Exit
+      value: rettiuQ
+    - key: Exit?
+      value: ?rettiuq tnemiarv suov-zeluoV
+    - key: Exit to Desktop
+      value: uaerub el rettiuQ
+    - key: Exit to Desktop?
+      value: ?uaerub el rettiuq tnemiarv suov-zeluoV
+    - key: Quit
+      value: rennodnabA
+    - key: Quit?
+      value: ?rennodnaba tnemiarv suov-zeluoV
+    - key: Pause
+      value: esuaP
+    - key: Are you sure you want to quit?
+      value: "?rennodnaba rioluov ed r\xFBs suov-setE"
+    - key: Return
+      value: ruoteR
+    - key: Main Menu
+      value: lapicnirp uneM
+    - key: Return to Main Menu
+      value: lapicnirp unem ua ruoteR
+    - key: Return to Main Menu?
+      value: ?lapicnirp unem ua renruoter suov-zeluoV
+    - key: Sound Options
+      value: seronos snoitpO
+    - key: Sound
+      value: noS
+    - key: Volume
+      value: emuloV
+    - key: Graphics Options
+      value: seuqihparg snoitpO
+    - key: Video Options
+      value: "so\xE9div snoitpO"
+    - key: Quality
+      value: "\xE9tilauQ"
+    - key: Gameplay Options
+      value: ecafretni'l ed snoitpO
+    - key: Network Options
+      value: tenretnI snoitpO
+    - key: Difficulty Options
+      value: "s\xE9tluciffid ed snoitpO"
+    - key: Difficulty
+      value: "\xE9tluciffiD"
+    - key: Very Easy
+      value: "elicaf s\xE8rT"
+    - key: Easy
+      value: elicaF
+    - key: Medium
+      value: lettiM
+    - key: Hard
+      value: eliciffiD
+    - key: Very Hard
+      value: "eliciffid s\xE8rT"
+    - key: Insane
+      value: letroM
+    - key: Impossible
+      value: elbissopmI
+    - key: Thank you!
+      value: '! icreM'
+    - key: Goodbye!
+      value: '!riover uA'
+    - key: Are you sure?
+      value: "?r\xFBs suov-setE"
+    - key: Single player
+      value: rueuoj nU
+    - key: Multiplayer
+      value: rueuojitlum edoM
+    - key: Online Multiplayer
+      value: engil ne rueuojitluM
+    - key: Local Multiplayer
+      value: lacol ne rueuojitluM
+    - key: Splitscreen
+      value: "\xE9sivid narcE"
+    - key: Co-op
+      value: "noitar\xE9pooC"
+    - key: Cooperative
+      value: "noitar\xE9pooC"
+    - key: Versus
+      value: susreV
+  - groupid: TEST
+    translations:
+    - key: sprechen sie deutsch
+      value: ?gniyas uoy era tahW
+    - key: manually edited key
+      value: I manually entered this
+  language:
+    name: Pseudo language
+    code: xx-xx
+    id: 500
