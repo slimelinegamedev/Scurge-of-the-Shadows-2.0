@@ -24,6 +24,7 @@ Reduced draw calls for tiles
 Added fog, so you can’t see forever
 Added Occlusion Culling, less draw calls, more frames!
 Removed options from startup menu, now in pause menu (default escape)
+Changed new floor loading screen, cant see game at edge when in different resoultion
 
 For developers
 New Unity version - Must Have Unity Version 4.5.2f1 or later to contribute
@@ -39,6 +40,10 @@ Added the ability to have a enemy spawn minions
 Switched from ST3 to MonoDevelop
 Improved Item Editor window
 Exit buton in main menu now works in editor
+All Editor Extensions are now in menu item /Tools/Scurge/
+Added Prototype from ProCore
+More controlled tile spawning
+Tiles now have percentage of spawn rates
 
 Indev 0.1.1
 Fixed several bugs

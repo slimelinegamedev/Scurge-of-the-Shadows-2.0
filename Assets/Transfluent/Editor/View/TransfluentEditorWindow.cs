@@ -18,7 +18,7 @@ namespace transfluent.editor
 			textGui = new TextsGUI(_mediator);
 		}
 
-		[MenuItem("Translation/View My Transfluent Account")]
+		[MenuItem("Tools/Translation/View My Transfluent Account")]
 		public static void Init()
 		{
 			var window = GetWindow<TransfluentEditorWindow>();

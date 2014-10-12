@@ -1,9 +1,9 @@
 ﻿#pragma strict
-import IndieEffects;
+import IndieEffectsJS;
 
-@script RequireComponent (IndieEffects)
+@script RequireComponent (IndieEffectsJS)
 @script AddComponentMenu ("Indie Effects/Blur")
-var fxRes : IndieEffects;
+var fxRes : IndieEffectsJS;
 
 private var blurMat : Material;
 var blurShader : Shader;
@@ -11,7 +11,7 @@ var blurShader : Shader;
 var blur : float;
 
 function Start () {
-	fxRes = GetComponent(IndieEffects);
+	fxRes = GetComponent(IndieEffectsJS);
 	blurMat = new Material(blurShader);
 }
 

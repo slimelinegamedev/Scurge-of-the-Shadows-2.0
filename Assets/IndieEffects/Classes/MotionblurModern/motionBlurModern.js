@@ -1,9 +1,9 @@
 #pragma strict
-import IndieEffects;
+import IndieEffectsJS;
 
-@script RequireComponent (IndieEffects)
+@script RequireComponent (IndieEffectsJS)
 @script AddComponentMenu ("Indie Effects/Motion Blur")
-var fxRes : IndieEffects;
+var fxRes : IndieEffectsJS;
 
 private var blurMat : Material;
 var blurShader : Shader;
@@ -15,7 +15,7 @@ var prevDepth : Texture2D;
 var previousViewProjectionMatrix : Matrix4x4;
 
 function Start () {
-	fxRes = GetComponent(IndieEffects);
+	fxRes = GetComponent(IndieEffectsJS);
     blurMat = new Material(blurShader);
     previousViewProjectionMatrix = camera.projectionMatrix * camera.worldToCameraMatrix;
 }

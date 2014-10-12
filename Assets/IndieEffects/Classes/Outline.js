@@ -1,17 +1,17 @@
 #pragma strict
-import IndieEffects;
+import IndieEffectsJS;
 
-@script RequireComponent (IndieEffects)
+@script RequireComponent (IndieEffectsJS)
 @script AddComponentMenu ("Indie Effects/Outline")
 
-var fxRes : IndieEffects;
+var fxRes : IndieEffectsJS;
 
 var threshold : float;
 private var blurMat : Material;
 var outlineShader : Shader; 
 
 function Start () {
-    fxRes = GetComponent("IndieEffects");
+    fxRes = GetComponent("IndieEffectsJS");
     blurMat = new Material(outlineShader);
 }
 function Update () {

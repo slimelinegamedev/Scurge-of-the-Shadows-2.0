@@ -1,9 +1,9 @@
 ﻿#pragma strict
  
-@script RequireComponent (IndieEffects)
+@script RequireComponent (IndieEffectsJS)
 @script AddComponentMenu ("Indie Effects/Image Bloom")
-import IndieEffects;
-var fxRes : IndieEffects;
+import IndieEffectsJS;
+var fxRes : IndieEffectsJS;
 
 private var bloomMat : Material;
 var bloomShader : Shader;
@@ -12,7 +12,7 @@ var amount : float;
 var newTex : Texture2D;
  
 function Start () {
-fxRes = GetComponent(IndieEffects);
+fxRes = GetComponent(IndieEffectsJS);
 newTex = new Texture2D(fxRes.textureSize, fxRes.textureSize, TextureFormat.RGB24, false);
 newTex.wrapMode = TextureWrapMode.Clamp;
 bloomMat = new Material(bloomShader);

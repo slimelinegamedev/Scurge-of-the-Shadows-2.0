@@ -7,7 +7,7 @@ using UnityEngine;
 public class SimpleLineBasedImporter
 {
 	//simple case where key=value for a line based file
-	[MenuItem("Translation/Database/Import Selected Newline based File")]
+	[MenuItem("Tools/Translation/Database/Import Selected Newline based File")]
 	private static void ImportFileToDefaultGroupAndSourceLanguageDB() //does not import it to a group
 	{
 		TextAsset ta = Selection.activeObject as TextAsset;

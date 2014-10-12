@@ -13,7 +13,7 @@ using TeamUtility.IO;
 
 namespace Scurge.Editor {
 	public class MeshCombiner : EditorWindow {
-		[MenuItem ("Utility/Mesh Combiner")]
+		[MenuItem ("Tools/Scurge/Utility/Mesh Combiner")]
 		static void Init () {
 			EditorWindow window = EditorWindow.GetWindow(typeof (MeshCombiner));
 			window.title = "Mesh Combiner Utility";
@@ -22,11 +22,16 @@ namespace Scurge.Editor {
 		public bool generateTriangleStrips = true;
 		public bool castShadows = true;
 		public bool receiveShadows = true;
+		public bool keepOld = true;
+
+		public List<GameObject> oldMeshPieces;
+		public GameObject oldMeshHolder;
 
 		void OnGUI() {
 			generateTriangleStrips = EditorGUILayout.Toggle("Generate Triangle Strips", generateTriangleStrips);
 			castShadows = EditorGUILayout.Toggle("Cast Shadows", castShadows);
 			receiveShadows = EditorGUILayout.Toggle("Receive Shadows", receiveShadows);
+			keepOld = EditorGUILayout.Toggle("Keep Old Mesh Parts", keepOld);
 			if(GUILayout.Button("Combine")) {
 				if(EditorUtility.DisplayDialog("Are You Sure You Want To Combine These Meshes?", "This Cannot Be Undone", "Combine", "Stop")) {
 					CombineMesh(Selection.activeGameObject);
@@ -37,6 +42,20 @@ namespace Scurge.Editor {
 			Component[] filters  = obj.GetComponentsInChildren(typeof(MeshFilter));
 			Matrix4x4 myTransform = obj.transform.worldToLocalMatrix;
 			Hashtable materialToMesh= new Hashtable();
+
+			if(keepOld) {
+				foreach(Component curMeshPiece in filters) {
+					oldMeshPieces.Add(curMeshPiece.gameObject);
+				}
+				oldMeshHolder = new GameObject("Old Mesh");
+				oldMeshHolder.transform.parent = obj.transform;
+			}
+			if(keepOld) {
+				for(int iterateOldMeshPieces = 0; iterateOldMeshPieces < oldMeshPieces.Count; iterateOldMeshPieces++) {
+					oldMeshPieces[iterateOldMeshPieces].transform.parent = oldMeshHolder.transform;
+					oldMeshPieces.RemoveAt(iterateOldMeshPieces);
+				}
+			}
 
 			for (int i=0;i<filters.Length;i++) {
 				MeshFilter filter = (MeshFilter)filters[i];

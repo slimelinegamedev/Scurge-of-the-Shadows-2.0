@@ -34,7 +34,7 @@ namespace Scurge.Editor {
 	}
 
 	public class EnemyCreator : EditorWindow {
-		[MenuItem ("Window/Enemy Editor %#v")]
+		[MenuItem ("Tools/Scurge/Windows/Enemy Editor %#v")]
 		static void Init() {
 			EditorWindow window = EditorWindow.GetWindow(typeof (EnemyCreator));
 			window.title = "Enemy Editor";

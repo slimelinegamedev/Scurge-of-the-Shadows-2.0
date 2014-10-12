@@ -1,7 +1,7 @@
 ﻿#pragma strict
 
-@script RequireComponent(IndieEffects)
-import IndieEffects;
+@script RequireComponent(IndieEffectsJS)
+import IndieEffectsJS;
 
 var shader : Shader;
 static var DepthTex : Texture2D;

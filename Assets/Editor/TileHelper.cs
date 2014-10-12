@@ -12,7 +12,7 @@ using Scurge.AI;
 using TeamUtility.IO;
 
 public class TileHelper : EditorWindow {
-	[MenuItem ("Utility/Tile Helper")]
+	[MenuItem ("Tools/Scurge/Utility/Tile Helper")]
 	static void Init() {
 		EditorWindow window = EditorWindow.GetWindow(typeof(TileHelper));
 		window.title = "Tile Helper Utility";

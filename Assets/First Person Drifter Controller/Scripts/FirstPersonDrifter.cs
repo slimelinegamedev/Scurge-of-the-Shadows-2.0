@@ -95,7 +95,7 @@ public class FirstPersonDrifter: MonoBehaviour
  
             if( enableRunning )
             {
-            	speed = InputManager.GetButton("Run")? runSpeed : walkSpeed;
+            	speed = cInput.GetButton("Run")? runSpeed : walkSpeed;
             }
  
             // If sliding (and it's allowed), or if we're on an object tagged "Slide", get a vector pointing down the slope we're on
@@ -114,7 +114,7 @@ public class FirstPersonDrifter: MonoBehaviour
             }
  
             // Jump! But only if the jump button has been released and player has been grounded for a given number of frames
-            if (!InputManager.GetButton("Jump"))
+            if (!cInput.GetButton("Jump"))
                 jumpTimer++;
             else if (jumpTimer >= antiBunnyHopFactor) {
                 moveDirection.y = jumpSpeed;

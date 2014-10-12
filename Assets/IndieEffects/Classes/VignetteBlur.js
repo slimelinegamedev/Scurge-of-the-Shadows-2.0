@@ -1,7 +1,7 @@
 ﻿#pragma strict
-import IndieEffects;
+import IndieEffectsJS;
 
-var fxRes : IndieEffects;
+var fxRes : IndieEffectsJS;
 @script RequireComponent(Camera);
 @script AddComponentMenu("Indie Effects/Vignette");
 
@@ -131,7 +131,7 @@ function RadialBlurQuad6 (renderMat : Material) {
 
 
 function Start () {
-	fxRes = GetComponent(IndieEffects);
+	fxRes = GetComponent(IndieEffectsJS);
 	sampleMat = new Material(shader);
 }
 

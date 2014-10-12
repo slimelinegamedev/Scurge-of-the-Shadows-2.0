@@ -6,10 +6,10 @@ along with this script.
 -Adam T. Ryder
 http://1337atr.weebly.com
 */
-import IndieEffects;
-@script RequireComponent (IndieEffects)
+import IndieEffectsJS;
+@script RequireComponent (IndieEffectsJS)
 @script AddComponentMenu ("Indie Effects/Color Balance")
-var fxRes : IndieEffects;
+var fxRes : IndieEffectsJS;
 
 private var mat : Material;
 var shader : Shader;
@@ -22,7 +22,7 @@ var Gain : Color = Color(1.0, 1.0, 1.0, 1.0);
 var GainBright : float = 1.0;
 
 function Start () {
-	fxRes = GetComponent(IndieEffects);
+	fxRes = GetComponent(IndieEffectsJS);
 	mat = new Material(shader);
 	mat.SetColor("_Lift", Lift);
 	mat.SetFloat("_LiftB", Mathf.Clamp(LiftBright, 0.0, 2.0));

@@ -1,9 +1,9 @@
 ﻿#pragma strict
-import IndieEffects;
+import IndieEffectsJS;
 
-@script RequireComponent(IndieEffects)
+@script RequireComponent(IndieEffectsJS)
 @script AddComponentMenu("Indie Effects/Depth of Field")
-var fxRes : IndieEffects;
+var fxRes : IndieEffectsJS;
 
 var shader : Shader;
 private var DOFMat : Material;
@@ -13,7 +13,7 @@ var FStop : float;
 var BlurAmount : float;
 
 function Start () {
-	fxRes = GetComponent(IndieEffects);
+	fxRes = GetComponent(IndieEffectsJS);
 	DOFMat = new Material(shader);
 }
 

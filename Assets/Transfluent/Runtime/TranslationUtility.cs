@@ -175,14 +175,14 @@ namespace transfluent
 
 #if UNITY_EDITOR
 
-		[MenuItem("Translation/Helpers/Enable Capture Mode")]
+		[MenuItem("Tools/Translation/Helpers/Enable Capture Mode")]
 		private static void EnableCaptureMode()
 		{
 			setCaptureMode(true);
 			_instance = createNewInstance();
 		}
 
-		[MenuItem("Translation/Helpers/Disable Capture Mode")]
+		[MenuItem("Tools/Translation/Helpers/Disable Capture Mode")]
 		private static void DisableCaptureMode()
 		{
 			setCaptureMode(false);

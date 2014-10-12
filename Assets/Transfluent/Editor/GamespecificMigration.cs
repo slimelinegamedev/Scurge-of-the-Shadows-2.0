@@ -71,7 +71,7 @@ namespace transfluent
 				Debug.Log(TranslationUtility.get("Start Game"));
 			}
 
-			[MenuItem("Translation/Helpers/Full migration")]
+			[MenuItem("Tools/Translation/Helpers/Full migration")]
 			public static void UpdateReferences()
 			{
 				var scanner = new AssetScanner();

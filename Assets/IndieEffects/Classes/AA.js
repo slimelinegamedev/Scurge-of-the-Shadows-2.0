@@ -1,15 +1,15 @@
 ﻿#pragma strict
-import IndieEffects;
+import IndieEffectsJS;
 /*
 ---------- Anti-Aliasing Indie Effects----------
 
 This is an adaption of Unity Pro's AA Script, done by TheBlur (me)
 
 */
-@script RequireComponent (IndieEffects)
+@script RequireComponent (IndieEffectsJS)
 @script AddComponentMenu ("Indie Effects/Anti-Aliasing")
-//import IndieEffects;
-var fxRes : IndieEffects;
+//import IndieEffectsJS;
+var fxRes : IndieEffectsJS;
 
 enum AAMode {
 	FXAA2 = 0,
@@ -82,7 +82,7 @@ enum AAMode {
 	}
 
 	function Start () {
-		fxRes = gameObject.GetComponent(IndieEffects);
+		fxRes = gameObject.GetComponent(IndieEffectsJS);
 		materialFXAAPreset2 = new Material (shaderFXAAPreset2);
 		materialFXAAPreset3 = new Material (shaderFXAAPreset3);
 		materialFXAAII = new Material (shaderFXAAII);

@@ -1,12 +1,12 @@
 ﻿#pragma strict
-import IndieEffects;
+import IndieEffectsJS;
 /* 
 						---Fisheye Image Effect---
 This Indie Effects script is an adaption of the Unity Pro Fisheye Effect done by me.
 If you want me to attempt to convert a unity pro image effect, consult the manual for my
 forum link and email address.
 */
-var fxRes : IndieEffects;
+var fxRes : IndieEffectsJS;
 
 @script RequireComponent (Camera)
 @script AddComponentMenu ("Indie Effects/Fisheye")
@@ -18,7 +18,7 @@ private var tex : Texture2D;
 private var fisheyeMaterial : Material;	
 	
 function Start (){	
-	fxRes = GetComponent(IndieEffects);
+	fxRes = GetComponent(IndieEffectsJS);
 	fisheyeMaterial = new Material(fishEyeShader);		
 }
 	

@@ -1,16 +1,16 @@
 ﻿#pragma strict
 
-@script RequireComponent(IndieEffects)
+@script RequireComponent(IndieEffectsJS)
 @script AddComponentMenu("Indie Effects/Chromatic Abberation")
-import IndieEffects;
+import IndieEffectsJS;
 
-var fxRes : IndieEffects;
+var fxRes : IndieEffectsJS;
 var shader : Shader;
 private var chromMat : Material;
 var vignette : Texture2D;
 
 function Start () {
-	fxRes = GetComponent(IndieEffects);
+	fxRes = GetComponent(IndieEffectsJS);
 	chromMat = new Material(shader);
 }
 

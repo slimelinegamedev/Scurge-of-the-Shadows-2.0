@@ -24,7 +24,7 @@ namespace Scurge.Editor {
 
 		public Item itemsList;
 
-		[MenuItem ("Window/Item Editor %#e")]
+		[MenuItem ("Tools/Scurge/Windows/Item Editor %#e")]
 		static void Init () {
 			window = EditorWindow.GetWindow(typeof (ItemEditor));
 			icon = (Texture2D)Resources.Load("Inventory Icon", typeof(Texture2D));

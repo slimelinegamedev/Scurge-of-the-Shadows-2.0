@@ -35,7 +35,20 @@ namespace Scurge.Util {
 		public bool InvertMouseX = false;
 		public bool InvertMouseY = false;
 
+		public float MovingSensitivityY;
+		public float MovingSensitivityX;
+		
+		public float MovingGravityY;
+		public float MovingGravityX;
+		
+		public float MovingDeadzoneY;
+		public float MovingDeadzoneX;
+		
+		public bool InvertMovingX = false;
+		public bool InvertMovingY = false;
+
 		void Start() {
+			//Mouse
 			MouseSensitivityX = cInput.GetAxisSensitivity("Look X");
 			MouseSensitivityY = cInput.GetAxisSensitivity("Look Y");
 
@@ -47,26 +60,23 @@ namespace Scurge.Util {
 
 			InvertMouseX = cInput.AxisInverted("Look X");
 			InvertMouseY = cInput.AxisInverted("Look Y");
+
+			//Moving
+			MovingSensitivityX = cInput.GetAxisSensitivity("Horizontal");
+			MovingSensitivityY = cInput.GetAxisSensitivity("Vertical");
+			
+			MovingGravityX = cInput.GetAxisGravity("Horizontal");
+			MovingGravityY = cInput.GetAxisGravity("Vertical");
+			
+			MovingDeadzoneX = cInput.GetAxisDeadzone("Horizontal");
+			MovingDeadzoneY = cInput.GetAxisDeadzone("Vertical");
+			
+			InvertMovingX = cInput.AxisInverted("Horizontal");
+			InvertMouseY = cInput.AxisInverted("Vertical");
 		}
 		void Update() {
 			if(cInput.GetKeyDown("Pause")) {
-				Open = !Open;
-				if(ShowControlsOptions) {
-					ShowControlsOptions = false;
-				}
-				if(ShowOptions) {
-					ShowOptions = false;
-				}
-				if(Open) {
-					Disable.DisableObj(true, false);
-					Time.timeScale = 0;
-					Screen.showCursor = true;
-				}
-				else if(!Open) {
-					Disable.EnableObj(true, false);
-					Time.timeScale = 1;
-					Screen.showCursor = false;
-				}
+				PauseUnpauseGame();
 			}
 			cInput.SetAxisSensitivity("Look X", MouseSensitivityX);
 			cInput.SetAxisSensitivity("Look Y", MouseSensitivityY);
@@ -79,6 +89,37 @@ namespace Scurge.Util {
 
 			cInput.AxisInverted("Look X", InvertMouseX);
 			cInput.AxisInverted("Look Y", InvertMouseY);
+
+			cInput.SetAxisSensitivity("Horizontal", MovingSensitivityX);
+			cInput.SetAxisSensitivity("Vertical", MovingSensitivityY);
+			
+			cInput.SetAxisGravity("Horizontal", MovingGravityX);
+			cInput.SetAxisGravity("Vertical", MovingGravityY);
+			
+			cInput.SetAxisDeadzone("Horizontal", MovingDeadzoneX);
+			cInput.SetAxisDeadzone("Vertical", MovingDeadzoneY);
+			
+			cInput.AxisInverted("Horizontal", InvertMovingX);
+			cInput.AxisInverted("Vertical", InvertMovingY);
+		}
+		public void PauseUnpauseGame() {
+			Open = !Open;
+			if(ShowControlsOptions) {
+				ShowControlsOptions = false;
+			}
+			if(ShowOptions) {
+				ShowOptions = false;
+			}
+			if(Open) {
+				Disable.DisableObj(true, false);
+				Time.timeScale = 0;
+				Screen.showCursor = true;
+			}
+			else if(!Open) {
+				Disable.EnableObj(true, false);
+				Time.timeScale = 1;
+				Screen.showCursor = false;
+			}
 		}
 		void OnGUI() {
 			GUI.skin = Skin;

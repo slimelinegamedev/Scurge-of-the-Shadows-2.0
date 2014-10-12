@@ -27,13 +27,30 @@ namespace Scurge.Environment {
 	}
 	#endregion
 
+	public enum TileType {
+		Regular,
+		Boss,
+		WayDown,
+		FromAbove,
+		DownAndAbove,
+		Chest
+	}
+	[System.Serializable]
+	public class Tile {
+		public string name;
+		public GameObject tileObject;
+		public TileType tileType;
+		[Range(1, 1000)]
+		public int spawnRate = 1;
+	}
+
 	public class Dungeon : MonoBehaviour {
 
 		public Objects Objects;
 		public Spawner Spawner;
-		public List<GameObject> Tiles;
-		public List<GameObject> BossTiles;
-		public List<GameObject> WaysDown;
+		public Disable Disable;
+		public Pause Pause;
+		public List<Tile> Tiles;
 		public List<GameObject> SpawnedTiles;
 		public List<DungeonProp> Props;
 		public GameObject Wall;
@@ -52,10 +69,8 @@ namespace Scurge.Environment {
 		public bool Generating = false;
 		public bool entered = false;
 		public bool firstTime = true;
-
-		void Awake() {
-
-		}
+		public TextMesh loadingTextMesh;
+		public GameObject loadingGameObject;
 
 		void Start() {
 			if(TileSize > 0) {
@@ -88,29 +103,40 @@ namespace Scurge.Environment {
 				}
 			}
 			SpawnedTiles = new List<GameObject>(0);
+			bool spawnedFirstTile = false;
+			while(!spawnedFirstTile) {
+				PieceNumber = Random.Range(0, Tiles.Count);
+				int rarityChosen = Random.Range(1, 1000);
+				if(Tiles[PieceNumber].spawnRate < rarityChosen && Tiles[PieceNumber].tileType == TileType.DownAndAbove) {
+					CurrentPiece = Tiles [PieceNumber].tileObject;
+					var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(0, -20, 0), Quaternion.identity);
+					CurTile.transform.parent = Holder.transform;
+					SpawnedTiles.Add(CurTile);
+					spawnedFirstTile = true;
+				}
+				else {
+					spawnedFirstTile = false;
+				}
+			}
 			for(int x = 0; x < SizeX * TileSize; x += TileSize) {
 				for(int y = 0; y < SizeZ * TileSize; y += TileSize) {
 					if(y > 0 || x > 0) {
-						Type = Random.Range(0, 1000);
-						if(Type < 999) {
+						bool chosen = false;
+
+						while(!chosen) {
 							PieceNumber = Random.Range(0, Tiles.Count);
-							CurrentPiece = Tiles [PieceNumber];
-							var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);
-							CurTile.transform.parent = Holder.transform;
-							SpawnedTiles.Add(CurTile);
-						} else {	
-							PieceNumber = Random.Range(0, BossTiles.Count);
-							CurrentPiece = BossTiles [PieceNumber];
-							var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);
-							CurTile.transform.parent = Holder.transform;
-							SpawnedTiles.Add(CurTile);
-						}
-					} else {
-						PieceNumber = Random.Range(0, WaysDown.Count);
-						CurrentPiece = WaysDown [PieceNumber];
-						var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);
-						CurTile.transform.parent = Holder.transform;
-						SpawnedTiles.Add(CurTile);
+							int rarityChosen = Random.Range(1, 1000);
+							if(Tiles[PieceNumber].spawnRate < rarityChosen && Tiles[PieceNumber].tileType != TileType.DownAndAbove && Tiles[PieceNumber].tileType != TileType.FromAbove) {
+								CurrentPiece = Tiles [PieceNumber].tileObject;
+								var CurTile = (GameObject)Instantiate(CurrentPiece, new Vector3(x, -20, y), Quaternion.identity);
+								CurTile.transform.parent = Holder.transform;
+								SpawnedTiles.Add(CurTile);
+								chosen = true;
+							}
+							else {
+								chosen = false;
+							}
+						}	
 					}
 				}
 			}
@@ -162,12 +188,18 @@ namespace Scurge.Environment {
 			GUI.depth = 0;
 			GUI.skin = Skin;
 			if(Generating) {
-				GUI.Box(new Rect(0, 0, 1280, 720), GenerationText, "Gen BG");
+				loadingTextMesh.text = GenerationText;
+				loadingGameObject.SetActive(true);
+				Disable.DisableObj(false, true);
+			}
+			else if(loadingGameObject.activeInHierarchy && !Generating) {
+				Disable.EnableObj(true, true);
+				loadingGameObject.SetActive(false);
 			}
 		}
 
 		public IEnumerator BeginGeneration() {
-			GenerationText = "Floor " + Floor + "\n\n<size=20>Loading...</size>";
+			GenerationText = "Floor " + Floor;
 			Generating = true;
 			yield return new WaitForSeconds(1);
 			Generate();
@@ -177,7 +209,7 @@ namespace Scurge.Environment {
 
 		public IEnumerator Generation(float waiter) {
 			print("Generation");
-			GenerationText = "Floor " + Floor + "\n\n<size=20>Loading...</size>";
+			GenerationText = "Floor " + Floor;
 			Generating = true;
 			yield return new WaitForSeconds(waiter);
 			Generate();

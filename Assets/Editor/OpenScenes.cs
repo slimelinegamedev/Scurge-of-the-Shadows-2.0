@@ -14,15 +14,15 @@ using Scurge.UI;
 using Scurge.Util;
 
 public class OpenScenes : Editor {
-	[MenuItem("Open Scene/Main &1")]
+	[MenuItem("Tools/Scurge/Open Scene/Main &1")]
 	public static void OpenMain() {
 		OpenScene("Main");
 	}
-	[MenuItem("Open Scene/Menu &2")]
+	[MenuItem("Tools/Scurge/Open Scene/Menu &2")]
 	public static void OpenMenu() {
 		OpenScene("Menu");
 	}
-	[MenuItem("Open Scene/Village &3")]
+	[MenuItem("Tools/Scurge/Open Scene/Village &3")]
 	public static void OpenVillage() {
 		OpenScene("Village");
 	}

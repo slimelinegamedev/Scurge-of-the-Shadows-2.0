@@ -5,7 +5,7 @@ This is the base for all other image effects to occur. Includes depth texture ge
 */
 
 @script RequireComponent(Camera);
-@script AddComponentMenu("Indie Effects/IndieEffectsBase")
+@script AddComponentMenu("Indie Effects/IndieEffectsJSBase")
 
 //base effects
 @script HideInInspector var RT : Texture2D;

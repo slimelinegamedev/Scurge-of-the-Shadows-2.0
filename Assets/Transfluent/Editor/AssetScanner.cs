@@ -29,7 +29,7 @@ namespace transfluent
 			_gameProcessors.Add(new GUITextProcessor());
 		}
 
-		[MenuItem("Translation/testScan")]
+		[MenuItem("Tools/Translation/testScan")]
 		public static void fullMigration()
 		{
 			AssetScanner scanner = new AssetScanner();

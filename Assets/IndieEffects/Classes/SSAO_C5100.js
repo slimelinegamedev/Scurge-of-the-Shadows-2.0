@@ -5,12 +5,12 @@
 // Arkano22 modified it to work in Screen Space.
 // About me, i translated the shader in CG (original was GLSL), and i tweaked/customized it a little, to work correctly in Unity.
 // If you use it in your games, please say my name in credits ;)
-// Big thanks to Arkano22 for creating this EPIC technique, to FuzzyQuills for IndieEffects, to 0tacun for helping in position reconstruction, 
+// Big thanks to Arkano22 for creating this EPIC technique, to FuzzyQuills for IndieEffectsJS, to 0tacun for helping in position reconstruction, 
 // to #Include Graphics and bwhiting from GameDev forum for helping me about self occlusion problem.
-@script RequireComponent(IndieEffects)
+@script RequireComponent(IndieEffectsJS)
 @script AddComponentMenu("Indie Effects/Screen Space Ambient Occlusion")
-import IndieEffects;
-var fxRes : IndieEffects;
+import IndieEffectsJS;
+var fxRes : IndieEffectsJS;
 
 var randTex : Texture2D;
 var bias : float = 1;
@@ -24,7 +24,7 @@ var materialAO : Material;
 var shaderAO : Shader;
 
 function Start () {	
-	fxRes = GetComponent(IndieEffects);
+	fxRes = GetComponent(IndieEffectsJS);
 	materialAO = new Material (shaderAO);
 }
 
