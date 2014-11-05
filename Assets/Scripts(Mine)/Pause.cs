@@ -3,12 +3,15 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Scurge;
-using Scurge.Environment;
-using Scurge.Player;
-using Scurge.Util;
-using Scurge.Enemy;
-using Scurge.Audio;
 using Scurge.AI;
+using Scurge.Audio;
+using Scurge.Enemy;
+using Scurge.Environment;
+using Scurge.Networking;
+using Scurge.Player;
+using Scurge.Scoreboard;
+using Scurge.UI;
+using Scurge.Util;
 using TeamUtility.IO;
 using System.Globalization;
 
@@ -74,6 +77,7 @@ namespace Scurge.Util {
 
 		void Start() {
 			Objects.PauseObject.SetActive(false);
+
 			//Mouse
 			MouseSensitivityX = cInput.GetAxisSensitivity("Look X");
 			MouseSensitivityY = cInput.GetAxisSensitivity("Look Y");
@@ -221,7 +225,7 @@ namespace Scurge.Util {
 				GUILayout.EndArea();
 			}
 			if(Open && !ShowControlsOptions && !ShowOptions) {
-				/*GUI.Box(new Rect(420, 297.5f, 440, 125), "Paused");
+				GUI.Box(new Rect(420, 297.5f, 440, 125), "Paused");
 				if(GUI.Button(new Rect(500- 70, 327.5f, 140, 85), "Resume")) {
 					Open = !Open;
 					Disable.EnableObj(true, false);
@@ -233,7 +237,7 @@ namespace Scurge.Util {
 				}
 				if(GUI.Button(new Rect(780 - 70, 327.5f, 140, 85), "Control Setup")) {
 					ShowControlsOptions = true;
-				}*//*
+				}
 			}
 			if(Open && ShowControlsOptions) {
 				GUI.Box(new Rect(40, 40, 1200, 652), "Control Setup", "Box");
@@ -289,7 +293,7 @@ namespace Scurge.Util {
 			Objects.UIOptions.SetActive(true);
 		}
 		public void ExitOptions() {
-			ShowControlsOptions = false;
+			ShowOptions = false;
 			Objects.UIOptions.SetActive(false);
 			Objects.PauseMenu.gameObject.SetActive(true);
 		}
@@ -310,7 +314,7 @@ namespace Scurge.Util {
 			#endif
 		}
 		public void ShowCalibration() {
-		
+			
 		}
 		public void HideCalibration() {
 			
@@ -321,23 +325,94 @@ namespace Scurge.Util {
 		public void RestoreDefaultControls() {
 			cInput.ResetInputs();
 		}
+		//Function to call to set displays value
+		//name: Shortened version of the displays name, eg Mouse Sensitivity X = MSX etc.
+		public void SetDisplayValue(string name) {
+			//Check names, then apply display values to slider values
+			if(name == "MSX") {
+				if(MouseSensitivityXSlider.value.ToString().Length > 2) {
+					MouseSensitivityXDisplay.value = MouseSensitivityXSlider.value.ToString().Remove(MouseSensitivityXSlider.value.ToString().Length - 2);
+				}
+				else {
+					MouseSensitivityXDisplay.value = MouseSensitivityXSlider.value.ToString();
+				}
+			}
+			else if(name == "MSY") {
+				if(MouseSensitivityYSlider.value.ToString().Length > 2) {
+					MouseSensitivityYDisplay.value = MouseSensitivityYSlider.value.ToString().Remove(MouseSensitivityYSlider.value.ToString().Length - 2);
+				}
+				else {
+					MouseSensitivityYDisplay.value = MouseSensitivityYSlider.value.ToString();
+				}
+			}
+			else if(name == "MGX") {
+				if(MouseGravityXSlider.value.ToString().Length > 2) {
+					MouseGravityXDisplay.value = MouseGravityXSlider.value.ToString().Remove(MouseGravityXSlider.value.ToString().Length - 2);
+				}
+				else {
+					MouseGravityXDisplay.value = MouseGravityXSlider.value.ToString();
+				}
+			}
+			else if(name == "MGY") {
+				if(MouseGravityYSlider.value.ToString().Length > 2) {
+					MouseGravityYDisplay.value = MouseGravityYSlider.value.ToString().Remove(MouseGravityYSlider.value.ToString().Length - 2);
+				}
+				else {
+					MouseGravityYDisplay.value = MouseGravityYSlider.value.ToString();
+				}
+			}
+			else if(name == "MDX") {
+				if(MouseDeadzoneXSlider.value.ToString().Length > 2) {
+					MouseDeadzoneXDisplay.value = MouseDeadzoneXSlider.value.ToString().Remove(MouseDeadzoneXSlider.value.ToString().Length - 2);
+				}
+				else {
+					MouseDeadzoneXDisplay.value = MouseDeadzoneXSlider.value.ToString();
+				}
+			}
+			else if(name == "MDY") {
+				if(MouseDeadzoneYSlider.value.ToString().Length > 2) {
+					MouseDeadzoneYDisplay.value = MouseDeadzoneYSlider.value.ToString().Remove(MouseDeadzoneYSlider.value.ToString().Length - 2);
+				}
+				else {
+					MouseDeadzoneYDisplay.value = MouseDeadzoneYSlider.value.ToString();
+				}
+			}
+		}
 		public void SetSliderValue(string name) {
 			if(name == "MSX") {
+				if(float.Parse(MouseSensitivityXDisplay.value, CultureInfo.InvariantCulture) > 20) {
+					MouseSensitivityXDisplay.value = "20";
+				}
 				MouseSensitivityXSlider.value = float.Parse(MouseSensitivityXDisplay.value, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MSY") {
+				if(float.Parse(MouseSensitivityYDisplay.value, CultureInfo.InvariantCulture) > 20) {
+					MouseSensitivityYDisplay.value = "20";
+				}
 				MouseSensitivityYSlider.value = float.Parse(MouseSensitivityYDisplay.value, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MGX") {
+				if(float.Parse(MouseGravityXDisplay.value, CultureInfo.InvariantCulture) > 20) {
+					MouseGravityXDisplay.value = "20";
+				}
 				MouseGravityXSlider.value = float.Parse(MouseGravityXDisplay.value, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MGY") {
+				if(float.Parse(MouseGravityYDisplay.value, CultureInfo.InvariantCulture) > 20) {
+					MouseGravityYDisplay.value = "20";
+				}
 				MouseGravityYSlider.value = float.Parse(MouseGravityYDisplay.value, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MDX") {
+				if(float.Parse(MouseDeadzoneXDisplay.value, CultureInfo.InvariantCulture) > 20) {
+					MouseDeadzoneXDisplay.value = "20";
+				}
 				MouseDeadzoneXSlider.value = float.Parse(MouseDeadzoneXDisplay.value, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MDY") {
+				if(float.Parse(MouseDeadzoneYDisplay.value, CultureInfo.InvariantCulture) > 20) {
+					MouseDeadzoneYDisplay.value = "20";
+				}
 				MouseDeadzoneYSlider.value = float.Parse(MouseDeadzoneYDisplay.value, CultureInfo.InvariantCulture);
 			}
 		}

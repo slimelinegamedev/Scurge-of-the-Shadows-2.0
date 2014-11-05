@@ -1,4 +1,5 @@
 Alpha 0.2.0 - Version Assassin
+UI Overhaul, now works on different resolutions
 Changed Indev to Alpha, Indev was not the word to be using in development
 Staffs now use spell items for casting spells
 Added multiple spells for the staff
@@ -44,6 +45,8 @@ All Editor Extensions are now in menu item /Tools/Scurge/
 Added Prototype from ProCore
 More controlled tile spawning
 Tiles now have percentage of spawn rates
+Now using Xamarin Studio, instead of MonoDevelop
+Using new 4.6 beta UI
 
 Indev 0.1.1
 Fixed several bugs
