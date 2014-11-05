@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using Scurge.Player;
-using Scurge.Util;
+using Scurge;
+using Scurge.AI;
+using Scurge.Audio;
 using Scurge.Enemy;
-using Scurge.Scoreboard;
 using Scurge.Environment;
+using Scurge.Networking;
+using Scurge.Player;
+using Scurge.Scoreboard;
+using Scurge.UI;
+using Scurge.Util;
 
 namespace Scurge.Player {
 	public class Stats : MonoBehaviour {
@@ -33,6 +39,13 @@ namespace Scurge.Player {
 		public bool Dead = false;
 		public int Countdown = 10;
 		public GUISkin Skin;
+
+		public Slider HealthSlider;
+		public Slider ManaSlider;
+		public Text goldText;
+
+		public Canvas deathCanvas;
+		public Text deathCountDownText;
 
 		public bool CanUseSpell(int ManaCost) {
 			if(Mana  - ManaCost >= 0) {
@@ -82,6 +95,19 @@ namespace Scurge.Player {
 					Application.LoadLevel(0);
 				}
 			}
+
+			HealthSlider.value = Health;
+			HealthSlider.maxValue = MaxHealth;
+
+			ManaSlider.value = Mana;
+			ManaSlider.maxValue = MaxMana;
+
+			goldText.text = Gold.ToString();
+
+			if(Dead && !deathCanvas.enabled) {
+				deathCanvas.enabled = true;
+			}
+			deathCountDownText.text = Countdown.ToString();
 		}
 		#endregion
 
@@ -171,25 +197,10 @@ namespace Scurge.Player {
 			Objects.Player.transform.position = new Vector3(-1000000, -1000000, -1000000);
 		}
 		#endregion
-
-		#region Script Space Takers
-		void OnGUI() {
-			GUI.skin = Skin;
-			GUI.depth = 2;
-			if(!Inventory.InventoryOpen) {
-				GUI.Label(new Rect(10, 690, 100, 25), Health + " / " + MaxHealth, "Health");
-				GUI.Label(new Rect(10, 665, 100, 25), Mana + " / " + MaxMana, "Mana");
-				GUI.Label(new Rect(10, 640, 100, 25), "Gold: " + Gold, "Gold");
-			}
-			if(Dead) {
-				GUI.Box(new Rect(0, 0, 1280, 720), "", "DeathBox");
-				GUI.Label(new Rect(0, 50, 1280, 720), "Continue?", "DeathText");
-				GUI.Label(new Rect(0, 300, 1280, 720), Countdown.ToString(), "DeathText");
-				if(GUI.Button(new Rect(435, 595, 500, 75), "Play Again", "DeathTextNoCenter")) {
-					Application.LoadLevel(1);
-				}
-			}
+		public void RestartLevel() {
+			Application.LoadLevel(1);
 		}
+		#region Script Space Takers
 		IEnumerator CountdownTimer() {
 			if(true) {
 				yield return new WaitForSeconds(1);

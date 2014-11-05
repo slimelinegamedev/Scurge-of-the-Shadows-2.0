@@ -15,5 +15,11 @@ namespace Scurge.Util {
 		public FirstPersonDrifter Controller;
 		public Inventory Inventory;
 		public HeadBob[] StopTheBobs;
+		public GameObject HUD;
+		public GameObject PauseMenu;
+		public GameObject UIOptions;
+		public GameObject UIControls;
+		public GameObject CalibrationWindow;
+		public GameObject PauseObject;
 	}
 }

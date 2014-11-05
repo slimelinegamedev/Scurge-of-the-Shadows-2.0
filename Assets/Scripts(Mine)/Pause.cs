@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Scurge;
@@ -9,17 +10,41 @@ using Scurge.Enemy;
 using Scurge.Audio;
 using Scurge.AI;
 using TeamUtility.IO;
+using System.Globalization;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Scurge.Util {
 	public class Pause : MonoBehaviour {
 
 		public Disable Disable;
+		public Objects Objects;
 
 		public GUISkin Skin;
+		public Animator PauseAnimator;
 		public bool Open = false;
 		public bool ShowControlsOptions = false;
 		public bool ShowViewOptions = false;
 		public bool ShowOptions = false;
+
+		public Slider MouseSensitivityXSlider;
+		public Slider MouseSensitivityYSlider;
+		public Slider MouseGravityXSlider;
+		public Slider MouseGravityYSlider;
+		public Slider MouseDeadzoneXSlider;
+		public Slider MouseDeadzoneYSlider;
+
+		public InputField MouseSensitivityXDisplay;
+		public InputField MouseSensitivityYDisplay;
+		public InputField MouseGravityXDisplay;
+		public InputField MouseGravityYDisplay;
+		public InputField MouseDeadzoneXDisplay;
+		public InputField MouseDeadzoneYDisplay;
+
+		public Toggle MouseInvertXToggle;
+		public Toggle MouseInvertYToggle;
 
 		public bool Calibrating = false;
 
@@ -48,6 +73,7 @@ namespace Scurge.Util {
 		public bool InvertMovingY = false;
 
 		void Start() {
+			Objects.PauseObject.SetActive(false);
 			//Mouse
 			MouseSensitivityX = cInput.GetAxisSensitivity("Look X");
 			MouseSensitivityY = cInput.GetAxisSensitivity("Look Y");
@@ -73,22 +99,42 @@ namespace Scurge.Util {
 			
 			InvertMovingX = cInput.AxisInverted("Horizontal");
 			InvertMouseY = cInput.AxisInverted("Vertical");
+
+			//Initialize sliders
+			MouseSensitivityXSlider.value = MouseSensitivityX;
+			MouseSensitivityYSlider.value = MouseSensitivityY;
+			MouseGravityXSlider.value = MouseGravityX;
+			MouseGravityXSlider.value = MouseGravityY;
+			MouseDeadzoneXSlider.value = MouseDeadzoneX;
+			MouseDeadzoneYSlider.value = MouseDeadzoneY;
+
+			//Init displays
+			MouseSensitivityXDisplay.value = MouseSensitivityX.ToString();
+			MouseSensitivityYDisplay.value = MouseSensitivityY.ToString();
+			MouseGravityXDisplay.value = MouseGravityX.ToString();
+			MouseGravityXDisplay.value = MouseGravityY.ToString();
+			MouseDeadzoneXDisplay.value = MouseDeadzoneX.ToString();
+			MouseDeadzoneYDisplay.value = MouseDeadzoneY.ToString();
+
+			//Init toggles
+			MouseInvertXToggle.isOn = cInput.AxisInverted("Horizontal");
+			MouseInvertYToggle.isOn = cInput.AxisInverted("Vertical");
 		}
 		void Update() {
 			if(cInput.GetKeyDown("Pause")) {
 				PauseUnpauseGame();
 			}
-			cInput.SetAxisSensitivity("Look X", MouseSensitivityX);
-			cInput.SetAxisSensitivity("Look Y", MouseSensitivityY);
+			cInput.SetAxisSensitivity("Look X", MouseSensitivityXSlider.value);
+			cInput.SetAxisSensitivity("Look Y", MouseSensitivityYSlider.value);
 
-			cInput.SetAxisGravity("Look X", MouseGravityX);
-			cInput.SetAxisGravity("Look Y", MouseGravityY);
+			cInput.SetAxisGravity("Look X", MouseGravityXSlider.value);
+			cInput.SetAxisGravity("Look Y", MouseGravityYSlider.value);
 
-			cInput.SetAxisDeadzone("Look X", MouseDeadzoneX);
-			cInput.SetAxisDeadzone("Look Y", MouseDeadzoneY);
+			cInput.SetAxisDeadzone("Look X", MouseDeadzoneXSlider.value);
+			cInput.SetAxisDeadzone("Look Y", MouseDeadzoneYSlider.value);
 
-			cInput.AxisInverted("Look X", InvertMouseX);
-			cInput.AxisInverted("Look Y", InvertMouseY);
+			cInput.AxisInverted("Look X", MouseInvertXToggle.isOn);
+			cInput.AxisInverted("Look Y", MouseInvertYToggle.isOn);
 
 			cInput.SetAxisSensitivity("Horizontal", MovingSensitivityX);
 			cInput.SetAxisSensitivity("Vertical", MovingSensitivityY);
@@ -103,25 +149,27 @@ namespace Scurge.Util {
 			cInput.AxisInverted("Vertical", InvertMovingY);
 		}
 		public void PauseUnpauseGame() {
-			Open = !Open;
-			if(ShowControlsOptions) {
+			if(!ShowControlsOptions && !ShowOptions) {
+				Open = !Open;
 				ShowControlsOptions = false;
-			}
-			if(ShowOptions) {
 				ShowOptions = false;
-			}
-			if(Open) {
-				Disable.DisableObj(true, false);
-				Time.timeScale = 0;
-				Screen.showCursor = true;
-			}
-			else if(!Open) {
-				Disable.EnableObj(true, false);
-				Time.timeScale = 1;
-				Screen.showCursor = false;
+				if(Open) {
+					Objects.PauseObject.SetActive(true);
+					PauseAnimator.SetTrigger("Pause");
+					Disable.DisableObj(true, false);
+					Screen.showCursor = true;
+					Time.timeScale = 0;
+				}
+				else if(!Open) {
+					PauseAnimator.SetTrigger("Pause");
+					Disable.EnableObj(true, false);
+					Time.timeScale = 1;
+					Screen.showCursor = false;
+					Objects.PauseObject.SetActive(false);
+				}
 			}
 		}
-		void OnGUI() {
+		/*void OnGUI() {
 			GUI.skin = Skin;
 			if(!Calibrating) {
 				GUI.enabled = true;
@@ -173,7 +221,7 @@ namespace Scurge.Util {
 				GUILayout.EndArea();
 			}
 			if(Open && !ShowControlsOptions && !ShowOptions) {
-				GUI.Box(new Rect(420, 297.5f, 440, 125), "Paused");
+				/*GUI.Box(new Rect(420, 297.5f, 440, 125), "Paused");
 				if(GUI.Button(new Rect(500- 70, 327.5f, 140, 85), "Resume")) {
 					Open = !Open;
 					Disable.EnableObj(true, false);
@@ -185,7 +233,7 @@ namespace Scurge.Util {
 				}
 				if(GUI.Button(new Rect(780 - 70, 327.5f, 140, 85), "Control Setup")) {
 					ShowControlsOptions = true;
-				}
+				}*//*
 			}
 			if(Open && ShowControlsOptions) {
 				GUI.Box(new Rect(40, 40, 1200, 652), "Control Setup", "Box");
@@ -233,6 +281,64 @@ namespace Scurge.Util {
 					cInput.Calibrate();
 					Calibrating = false;
 				}
+			}
+		}*/
+		public void OpenOptions() {
+			ShowOptions = true;
+			Objects.PauseMenu.gameObject.SetActive(false);
+			Objects.UIOptions.SetActive(true);
+		}
+		public void ExitOptions() {
+			ShowControlsOptions = false;
+			Objects.UIOptions.SetActive(false);
+			Objects.PauseMenu.gameObject.SetActive(true);
+		}
+		public void ShowControls() {
+			ShowControlsOptions = true;
+			Objects.PauseMenu.gameObject.SetActive(false);
+			Objects.UIControls.SetActive(true);
+		}
+		public void HideControls() {
+			ShowControlsOptions = false;Objects.PauseMenu.gameObject.SetActive(true);
+			Objects.UIControls.SetActive(false);
+		}
+		public void Quit() {
+			#if UNITY_EDITOR
+			EditorApplication.isPlaying = false;
+			#else
+			Application.Quit();
+			#endif
+		}
+		public void ShowCalibration() {
+		
+		}
+		public void HideCalibration() {
+			
+		}
+		public void CalibrateControls() {
+			
+		}
+		public void RestoreDefaultControls() {
+			cInput.ResetInputs();
+		}
+		public void SetSliderValue(string name) {
+			if(name == "MSX") {
+				MouseSensitivityXSlider.value = float.Parse(MouseSensitivityXDisplay.value, CultureInfo.InvariantCulture);
+			}
+			else if(name == "MSY") {
+				MouseSensitivityYSlider.value = float.Parse(MouseSensitivityYDisplay.value, CultureInfo.InvariantCulture);
+			}
+			else if(name == "MGX") {
+				MouseGravityXSlider.value = float.Parse(MouseGravityXDisplay.value, CultureInfo.InvariantCulture);
+			}
+			else if(name == "MGY") {
+				MouseGravityYSlider.value = float.Parse(MouseGravityYDisplay.value, CultureInfo.InvariantCulture);
+			}
+			else if(name == "MDX") {
+				MouseDeadzoneXSlider.value = float.Parse(MouseDeadzoneXDisplay.value, CultureInfo.InvariantCulture);
+			}
+			else if(name == "MDY") {
+				MouseDeadzoneYSlider.value = float.Parse(MouseDeadzoneYDisplay.value, CultureInfo.InvariantCulture);
 			}
 		}
 		public void InputButton(string name, string display, int primary) {

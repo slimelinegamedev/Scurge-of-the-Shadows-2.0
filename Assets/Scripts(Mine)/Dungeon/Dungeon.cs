@@ -57,7 +57,6 @@ namespace Scurge.Environment {
 		public GameObject Holder;
 		public GameObject meshHolder;
 		public float WaitTime;
-		public GUISkin Skin;
 		private bool FirstTime = true;
 		public string GenerationText = "Generating New\nDungeon";
 		public int Floor = 0;
@@ -88,11 +87,20 @@ namespace Scurge.Environment {
 				Floor += 1;
 				firstTime = false;
 			}
+			if(Generating) {
+				loadingTextMesh.text = GenerationText;
+				loadingGameObject.SetActive(true);
+				Disable.DisableObj(false, true);
+			}
+			else if(loadingGameObject.activeInHierarchy && !Generating) {
+				Disable.EnableObj(true, true);
+				loadingGameObject.SetActive(false);
+			}
 		}
 
 		public void Generate() {
 			int Type = Random.Range(0, 1000);
-			if(SpawnedTiles.Count > 0) {
+		if(SpawnedTiles.Count > 0) {
 				foreach(GameObject curTileDestroying in SpawnedTiles) {
 					Destroy(curTileDestroying);
 				}
@@ -184,36 +192,26 @@ namespace Scurge.Environment {
 			}
 		}
 
-		void OnGUI() {
-			GUI.depth = 0;
-			GUI.skin = Skin;
-			if(Generating) {
-				loadingTextMesh.text = GenerationText;
-				loadingGameObject.SetActive(true);
-				Disable.DisableObj(false, true);
-			}
-			else if(loadingGameObject.activeInHierarchy && !Generating) {
-				Disable.EnableObj(true, true);
-				loadingGameObject.SetActive(false);
-			}
-		}
-
 		public IEnumerator BeginGeneration() {
+			Objects.HUD.SetActive(false);
 			GenerationText = "Floor " + Floor;
 			Generating = true;
 			yield return new WaitForSeconds(1);
 			Generate();
 			yield return new WaitForSeconds(WaitTime);
+			Objects.HUD.SetActive(true);
 			Generating = false;
 		}
 
 		public IEnumerator Generation(float waiter) {
+			Objects.HUD.SetActive(false);
 			print("Generation");
 			GenerationText = "Floor " + Floor;
 			Generating = true;
 			yield return new WaitForSeconds(waiter);
 			Generate();
 			yield return new WaitForSeconds(waiter * 4);
+			Objects.HUD.SetActive(true);
 			Generating = false;
 			yield return new WaitForSeconds(1);
 			entered = false;
