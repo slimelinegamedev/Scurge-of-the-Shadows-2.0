@@ -19,6 +19,7 @@ namespace Scurge.Util {
 		public GameObject PauseMenu;
 		public GameObject UIOptions;
 		public GameObject UIControls;
+		public GameObject UIInventory;
 		public GameObject CalibrationWindow;
 		public GameObject PauseObject;
 	}

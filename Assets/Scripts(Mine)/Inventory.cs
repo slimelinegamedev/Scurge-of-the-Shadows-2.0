@@ -1,13 +1,19 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Scurge;
-using Scurge.Player;
-using Scurge.Util;
-using Scurge.Enemy;
-using Scurge.Audio;
 using Scurge.AI;
+using Scurge.Audio;
+using Scurge.Enemy;
+using Scurge.Environment;
+using Scurge.Networking;
+using Scurge.Player;
+using Scurge.Scoreboard;
+using Scurge.UI;
+using Scurge.Util;
 using TeamUtility.IO;
+using System.Globalization;
 
 namespace Scurge.Player {
 	public enum Potion {
@@ -101,6 +107,16 @@ namespace Scurge.Player {
 		public int ActiveItem;
 		public GUISkin Skin;
 		public HeldItem curStaff;
+
+		//UI Related
+		[Header("UI Related")]
+		public List<Button> ItemSlots;
+		public List<Button> EquippedItemSlots;
+		public List<Sprite> InventorySprites;
+		public Text DescriptionLabel;
+		public Text DescriptionSubtitle;
+
+		[Header("Technical Things")]
 		public List<Item> Items;
 		public List<Item> EquippedItems;
 		public List<HeldItem> heldItems;
@@ -173,7 +189,6 @@ namespace Scurge.Player {
 		}
 
 		public void EquipItems() {
-
 			ItemObjects [(int)EquippedItems [0]].SetActive(true);
 
 			ActiveItem = (int)EquippedItems [0];
@@ -264,6 +279,24 @@ namespace Scurge.Player {
 			}
 		}
 
+		public void ResetAllInventoryUI() {
+			foreach(Button curItemButton in ItemSlots) {
+				curItemButton.gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+			}
+		}
+		public void SetItemSlotTextures() {
+			for(int iterateInventoryButtons = 0; iterateInventoryButtons < ItemSlots.Count; iterateInventoryButtons++) {
+				if(Items[iterateInventoryButtons] != Item.None) {
+					ItemSlots[iterateInventoryButtons].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
+					ItemSlots[iterateInventoryButtons].GetComponentInChildren<Image>().overrideSprite = InventorySprites[(int)Items[3]];
+				}
+				else {
+					ItemSlots[iterateInventoryButtons].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+				}
+			}
+		}
+
+
 		public void ApplyStats() {
 			//Ring stats application
 			//Temporary reset method
@@ -309,10 +342,14 @@ namespace Scurge.Player {
 			curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
 		}
 
+		//TODO: Inventory doesnt open
 		void Update() {
 			if(!InventoryOpen) {
 				Screen.showCursor = false;
 				Screen.lockCursor = true;
+				if(Objects.UIInventory.activeInHierarchy) {
+					Objects.UIInventory.SetActive(false);
+				}
 			}
 			else {
 				Screen.showCursor = true;
@@ -323,10 +360,12 @@ namespace Scurge.Player {
 				if(EquippedItems[1] != Item.None) {
 					curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
 				}
+				Objects.UIInventory.SetActive(true);
 			}
 			FindSlot();
 			EquipItems();
 			ApplyStats();
+			SetItemSlotTextures();
 
 			if(cInput.GetKeyDown("Inventory") && !Moving) {
 				InventoryOpen = !InventoryOpen;
@@ -366,7 +405,7 @@ namespace Scurge.Player {
 			TooltipText [20] = ItemDescription [(int)EquippedItems [4]];
 		}
 
-		void OnGUI() {
+		/*void OnGUI() {
 			GUI.skin = Skin;
 
 			if(Visible) {
@@ -537,6 +576,6 @@ namespace Scurge.Player {
 					}
 				}
 			}
-		}
+		}*/
 	}	
 }

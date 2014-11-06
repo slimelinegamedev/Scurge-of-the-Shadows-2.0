@@ -49,6 +49,21 @@ namespace Scurge.Util {
 		public Toggle MouseInvertXToggle;
 		public Toggle MouseInvertYToggle;
 
+		//All the controls buttons labels
+		public Text MoveForwardControlLabel;
+		public Text MoveBackwardsControlLabel;
+		public Text MoveLeftControlLabel;
+		public Text MoveRightControlLabel;
+		public Text LookUpControlLabel;
+		public Text LookDownControlLabel;
+		public Text LookLeftControlLabel;
+		public Text LookRightControlLabel;
+		public Text InventoryControlLabel;
+		public Text InteractControlLabel;
+		public Text JumpControlLabel;
+		public Text RunControlLabel;
+		public Text PauseControlLabel;
+
 		public bool Calibrating = false;
 
 		public float MouseSensitivityY;
@@ -151,6 +166,21 @@ namespace Scurge.Util {
 			
 			cInput.AxisInverted("Horizontal", InvertMovingX);
 			cInput.AxisInverted("Vertical", InvertMovingY);
+
+			//Set controls buttons text
+			MoveForwardControlLabel.text = cInput.GetText("Move Forward", 1);
+			MoveBackwardsControlLabel.text = cInput.GetText("Move Backwards", 1);
+			MoveLeftControlLabel.text = cInput.GetText("Move Left", 1);
+			MoveRightControlLabel.text = cInput.GetText("Move Right", 1);
+			LookUpControlLabel.text = cInput.GetText("Look Up", 1);
+			LookDownControlLabel.text = cInput.GetText("Look Down", 1);
+			LookLeftControlLabel.text = cInput.GetText("Look Left", 1);
+			LookRightControlLabel.text = cInput.GetText("Look Right", 1);
+			InventoryControlLabel.text = cInput.GetText("Inventory", 1);
+			InteractControlLabel.text = cInput.GetText("Interact", 1);
+			JumpControlLabel.text = cInput.GetText("Jump", 1);
+			RunControlLabel.text = cInput.GetText("Run", 1);
+			PauseControlLabel.text = cInput.GetText("Pause", 1);
 		}
 		public void PauseUnpauseGame() {
 			if(!ShowControlsOptions && !ShowOptions) {
@@ -314,16 +344,24 @@ namespace Scurge.Util {
 			#endif
 		}
 		public void ShowCalibration() {
-			
+			Objects.CalibrationWindow.SetActive(true);
+			Objects.UIControls.SetActive(false);
 		}
 		public void HideCalibration() {
-			
+			Objects.CalibrationWindow.SetActive(false);
+			Objects.UIControls.SetActive(true);
 		}
 		public void CalibrateControls() {
-			
+			ShowCalibration();
+		}
+		public void CallCalibrateFunction() {
+			cInput.Calibrate();
+			HideCalibration();
 		}
 		public void RestoreDefaultControls() {
 			cInput.ResetInputs();
+			Objects.CalibrationWindow.SetActive(false);
+			Objects.UIControls.SetActive(true);
 		}
 		//Function to call to set displays value
 		//name: Shortened version of the displays name, eg Mouse Sensitivity X = MSX etc.
@@ -415,6 +453,9 @@ namespace Scurge.Util {
 				}
 				MouseDeadzoneYSlider.value = float.Parse(MouseDeadzoneYDisplay.value, CultureInfo.InvariantCulture);
 			}
+		}
+		public void SetControl(string name) {
+			cInput.ChangeKey(name, 1);
 		}
 		public void InputButton(string name, string display, int primary) {
 			GUILayout.BeginHorizontal();
