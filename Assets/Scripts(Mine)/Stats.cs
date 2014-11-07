@@ -193,6 +193,13 @@ namespace Scurge.Player {
 		public void Die() {
 			Dead = true;
 			Disable.DisableObj(true, false);
+			Objects.UIOptions.SetActive(false);
+			Objects.UIControls.SetActive(false);
+			Objects.UIInventory.SetActive(false);
+			Objects.CalibrationWindow.SetActive(false);
+			Objects.PauseObject.SetActive(false);
+			Objects.PauseMenu.SetActive(false);
+			Objects.HUD.SetActive(false);
 			Highscore.add("Player1", Dungeon.Floor, Gold, "SOMETHING");
 			Objects.Player.transform.position = new Vector3(-1000000, -1000000, -1000000);
 		}

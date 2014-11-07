@@ -16,6 +16,7 @@ using TeamUtility.IO;
 using System.Globalization;
 
 namespace Scurge.Player {
+	#region Enums
 	public enum Potion {
 		None = 0,
 		Health = 1,
@@ -65,7 +66,9 @@ namespace Scurge.Player {
 		ExpandingSphere = 2,
 		Nothing = 3
 	}
+	#endregion
 
+	#region Structs
 	[System.Serializable]
 	public struct Spell {
 		public string name ;
@@ -86,8 +89,10 @@ namespace Scurge.Player {
 		public Vector3 positionAdder;
 		public int ManaCost;
 	}
+	#endregion
 
 	public class Inventory : MonoBehaviour {
+		#region Variables
 		public Stats Stats;
 		public Objects Objects;
 		public bool Visible;
@@ -99,7 +104,6 @@ namespace Scurge.Player {
 		public Disable Disable;
 		public bool Moving;
 		public Texture2D movingTex;
-		public Item movingItem;
 		public Item lastMovedItem;
 		public ItemType curItemType;
 		public int FirstOpenSlot;
@@ -112,9 +116,15 @@ namespace Scurge.Player {
 		[Header("UI Related")]
 		public List<Button> ItemSlots;
 		public List<Button> EquippedItemSlots;
+		public List<Image> ItemSlotsImages;
+		public List<Image> EquippedItemSlotsImages;
 		public List<Sprite> InventorySprites;
 		public Text DescriptionLabel;
 		public Text DescriptionSubtitle;
+		public Image DragImage;
+		public Item movingItem;
+		[Range(0, 20)]
+		public int CurrentSelectedSlot;
 
 		[Header("Technical Things")]
 		public List<Item> Items;
@@ -136,7 +146,9 @@ namespace Scurge.Player {
 		private bool HasFound = false;
 		//All enemys proximity detectors
 		public List<HealthVariables> enemyProximities;
+		#endregion
 
+		#region Functions
 		public bool HasEquipped(Item item) {
 			if(EquippedItems [0] == item) {
 				return true;
@@ -280,22 +292,93 @@ namespace Scurge.Player {
 		}
 
 		public void ResetAllInventoryUI() {
-			foreach(Button curItemButton in ItemSlots) {
-				curItemButton.gameObject.GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+			foreach(Image curItemImage in ItemSlotsImages) {
+				curItemImage.color = new Color(1, 1, 1, 0);
+			}
+			foreach(Image curEquippingItemImage in EquippedItemSlotsImages) {
+				curEquippingItemImage.color = new Color(1, 1, 1, 0);
 			}
 		}
 		public void SetItemSlotTextures() {
-			for(int iterateInventoryButtons = 0; iterateInventoryButtons < ItemSlots.Count; iterateInventoryButtons++) {
-				if(Items[iterateInventoryButtons] != Item.None) {
-					ItemSlots[iterateInventoryButtons].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 1);
-					ItemSlots[iterateInventoryButtons].GetComponentInChildren<Image>().overrideSprite = InventorySprites[(int)Items[3]];
+			for(int iterateInventoryImages = 0; iterateInventoryImages < ItemSlotsImages.Count; iterateInventoryImages++) {
+				if(Items[iterateInventoryImages] != Item.None) {
+					//Something there, make visible and set image
+					ItemSlotsImages[iterateInventoryImages].color = new Color(1, 1, 1, 1);
+					ItemSlotsImages[iterateInventoryImages].overrideSprite = InventorySprites[(int)Items[iterateInventoryImages]];
 				}
 				else {
-					ItemSlots[iterateInventoryButtons].GetComponentInChildren<Image>().color = new Color(1, 1, 1, 0);
+					//Nothing there, make invisible
+					ItemSlotsImages[iterateInventoryImages].color = new Color(1, 1, 1, 0);
+				}
+			}
+			for(int iterateInventoryEquippingImages = 0; iterateInventoryEquippingImages < EquippedItemSlotsImages.Count; iterateInventoryEquippingImages++) {
+				if(EquippedItems[iterateInventoryEquippingImages] != Item.None) {
+					//Something there, make visible and set image
+					EquippedItemSlotsImages[iterateInventoryEquippingImages].color = new Color(1, 1, 1, 1);
+					EquippedItemSlotsImages[iterateInventoryEquippingImages].overrideSprite = InventorySprites[(int)EquippedItems[iterateInventoryEquippingImages]];
+				}
+				else {
+					//Nothing there, make invisible
+					EquippedItemSlotsImages[iterateInventoryEquippingImages].color = new Color(1, 1, 1, 0);
 				}
 			}
 		}
+		public void SetTooltip() {
+			//Split string by lines
+			string[] Tooltip = TooltipText [CurrentSelectedSlot].Split('\n');
+			//Get first in array for header
+			DescriptionLabel.text = Tooltip[0];
+			//Use the rest for the subtitle
+			foreach(string currentTooltipText in Tooltip) {
+				DescriptionSubtitle.text = currentTooltipText;
+			}
+		}
+		public void SetSelectedSlot(int slot) {
+			CurrentSelectedSlot = slot;
+		}
+		public void HandleDrag(int slot) {
+			if(!Moving) {
+				DragImage.gameObject.SetActive(true);
+				if(slot < 16) {
+					if(Items [slot] != Item.None) {
+						movingItem = Items [slot];
+						Items [slot] = Item.None;
 
+						DragImage.overrideSprite = InventorySprites [(int)Items [slot]];
+					}
+				}
+				else {
+					if(EquippedItems [slot] != Item.None) {
+						movingItem = EquippedItems [slot];
+
+						DragImage.overrideSprite = InventorySprites [(int)EquippedItems [slot - 16]];
+					}
+				}
+				Moving = true;
+			}
+			else if(Moving) {
+				DragImage.gameObject.SetActive(false);
+				if(slot < 16) {
+					if(Items [slot] != Item.None) {
+						movingItem = Items [slot];
+						Items [slot] = movingItem;
+					}
+					else {
+						Items [slot] = movingItem;
+					}
+				}
+				else {
+					if(EquippedItems [slot - 16] != Item.None) {
+						EquippedItems [slot - 16] = movingItem;
+						movingItem = EquippedItems [slot - 16];
+					}
+					else {
+						EquippedItems [slot - 16] = movingItem;
+					}
+				}
+				Moving = false;
+			}
+		}
 
 		public void ApplyStats() {
 			//Ring stats application
@@ -337,9 +420,12 @@ namespace Scurge.Player {
 				}
 			}
 		}
+		#endregion
 
+		#region Methods
 		void Start() {
 			curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
+			DragImage.gameObject.SetActive(false);
 		}
 
 		//TODO: Inventory doesnt open
@@ -347,9 +433,6 @@ namespace Scurge.Player {
 			if(!InventoryOpen) {
 				Screen.showCursor = false;
 				Screen.lockCursor = true;
-				if(Objects.UIInventory.activeInHierarchy) {
-					Objects.UIInventory.SetActive(false);
-				}
 			}
 			else {
 				Screen.showCursor = true;
@@ -360,24 +443,36 @@ namespace Scurge.Player {
 				if(EquippedItems[1] != Item.None) {
 					curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
 				}
-				Objects.UIInventory.SetActive(true);
+			}
+			if(Moving) {
+				if(CurrentSelectedSlot < 16) {
+					DragImage.transform.position = new Vector3(ItemSlots[CurrentSelectedSlot].transform.position.x, EquippedItemSlots [CurrentSelectedSlot].transform.position.y, DragImage.transform.position.z);
+				}
+				else {
+					DragImage.transform.position = new Vector3(EquippedItemSlots[CurrentSelectedSlot].transform.position.x, EquippedItemSlots [CurrentSelectedSlot].transform.position.y, DragImage.transform.position.z);
+				}
 			}
 			FindSlot();
 			EquipItems();
 			ApplyStats();
 			SetItemSlotTextures();
+			SetTooltip();
 
-			if(cInput.GetKeyDown("Inventory") && !Moving) {
+			if(/*cInput.GetKeyDown("Inventory") && !Moving*/Input.GetKeyDown(KeyCode.E)) {
 				InventoryOpen = !InventoryOpen;
 				if(InventoryOpen) {
 					Screen.showCursor = true;
 					Screen.lockCursor = false;
 					Disable.DisableObj(false, false);
+					print("Enabling(Showing) Inventory");
+					Objects.UIInventory.SetActive(true);
 				}
-				else {	
+				else if(!InventoryOpen) {
 					Screen.showCursor = false;
 					Screen.lockCursor = true;
 					Disable.EnableObj(false, false);
+					print("Disabling(Hiding) Inventory");
+					Objects.UIInventory.SetActive(false);
 				}
 			}
 			//Give item tooltips
@@ -404,7 +499,7 @@ namespace Scurge.Player {
 			TooltipText [19] = ItemDescription [(int)EquippedItems [3]];
 			TooltipText [20] = ItemDescription [(int)EquippedItems [4]];
 		}
-
+		#endregion
 		/*void OnGUI() {
 			GUI.skin = Skin;
 
@@ -490,42 +585,42 @@ namespace Scurge.Player {
 						SlotHandle(15, InventoryBar.Inventory);
 					}
 					//Equipping Row
-					if(GUI.Button(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [0]], TooltipText [16]))) {
-						print("The Target Is Moving The Item. I Repeat The Target Is Moving The Item");
-						SlotHandle(0, InventoryBar.Equipped);
-					}
-					if(GUI.Button(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [1]], TooltipText [17]))) {
-						if(Moving && curItemType == ItemType.Spell) {
-							SlotHandle(1, InventoryBar.Equipped);
-						}
-						else if(!Moving) {
-							SlotHandle(1, InventoryBar.Equipped);
-						}
-					}
-					if(GUI.Button(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [2]], TooltipText [18]))) {
-						if(Moving && curItemType == ItemType.Ring) {
-							SlotHandle(2, InventoryBar.Equipped);
-						}
-						else if(!Moving) {
-							SlotHandle(2, InventoryBar.Equipped);
-						}
-					}
-					if(GUI.Button(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [3]], TooltipText [19]))) {
-						if(Moving && curItemType == ItemType.Helmet) {
-							SlotHandle(3, InventoryBar.Equipped);
-						}
-						else if(!Moving) {
-							SlotHandle(3, InventoryBar.Equipped);
-						}
-					}
-					if(GUI.Button(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [4]], TooltipText [20]))) {
-						if(Moving && curItemType == ItemType.Chestplate) {
-							SlotHandle(4, InventoryBar.Equipped);
-						}
-						else if(!Moving) {
-							SlotHandle(4, InventoryBar.Equipped);
-						}
-					}
+							if(GUI.Button(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [0]], TooltipText [16]))) {
+								print("The Target Is Moving The Item. I Repeat The Target Is Moving The Item");
+								SlotHandle(0, InventoryBar.Equipped);
+							}
+							if(GUI.Button(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [1]], TooltipText [17]))) {
+								if(Moving && curItemType == ItemType.Spell) {
+									SlotHandle(1, InventoryBar.Equipped);
+								}
+								else if(!Moving) {
+									SlotHandle(1, InventoryBar.Equipped);
+								}
+							}
+							if(GUI.Button(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [2]], TooltipText [18]))) {
+								if(Moving && curItemType == ItemType.Ring) {
+									SlotHandle(2, InventoryBar.Equipped);
+								}
+								else if(!Moving) {
+									SlotHandle(2, InventoryBar.Equipped);
+								}
+							}
+							if(GUI.Button(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [3]], TooltipText [19]))) {
+								if(Moving && curItemType == ItemType.Helmet) {
+									SlotHandle(3, InventoryBar.Equipped);
+								}
+								else if(!Moving) {
+									SlotHandle(3, InventoryBar.Equipped);
+								}
+							}
+							if(GUI.Button(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [4]], TooltipText [20]))) {
+								if(Moving && curItemType == ItemType.Chestplate) {
+									SlotHandle(4, InventoryBar.Equipped);
+								}
+								else if(!Moving) {
+									SlotHandle(4, InventoryBar.Equipped);
+								}
+							}
 
 					if(EquippedItems [0] == Item.None) {
 						GUI.DrawTexture(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [0]);
