@@ -24,6 +24,7 @@ namespace Scurge.Util {
 
 		public Disable Disable;
 		public Objects Objects;
+		public Inventory Inventory;
 
 		public GUISkin Skin;
 		public Animator PauseAnimator;
@@ -183,7 +184,7 @@ namespace Scurge.Util {
 			PauseControlLabel.text = cInput.GetText("Pause", 1);
 		}
 		public void PauseUnpauseGame() {
-			if(!ShowControlsOptions && !ShowOptions) {
+			if(!ShowControlsOptions && !ShowOptions && !Inventory.InventoryOpen) {
 				Open = !Open;
 				ShowControlsOptions = false;
 				ShowOptions = false;

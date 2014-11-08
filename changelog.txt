@@ -1,8 +1,9 @@
 Alpha 0.2.0 - Version Assassin
 UI Overhaul, now works on different resolutions
 New UI skinning, looks way better!
+Inventory equipping lots now have labels beside them, instead of an outline
 Changed Indev to Alpha, Indev was not the word to be using in development
-Added Mana, no moire rapid spam spells ;)
+Added Mana, no more rapid spam spells ;)
 Staffs now use spell items for casting spells
 Added multiple spells for the staff
 Added loading indicator for level generation (Suggested by omg_ketchup on reddit)
@@ -50,6 +51,7 @@ Tiles now have percentage of spawn rates
 Now using Xamarin Studio, instead of MonoDevelop
 Using new 4.6 beta UI
 All new code should usually have coments now!
+Now doing //TODO: for things that need to be done
 
 Indev 0.1.1
 Fixed several bugs

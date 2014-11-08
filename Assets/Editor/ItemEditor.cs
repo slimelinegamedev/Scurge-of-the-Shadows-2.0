@@ -67,8 +67,10 @@ namespace Scurge.Editor {
 					GUILayout.Space(40);
 					GUILayout.Label("Item tooltip");
 					GUILayout.BeginHorizontal();
-						Inventory.ItemDescription[(int)itemsList] = EditorGUILayout.TextArea(Inventory.ItemDescription[(int)itemsList], GUILayout.Height(100));
-						Inventory.InventoryTextures[(int)itemsList] = (Texture2D)EditorGUILayout.ObjectField("Item Texture In Inventory", Inventory.InventoryTextures[(int)itemsList], typeof(Texture2D));
+					Inventory.ItemDescription[(int)itemsList] = EditorGUILayout.TextArea(Inventory.ItemDescription[(int)itemsList], GUILayout.Height(100));
+					GUILayout.BeginVertical();
+					Inventory.InventorySprites[(int)itemsList] = (Sprite)EditorGUILayout.ObjectField("Item Texture In Inventory", Inventory.InventorySprites[(int)itemsList], typeof(Sprite));
+					GUILayout.EndVertical();
 					GUILayout.EndHorizontal();
 					Inventory.Types[(int)itemsList] = (ItemType)EditorGUILayout.EnumPopup("Item Type", Inventory.Types[(int)itemsList]);
 					if(Inventory.Types[(int)itemsList] == ItemType.Ring) {

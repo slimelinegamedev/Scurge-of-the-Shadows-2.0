@@ -71,7 +71,7 @@ namespace Scurge.Player {
 	#region Structs
 	[System.Serializable]
 	public struct Spell {
-		public string name ;
+		public string name;
 		public bool hasParticle;
 		public GameObject particle;
 		public AudioSource sound;
@@ -95,6 +95,8 @@ namespace Scurge.Player {
 		#region Variables
 		public Stats Stats;
 		public Objects Objects;
+		public Pause Pause;
+
 		public bool Visible;
 		public bool InventoryOpen;
 		public Texture2D Crosshair;
@@ -102,10 +104,6 @@ namespace Scurge.Player {
 		public float SubtractionY;
 		public Rect BackgroundRect;
 		public Disable Disable;
-		public bool Moving;
-		public Texture2D movingTex;
-		public Item lastMovedItem;
-		public ItemType curItemType;
 		public int FirstOpenSlot;
 		public bool Full = false;
 		public int ActiveItem;
@@ -119,12 +117,23 @@ namespace Scurge.Player {
 		public List<Image> ItemSlotsImages;
 		public List<Image> EquippedItemSlotsImages;
 		public List<Sprite> InventorySprites;
+		//USed to move the DragImage
+		public List<Vector3> SlotPositions;
 		public Text DescriptionLabel;
 		public Text DescriptionSubtitle;
 		public Image DragImage;
-		public Item movingItem;
 		[Range(0, 20)]
 		public int CurrentSelectedSlot;
+
+		[Header("Dragging Things")]
+		//Current item being moved
+		public Item movingItem;
+		//Last moved item
+		public Item lastMovedItem;
+		//Current type of item
+		public ItemType curItemType;
+		//Is moving item?
+		public bool Moving;
 
 		[Header("Technical Things")]
 		public List<Item> Items;
@@ -148,36 +157,8 @@ namespace Scurge.Player {
 		public List<HealthVariables> enemyProximities;
 		#endregion
 
-		#region Functions
-		public bool HasEquipped(Item item) {
-			if(EquippedItems [0] == item) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		public void Give(Item item, int slot, InventoryBar bar) {
-			if(!Full) {
-				if(bar == InventoryBar.Inventory) {
-					Items [slot] = item;
-				}
-				else if(bar == InventoryBar.Equipped) {
-					EquippedItems [slot] = item;
-				}
-			}
-		}
-
-		public void Delete(int slot, InventoryBar bar) {
-			if(bar == InventoryBar.Equipped) {
-				EquippedItems [slot] = Item.None;
-			}
-			else if(bar == InventoryBar.Inventory) {
-				Items [slot] = Item.None;
-			}
-		}
-
-		public void Move(Item curItem, Texture2D curItemTex, int slot, InventoryBar bar, ItemType type) {
+		#region Deprecated
+		/*public void Move(Item curItem, Texture2D curItemTex, int slot, InventoryBar bar, ItemType type) {
 			print("Moving");
 			if(bar == InventoryBar.Inventory && Moving == false) {
 				print("Moving : Made It Past Checkup");
@@ -199,34 +180,6 @@ namespace Scurge.Player {
 				curItemType = type;
 			}
 		}
-
-		public void EquipItems() {
-			ItemObjects [(int)EquippedItems [0]].SetActive(true);
-
-			ActiveItem = (int)EquippedItems [0];
-
-			for(int allItemsCycle = 0; allItemsCycle < ItemObjects.Count; allItemsCycle++) {
-				if(allItemsCycle != ActiveItem) {
-					ItemObjects [allItemsCycle].SetActive(false);
-				}
-			}
-		}
-
-		public void ThrowItem(Item thrower) {
-			var ThrownItem = (GameObject)Instantiate(ThrownObjects [(int)thrower], transform.position, transform.rotation);
-			ThrownItem.transform.rigidbody.AddForce(Objects.Camera.transform.TransformDirection(Vector3.forward) * 500);
-		}
-
-		public void FindSlot() {
-			FirstOpenSlot = Items.IndexOf(Item.None);
-			if(FirstOpenSlot == -1) {
-				Full = true;
-			}
-			else {
-				Full = false;
-			}
-		}
-
 		public void Place(int slot, InventoryBar bar) {
 			if(bar == InventoryBar.Inventory) {
 				print("Placing InventoryBar.Inventory[" + slot.ToString() + "]");
@@ -289,6 +242,93 @@ namespace Scurge.Player {
 					Swap(slot, InventoryBar.Equipped);
 				}
 			}
+		}*/
+		#endregion
+
+		#region Functions
+		public bool HasEquipped(Item item) {
+			if(EquippedItems [0] == item) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		public bool NoItemAtSlot(int slot) {
+			if(slot < 16) {
+				if(Items [slot] == Item.None) {
+					return true;
+				}
+			}
+			else {
+				if(EquippedItems [slot] == Item.None) {
+					return true;
+				}
+			}
+			return false;
+		}
+		public void Give(Item item, int slot, InventoryBar bar) {
+			if(!Full) {
+				if(bar == InventoryBar.Inventory) {
+					Items [slot] = item;
+				}
+				else if(bar == InventoryBar.Equipped) {
+					EquippedItems [slot] = item;
+				}
+			}
+		}
+
+		public void Delete(int slot, InventoryBar bar) {
+			if(bar == InventoryBar.Equipped) {
+				EquippedItems [slot] = Item.None;
+			}
+			else if(bar == InventoryBar.Inventory) {
+				Items [slot] = Item.None;
+			}
+		}
+
+		public void EquipItems() {
+			ItemObjects [(int)EquippedItems [0]].SetActive(true);
+
+			ActiveItem = (int)EquippedItems [0];
+
+			for(int allItemsCycle = 0; allItemsCycle < ItemObjects.Count; allItemsCycle++) {
+				if(allItemsCycle != ActiveItem) {
+					ItemObjects [allItemsCycle].SetActive(false);
+				}
+			}
+		}
+
+		public void ThrowItem(Item thrower) {
+			var ThrownItem = (GameObject)Instantiate(ThrownObjects [(int)thrower], transform.position, transform.rotation);
+			ThrownItem.transform.rigidbody.AddForce(Objects.Camera.transform.TransformDirection(Vector3.forward) * 500);
+		}
+		public void ThrowMovingItem() {
+			if(Moving) {
+				//Set the item to throw
+				var ThrownItem = (GameObject)Instantiate(ThrownObjects [(int)movingItem], transform.position, transform.rotation);
+
+				//Reset drag item
+				movingItem = Item.None;
+				DragImage.gameObject.SetActive(false);
+				Moving = false;
+
+				//Throw
+				ThrownItem.transform.rigidbody.AddForce(Objects.Camera.transform.TransformDirection(Vector3.forward) * 500);
+			}
+			else {
+				print("Nothing moving to throw");
+			}
+		}
+
+		public void FindSlot() {
+			FirstOpenSlot = Items.IndexOf(Item.None);
+			if(FirstOpenSlot == -1) {
+				Full = true;
+			}
+			else {
+				Full = false;
+			}
 		}
 
 		public void ResetAllInventoryUI() {
@@ -324,44 +364,76 @@ namespace Scurge.Player {
 			}
 		}
 		public void SetTooltip() {
-			//Split string by lines
-			string[] Tooltip = TooltipText [CurrentSelectedSlot].Split('\n');
-			//Get first in array for header
-			DescriptionLabel.text = Tooltip[0];
-			//Use the rest for the subtitle
-			foreach(string currentTooltipText in Tooltip) {
-				DescriptionSubtitle.text = currentTooltipText;
+			//Not moving item
+			if(!Moving) {
+				//Split string by lines
+				string[] Tooltip = TooltipText [CurrentSelectedSlot].Split('\n');
+				//Get first in array for header
+				DescriptionLabel.text = Tooltip[0];
+				//Use the rest for the subtitle
+				foreach(string currentTooltipText in Tooltip) {
+					DescriptionSubtitle.text = currentTooltipText;
+				}
+			}
+			else {
+				string[] Tooltip = ItemDescription [(int)movingItem].Split('\n');
+				//Get first in array for header
+				DescriptionLabel.text = Tooltip[0];
+				//Use the rest for the subtitle
+				foreach(string currentTooltipText in Tooltip) {
+					DescriptionSubtitle.text = currentTooltipText;
+				}
 			}
 		}
 		public void SetSelectedSlot(int slot) {
 			CurrentSelectedSlot = slot;
 		}
+		//TODO: Allow swapping of items when moving
+		//TODO: Only allow items of the required type to go into equipping slots
 		public void HandleDrag(int slot) {
 			if(!Moving) {
+				//Not moving, enable the drag image
 				DragImage.gameObject.SetActive(true);
 				if(slot < 16) {
+					//Were in the regular inventory
 					if(Items [slot] != Item.None) {
-						movingItem = Items [slot];
-						Items [slot] = Item.None;
+						//Item at slot is not nothing
 
+						//movingItem is equal to that of the item in the selected slot
+						movingItem = Items [slot];
+
+						//Set sprite to correct image texture
 						DragImage.overrideSprite = InventorySprites [(int)Items [slot]];
+
+						//Set the slot item to none, wre dragging
+						Items [slot] = Item.None;
 					}
 				}
 				else {
-					if(EquippedItems [slot] != Item.None) {
-						movingItem = EquippedItems [slot];
+					//Were in the equipping inventory
+					if(EquippedItems [slot - 16] != Item.None) {
+						//Item at slot is not nothing
 
+						//movingItem is equal to that of the item in the selected slot
+						movingItem = EquippedItems [slot - 16];
+
+						//Set sprite to correct image texture
 						DragImage.overrideSprite = InventorySprites [(int)EquippedItems [slot - 16]];
+
+						//Set the slot item to none, wre dragging
+						EquippedItems [slot - 16] = Item.None;
 					}
 				}
+				//Set moving to true, were dragging now
 				Moving = true;
 			}
 			else if(Moving) {
 				DragImage.gameObject.SetActive(false);
 				if(slot < 16) {
 					if(Items [slot] != Item.None) {
-						movingItem = Items [slot];
+						lastMovedItem = Items [slot];
 						Items [slot] = movingItem;
+						movingItem = lastMovedItem;
 					}
 					else {
 						Items [slot] = movingItem;
@@ -369,8 +441,9 @@ namespace Scurge.Player {
 				}
 				else {
 					if(EquippedItems [slot - 16] != Item.None) {
+						lastMovedItem = EquippedItems [slot];
 						EquippedItems [slot - 16] = movingItem;
-						movingItem = EquippedItems [slot - 16];
+						movingItem = lastMovedItem;
 					}
 					else {
 						EquippedItems [slot - 16] = movingItem;
@@ -428,7 +501,6 @@ namespace Scurge.Player {
 			DragImage.gameObject.SetActive(false);
 		}
 
-		//TODO: Inventory doesnt open
 		void Update() {
 			if(!InventoryOpen) {
 				Screen.showCursor = false;
@@ -445,11 +517,9 @@ namespace Scurge.Player {
 				}
 			}
 			if(Moving) {
-				if(CurrentSelectedSlot < 16) {
-					DragImage.transform.position = new Vector3(ItemSlots[CurrentSelectedSlot].transform.position.x, EquippedItemSlots [CurrentSelectedSlot].transform.position.y, DragImage.transform.position.z);
-				}
-				else {
-					DragImage.transform.position = new Vector3(EquippedItemSlots[CurrentSelectedSlot].transform.position.x, EquippedItemSlots [CurrentSelectedSlot].transform.position.y, DragImage.transform.position.z);
+				DragImage.transform.localPosition = SlotPositions [CurrentSelectedSlot];
+				if(cInput.GetKeyDown("Attack/Fire 2")) {
+					ThrowMovingItem();
 				}
 			}
 			FindSlot();
@@ -458,7 +528,7 @@ namespace Scurge.Player {
 			SetItemSlotTextures();
 			SetTooltip();
 
-			if(/*cInput.GetKeyDown("Inventory") && !Moving*/Input.GetKeyDown(KeyCode.E)) {
+			if(cInput.GetKeyDown("Inventory") && !Moving && !Pause.Open) {
 				InventoryOpen = !InventoryOpen;
 				if(InventoryOpen) {
 					Screen.showCursor = true;
