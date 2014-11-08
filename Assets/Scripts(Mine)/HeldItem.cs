@@ -181,6 +181,7 @@ namespace Scurge.Player {
 			}
 		}
 
+		//TODO: Make the uses show as 4.6 UI
 		void OnGUI() {
 			GUI.skin = Skin;
 			if(ShowUses) {

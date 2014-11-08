@@ -390,6 +390,7 @@ namespace Scurge.Player {
 		}
 		//TODO: Allow swapping of items when moving
 		//TODO: Only allow items of the required type to go into equipping slots
+		//TODO: Set NPC GUI to use 4.6 UI
 		public void HandleDrag(int slot) {
 			if(!Moving) {
 				//Not moving, enable the drag image

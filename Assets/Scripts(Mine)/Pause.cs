@@ -129,12 +129,12 @@ namespace Scurge.Util {
 			MouseDeadzoneYSlider.value = MouseDeadzoneY;
 
 			//Init displays
-			MouseSensitivityXDisplay.value = MouseSensitivityX.ToString();
-			MouseSensitivityYDisplay.value = MouseSensitivityY.ToString();
-			MouseGravityXDisplay.value = MouseGravityX.ToString();
-			MouseGravityXDisplay.value = MouseGravityY.ToString();
-			MouseDeadzoneXDisplay.value = MouseDeadzoneX.ToString();
-			MouseDeadzoneYDisplay.value = MouseDeadzoneY.ToString();
+			MouseSensitivityXDisplay.text = MouseSensitivityX.ToString();
+			MouseSensitivityYDisplay.text = MouseSensitivityY.ToString();
+			MouseGravityXDisplay.text = MouseGravityX.ToString();
+			MouseGravityXDisplay.text = MouseGravityY.ToString();
+			MouseDeadzoneXDisplay.text = MouseDeadzoneX.ToString();
+			MouseDeadzoneYDisplay.text = MouseDeadzoneY.ToString();
 
 			//Init toggles
 			MouseInvertXToggle.isOn = cInput.AxisInverted("Horizontal");
@@ -370,89 +370,89 @@ namespace Scurge.Util {
 			//Check names, then apply display values to slider values
 			if(name == "MSX") {
 				if(MouseSensitivityXSlider.value.ToString().Length > 2) {
-					MouseSensitivityXDisplay.value = MouseSensitivityXSlider.value.ToString().Remove(MouseSensitivityXSlider.value.ToString().Length - 2);
+					MouseSensitivityXDisplay.text = MouseSensitivityXSlider.value.ToString().Remove(MouseSensitivityXSlider.value.ToString().Length - 2);
 				}
 				else {
-					MouseSensitivityXDisplay.value = MouseSensitivityXSlider.value.ToString();
+					MouseSensitivityXDisplay.text = MouseSensitivityXSlider.value.ToString();
 				}
 			}
 			else if(name == "MSY") {
 				if(MouseSensitivityYSlider.value.ToString().Length > 2) {
-					MouseSensitivityYDisplay.value = MouseSensitivityYSlider.value.ToString().Remove(MouseSensitivityYSlider.value.ToString().Length - 2);
+					MouseSensitivityYDisplay.text = MouseSensitivityYSlider.value.ToString().Remove(MouseSensitivityYSlider.value.ToString().Length - 2);
 				}
 				else {
-					MouseSensitivityYDisplay.value = MouseSensitivityYSlider.value.ToString();
+					MouseSensitivityYDisplay.text = MouseSensitivityYSlider.value.ToString();
 				}
 			}
 			else if(name == "MGX") {
 				if(MouseGravityXSlider.value.ToString().Length > 2) {
-					MouseGravityXDisplay.value = MouseGravityXSlider.value.ToString().Remove(MouseGravityXSlider.value.ToString().Length - 2);
+					MouseGravityXDisplay.text = MouseGravityXSlider.value.ToString().Remove(MouseGravityXSlider.value.ToString().Length - 2);
 				}
 				else {
-					MouseGravityXDisplay.value = MouseGravityXSlider.value.ToString();
+					MouseGravityXDisplay.text = MouseGravityXSlider.value.ToString();
 				}
 			}
 			else if(name == "MGY") {
 				if(MouseGravityYSlider.value.ToString().Length > 2) {
-					MouseGravityYDisplay.value = MouseGravityYSlider.value.ToString().Remove(MouseGravityYSlider.value.ToString().Length - 2);
+					MouseGravityYDisplay.text = MouseGravityYSlider.value.ToString().Remove(MouseGravityYSlider.value.ToString().Length - 2);
 				}
 				else {
-					MouseGravityYDisplay.value = MouseGravityYSlider.value.ToString();
+					MouseGravityYDisplay.text = MouseGravityYSlider.value.ToString();
 				}
 			}
 			else if(name == "MDX") {
 				if(MouseDeadzoneXSlider.value.ToString().Length > 2) {
-					MouseDeadzoneXDisplay.value = MouseDeadzoneXSlider.value.ToString().Remove(MouseDeadzoneXSlider.value.ToString().Length - 2);
+					MouseDeadzoneXDisplay.text = MouseDeadzoneXSlider.value.ToString().Remove(MouseDeadzoneXSlider.value.ToString().Length - 2);
 				}
 				else {
-					MouseDeadzoneXDisplay.value = MouseDeadzoneXSlider.value.ToString();
+					MouseDeadzoneXDisplay.text = MouseDeadzoneXSlider.value.ToString();
 				}
 			}
 			else if(name == "MDY") {
 				if(MouseDeadzoneYSlider.value.ToString().Length > 2) {
-					MouseDeadzoneYDisplay.value = MouseDeadzoneYSlider.value.ToString().Remove(MouseDeadzoneYSlider.value.ToString().Length - 2);
+					MouseDeadzoneYDisplay.text = MouseDeadzoneYSlider.value.ToString().Remove(MouseDeadzoneYSlider.value.ToString().Length - 2);
 				}
 				else {
-					MouseDeadzoneYDisplay.value = MouseDeadzoneYSlider.value.ToString();
+					MouseDeadzoneYDisplay.text = MouseDeadzoneYSlider.value.ToString();
 				}
 			}
 		}
 		public void SetSliderValue(string name) {
 			if(name == "MSX") {
-				if(float.Parse(MouseSensitivityXDisplay.value, CultureInfo.InvariantCulture) > 20) {
-					MouseSensitivityXDisplay.value = "20";
+				if(float.Parse(MouseSensitivityXDisplay.text, CultureInfo.InvariantCulture) > 20) {
+					MouseSensitivityXDisplay.text = "20";
 				}
-				MouseSensitivityXSlider.value = float.Parse(MouseSensitivityXDisplay.value, CultureInfo.InvariantCulture);
+				MouseSensitivityXSlider.value = float.Parse(MouseSensitivityXDisplay.text, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MSY") {
-				if(float.Parse(MouseSensitivityYDisplay.value, CultureInfo.InvariantCulture) > 20) {
-					MouseSensitivityYDisplay.value = "20";
+				if(float.Parse(MouseSensitivityYDisplay.text, CultureInfo.InvariantCulture) > 20) {
+					MouseSensitivityYDisplay.text = "20";
 				}
-				MouseSensitivityYSlider.value = float.Parse(MouseSensitivityYDisplay.value, CultureInfo.InvariantCulture);
+				MouseSensitivityYSlider.value = float.Parse(MouseSensitivityYDisplay.text, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MGX") {
-				if(float.Parse(MouseGravityXDisplay.value, CultureInfo.InvariantCulture) > 20) {
-					MouseGravityXDisplay.value = "20";
+				if(float.Parse(MouseGravityXDisplay.text, CultureInfo.InvariantCulture) > 20) {
+					MouseGravityXDisplay.text = "20";
 				}
-				MouseGravityXSlider.value = float.Parse(MouseGravityXDisplay.value, CultureInfo.InvariantCulture);
+				MouseGravityXSlider.value = float.Parse(MouseGravityXDisplay.text, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MGY") {
-				if(float.Parse(MouseGravityYDisplay.value, CultureInfo.InvariantCulture) > 20) {
-					MouseGravityYDisplay.value = "20";
+				if(float.Parse(MouseGravityYDisplay.text, CultureInfo.InvariantCulture) > 20) {
+					MouseGravityYDisplay.text = "20";
 				}
-				MouseGravityYSlider.value = float.Parse(MouseGravityYDisplay.value, CultureInfo.InvariantCulture);
+				MouseGravityYSlider.value = float.Parse(MouseGravityYDisplay.text, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MDX") {
-				if(float.Parse(MouseDeadzoneXDisplay.value, CultureInfo.InvariantCulture) > 20) {
-					MouseDeadzoneXDisplay.value = "20";
+				if(float.Parse(MouseDeadzoneXDisplay.text, CultureInfo.InvariantCulture) > 20) {
+					MouseDeadzoneXDisplay.text = "20";
 				}
-				MouseDeadzoneXSlider.value = float.Parse(MouseDeadzoneXDisplay.value, CultureInfo.InvariantCulture);
+				MouseDeadzoneXSlider.value = float.Parse(MouseDeadzoneXDisplay.text, CultureInfo.InvariantCulture);
 			}
 			else if(name == "MDY") {
-				if(float.Parse(MouseDeadzoneYDisplay.value, CultureInfo.InvariantCulture) > 20) {
-					MouseDeadzoneYDisplay.value = "20";
+				if(float.Parse(MouseDeadzoneYDisplay.text, CultureInfo.InvariantCulture) > 20) {
+					MouseDeadzoneYDisplay.text = "20";
 				}
-				MouseDeadzoneYSlider.value = float.Parse(MouseDeadzoneYDisplay.value, CultureInfo.InvariantCulture);
+				MouseDeadzoneYSlider.value = float.Parse(MouseDeadzoneYDisplay.text, CultureInfo.InvariantCulture);
 			}
 		}
 		public void SetControl(string name) {
