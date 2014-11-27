@@ -132,6 +132,8 @@ namespace Scurge.Player {
 		public Item lastMovedItem;
 		//Current type of item
 		public ItemType curItemType;
+		//Last type of item
+		public ItemType lastItemType;
 		//Is moving item?
 		public bool Moving;
 
@@ -389,15 +391,14 @@ namespace Scurge.Player {
 			CurrentSelectedSlot = slot;
 		}
 		//TODO: Allow swapping of items when moving
-		//TODO: Only allow items of the required type to go into equipping slots
 		//TODO: Set NPC GUI to use 4.6 UI
 		public void HandleDrag(int slot) {
 			if(!Moving) {
-				//Not moving, enable the drag image
-				DragImage.gameObject.SetActive(true);
+				//Not moving
 				if(slot < 16) {
 					//Were in the regular inventory
 					if(Items [slot] != Item.None) {
+						print("Something In Slot!");
 						//Item at slot is not nothing
 
 						//movingItem is equal to that of the item in the selected slot
@@ -406,13 +407,26 @@ namespace Scurge.Player {
 						//Set sprite to correct image texture
 						DragImage.overrideSprite = InventorySprites [(int)Items [slot]];
 
+						//Set the item type
+						curItemType = Types[(int)Items[slot]];
+
 						//Set the slot item to none, wre dragging
 						Items [slot] = Item.None;
+
+						//enable the drag image
+						DragImage.gameObject.SetActive(true);  
+
+						//Set moving to true, were dragging now
+						Moving = true;
+					}
+					else {
+						print("Nothing In Slot...");
 					}
 				}
 				else {
 					//Were in the equipping inventory
 					if(EquippedItems [slot - 16] != Item.None) {
+						print("Something In Slot!");
 						//Item at slot is not nothing
 
 						//movingItem is equal to that of the item in the selected slot
@@ -421,36 +435,237 @@ namespace Scurge.Player {
 						//Set sprite to correct image texture
 						DragImage.overrideSprite = InventorySprites [(int)EquippedItems [slot - 16]];
 
+						//Set the item type
+						curItemType = Types[(int)EquippedItems[slot - 16]];
+
 						//Set the slot item to none, wre dragging
 						EquippedItems [slot - 16] = Item.None;
+
+						//enable the drag image
+						DragImage.gameObject.SetActive(true);  
+
+						//Set moving to true, were dragging now
+						Moving = true;
+					}
+					else {
+						print("Nothing In Slot...");
 					}
 				}
-				//Set moving to true, were dragging now
-				Moving = true;
 			}
 			else if(Moving) {
-				DragImage.gameObject.SetActive(false);
 				if(slot < 16) {
-					if(Items [slot] != Item.None) {
+					if(Items [slot] == Item.None) {
 						lastMovedItem = Items [slot];
 						Items [slot] = movingItem;
 						movingItem = lastMovedItem;
+						DragImage.gameObject.SetActive(false);
+						curItemType = ItemType.None;
+						Moving = false;
+
+						print("Dropped Item Down!");
 					}
 					else {
+						//Swappping
+						print("Swapping In Slot " + (slot).ToString());
+						lastMovedItem = Items [slot];
 						Items [slot] = movingItem;
+						movingItem = lastMovedItem;
+						DragImage.overrideSprite = InventorySprites [(int)movingItem];
 					}
 				}
 				else {
-					if(EquippedItems [slot - 16] != Item.None) {
-						lastMovedItem = EquippedItems [slot];
-						EquippedItems [slot - 16] = movingItem;
-						movingItem = lastMovedItem;
+					//Checking if can go into equipping slot (Check type)
+					print("Slot - 16 is " + (slot - 16).ToString());
+					if(slot - 16 == 0) {
+						print("Using Equipping Slot 0");
+						if(EquippedItems [slot - 16] != Item.None) {
+							if(Moving) {
+								//Moving Item
+								if(EquippedItems[slot - 16] != Item.None) {
+									//Swapping
+									print("Swapping In Slot " + (slot - 16).ToString());
+									lastMovedItem = EquippedItems [slot - 16];
+									EquippedItems [slot - 16] = movingItem;
+									movingItem = lastMovedItem;
+									DragImage.overrideSprite = InventorySprites [(int)movingItem];
+								}
+							}
+							else {
+								//Doesnt Have Anything Moving
+								print("Nothing Is Moving!");
+							}
+						}
+						else {
+							//Nothing here, regular place
+							print("Nothing in This Equipping Slot, Placing!");
+
+							lastMovedItem = EquippedItems [slot - 16];
+							EquippedItems [slot - 16] = movingItem;
+							movingItem = lastMovedItem;
+							DragImage.gameObject.SetActive(false);
+							curItemType = ItemType.None;
+							Moving = false;
+
+							print("Dropped Item Down!");
+						}
 					}
-					else {
-						EquippedItems [slot - 16] = movingItem;
+					else if(slot - 16 == 1) {
+						print("Using Equipping Slot 1");
+						if(curItemType == ItemType.Spell) {
+							if(EquippedItems [slot - 16] != Item.None) {
+								if(Moving) {
+									//Moving Item
+									if(EquippedItems[slot - 16] != Item.None) {
+										//Swapping
+										print("Swapping In Slot " + (slot - 16).ToString());
+										lastMovedItem = EquippedItems [slot - 16];
+										EquippedItems [slot - 16] = movingItem;
+										movingItem = lastMovedItem;
+										DragImage.overrideSprite = InventorySprites [(int)movingItem];
+									}
+								}
+								else {
+									//Doesnt Have Anything Moving
+									print("Nothing Is Moving!");
+								}
+							}
+							else if(EquippedItems [slot - 16] == Item.None) {
+								//Nothing here, regular place
+								print("Nothing in This Equipping Slot, Placing!");
+
+								lastMovedItem = EquippedItems [slot - 16];
+								EquippedItems [slot - 16] = movingItem;
+								movingItem = lastMovedItem;
+								DragImage.gameObject.SetActive(false);
+								curItemType = ItemType.None;
+								Moving = false;
+
+								print("Dropped Item Down!");
+							}
+						}
+						else {
+							//Not right type
+							print("Not Right Type");
+						}
+					}
+					if(slot - 16 == 2) {
+						print("Using Equipping Slot 2");
+						if(curItemType == ItemType.Ring) {
+							if(EquippedItems [slot - 16] != Item.None) {
+								if(Moving) {
+									//Moving Item
+									if(EquippedItems[slot - 16] != Item.None) {
+										//Swapping
+										print("Swapping In Slot " + (slot - 16).ToString());
+										lastMovedItem = EquippedItems [slot - 16];
+										EquippedItems [slot - 16] = movingItem;
+										movingItem = lastMovedItem;
+										DragImage.overrideSprite = InventorySprites [(int)movingItem];
+									}
+								}
+								else {
+									//Doesnt Have Anything Moving
+									print("Nothing Is Moving!");
+								}
+							}
+							else if(EquippedItems [slot - 16] == Item.None) {
+								//Nothing here, regular place
+								print("Nothing in This Equipping Slot, Placing!");
+
+								lastMovedItem = EquippedItems [slot - 16];
+								EquippedItems [slot - 16] = movingItem;
+								movingItem = lastMovedItem;
+								DragImage.gameObject.SetActive(false);
+								curItemType = ItemType.None;
+								Moving = false;
+
+								print("Dropped Item Down!");
+							}
+						}
+						else {
+							//Not right type
+							print("Not Right Type");
+						}
+					}
+					if(slot - 16 == 3) {
+						print("Using Equipping Slot 3");
+						if(curItemType == ItemType.Helmet) {
+							if(EquippedItems [slot - 16] != Item.None) {
+								if(Moving) {
+									//Moving Item
+									if(EquippedItems[slot - 16] != Item.None) {
+										//Swapping
+										print("Swapping In Slot " + (slot - 16).ToString());
+										lastMovedItem = EquippedItems [slot - 16];
+										EquippedItems [slot - 16] = movingItem;
+										movingItem = lastMovedItem;
+										DragImage.overrideSprite = InventorySprites [(int)movingItem];
+									}
+								}
+								else {
+									//Doesnt Have Anything Moving
+									print("Nothing Is Moving!");
+								}
+							}
+							else if(EquippedItems [slot - 16] == Item.None) {
+								//Nothing here, regular place
+								print("Nothing in This Equipping Slot, Placing!");
+
+								lastMovedItem = EquippedItems [slot - 16];
+								EquippedItems [slot - 16] = movingItem;
+								movingItem = lastMovedItem;
+								DragImage.gameObject.SetActive(false);
+								curItemType = ItemType.None;
+								Moving = false;
+
+								print("Dropped Item Down!");
+							}
+						}
+						else {
+							//Not right type
+							print("Not Right Type");
+						}
+					}
+					if(slot - 16 == 4) {
+						print("Using Equipping Slot 4");
+						if(curItemType == ItemType.Chestplate) {
+							if(EquippedItems [slot - 16] != Item.None) {
+								if(Moving) {
+									//Moving Item
+									if(EquippedItems[slot - 16] != Item.None) {
+										//Swapping
+										print("Swapping In Slot " + (slot - 16).ToString());
+										lastMovedItem = EquippedItems [slot - 16];
+										EquippedItems [slot - 16] = movingItem;
+										movingItem = lastMovedItem;
+										DragImage.overrideSprite = InventorySprites [(int)movingItem];
+									}
+								}
+								else {
+									//Doesnt Have Anything Moving
+									print("Nothing Is Moving!");
+								}
+							}
+							else if(EquippedItems [slot - 16] == Item.None) {
+								//Nothing here, regular place
+								print("Nothing in This Equipping Slot, Placing!");
+
+								lastMovedItem = EquippedItems [slot - 16];
+								EquippedItems [slot - 16] = movingItem;
+								movingItem = lastMovedItem;
+								DragImage.gameObject.SetActive(false);
+								curItemType = ItemType.None;
+								Moving = false;
+
+								print("Dropped Item Down!");
+							}
+						}
+						else {
+							//Not right type
+							print("Not Right Type");
+						}
 					}
 				}
-				Moving = false;
 			}
 		}
 
@@ -571,177 +786,5 @@ namespace Scurge.Player {
 			TooltipText [20] = ItemDescription [(int)EquippedItems [4]];
 		}
 		#endregion
-		/*void OnGUI() {
-			GUI.skin = Skin;
-
-			if(Visible) {
-				if(!InventoryOpen) {
-					GUI.DrawTexture(new Rect(Screen.width / 2, Screen.height / 2 - 50, 20, 20), Crosshair);
-				}
-				else {
-					//Throw Button
-					if(Moving) {
-						if(GUI.Button(new Rect(0, 0, 440, 720), "", "Label")) {
-							ThrowItem(movingItem);
-							Moving = false;
-						}
-						if(GUI.Button(new Rect(840, 0, 440, 720), "", "Label")) {
-							ThrowItem(movingItem);
-							Moving = false;
-						}
-						if(GUI.Button(new Rect(440, 585, 400, 135), "", "Label")) {
-							ThrowItem(movingItem);
-							Moving = false;
-						}
-						if(GUI.Button(new Rect(440, 0, 400, 135), "", "Label")) {
-							ThrowItem(movingItem);
-							Moving = false;
-						}
-					}
-					//BackGround Button
-					GUI.Box(BackgroundRect, "");
-					//Behind Equipped Box
-					GUI.Box(new Rect(438 - SubtractionX, 410 - SubtractionY, 340, 84), "");
-
-					//First Row
-					if(GUI.Button(new Rect(480 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [0]], TooltipText [0]))) {
-						SlotHandle(0, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(544 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [1]], TooltipText [1]))) {
-						SlotHandle(1, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(608 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [2]], TooltipText [2]))) {
-						SlotHandle(2, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(672 - SubtractionX, 100 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [3]], TooltipText [3]))) {
-						SlotHandle(3, InventoryBar.Inventory);
-					}
-					//Second Row
-					if(GUI.Button(new Rect(480 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [4]], TooltipText [4]))) {
-						SlotHandle(4, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(544 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [5]], TooltipText [5]))) {
-						SlotHandle(5, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(608 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [6]], TooltipText [6]))) {
-						SlotHandle(6, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(672 - SubtractionX, 164 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [7]], TooltipText [7]))) {
-						SlotHandle(7, InventoryBar.Inventory);
-					}
-					//Third Row
-					if(GUI.Button(new Rect(480 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [8]], TooltipText [8]))) {
-						SlotHandle(8, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(544 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [9]], TooltipText [9]))) {
-						SlotHandle(9, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(608 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [10]], TooltipText [10]))) {
-						SlotHandle(10, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(672 - SubtractionX, 228 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [11]], TooltipText [11]))) {
-						SlotHandle(11, InventoryBar.Inventory);
-					}
-					//Fourth Row
-					if(GUI.Button(new Rect(480 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [12]], TooltipText [12]))) {
-						SlotHandle(12, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(544 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [13]], TooltipText [13]))) {
-						SlotHandle(13, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(608 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [14]], TooltipText [14]))) {
-						SlotHandle(14, InventoryBar.Inventory);
-					}
-					if(GUI.Button(new Rect(672 - SubtractionX, 292 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)Items [15]], TooltipText [15]))) {
-						SlotHandle(15, InventoryBar.Inventory);
-					}
-					//Equipping Row
-							if(GUI.Button(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [0]], TooltipText [16]))) {
-								print("The Target Is Moving The Item. I Repeat The Target Is Moving The Item");
-								SlotHandle(0, InventoryBar.Equipped);
-							}
-							if(GUI.Button(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [1]], TooltipText [17]))) {
-								if(Moving && curItemType == ItemType.Spell) {
-									SlotHandle(1, InventoryBar.Equipped);
-								}
-								else if(!Moving) {
-									SlotHandle(1, InventoryBar.Equipped);
-								}
-							}
-							if(GUI.Button(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [2]], TooltipText [18]))) {
-								if(Moving && curItemType == ItemType.Ring) {
-									SlotHandle(2, InventoryBar.Equipped);
-								}
-								else if(!Moving) {
-									SlotHandle(2, InventoryBar.Equipped);
-								}
-							}
-							if(GUI.Button(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [3]], TooltipText [19]))) {
-								if(Moving && curItemType == ItemType.Helmet) {
-									SlotHandle(3, InventoryBar.Equipped);
-								}
-								else if(!Moving) {
-									SlotHandle(3, InventoryBar.Equipped);
-								}
-							}
-							if(GUI.Button(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), new GUIContent(InventoryTextures [(int)EquippedItems [4]], TooltipText [20]))) {
-								if(Moving && curItemType == ItemType.Chestplate) {
-									SlotHandle(4, InventoryBar.Equipped);
-								}
-								else if(!Moving) {
-									SlotHandle(4, InventoryBar.Equipped);
-								}
-							}
-
-					if(EquippedItems [0] == Item.None) {
-						GUI.DrawTexture(new Rect(544 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [0]);
-					}
-					if(EquippedItems [1] == Item.None) {
-						GUI.DrawTexture(new Rect(608 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [1]);
-					}
-					if(EquippedItems [2] == Item.None) {
-						GUI.DrawTexture(new Rect(672 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [2]);
-					}
-					if(EquippedItems [3] == Item.None) {
-						GUI.DrawTexture(new Rect(736 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [3]);
-					}
-					if(EquippedItems [4] == Item.None) {
-						GUI.DrawTexture(new Rect(800 - SubtractionX - 64 - 32, 420 - SubtractionY, 64, 64), EquippingEmptyTextures [4]);
-					}
-
-					//Tooltips
-					if(!Moving) {
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-						GUI.Label(new Rect(Event.current.mousePosition.x + 20, Event.current.mousePosition.y, 1000, 1000), GUI.tooltip);
-					}
-					
-
-					//Moving
-					if(Moving) {
-						GUI.DrawTexture(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 64, 64), movingTex);
-					}
-				}
-			}
-		}*/
 	}	
 }

@@ -31,7 +31,7 @@ Removed options from startup menu, now in pause menu (default escape)
 Changed new floor loading screen, cant see game at edge when in different resoultion
 
 For developers
-New Unity version - Must Have Unity Version 4.6.0 RC1 or later to contribute
+New Unity version - Must Have Unity Version 4.6.0 or later to contribute
 Added new item creator window, for easy custom Item creation
 Meshes now combine in Editor, not during runtime. except for one :D
 All tiles combine into one large tile at runtime
