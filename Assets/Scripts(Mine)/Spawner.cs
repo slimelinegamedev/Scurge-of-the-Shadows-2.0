@@ -44,14 +44,14 @@ namespace Scurge.Enemy {
 					SpawnedEnemys.Add(LastEnemySpawned);
 					LastEnemySpawned.transform.parent = Holder.transform;
 				}
-				else {
-					LastEnemy = NPCs[Random.Range(0, NPCs.Count)];
-					SpawnPosition = new Vector3(Random.Range(-20, 90), PosibleYPositions[Random.Range(0, PosibleYPositions.Count)], Random.Range(-20, 85));
-					var LastEnemySpawned = (GameObject)Object.Instantiate(LastEnemy, SpawnPosition, transform.rotation);
-					LastEnemySpawned.SetActive(true);
-					SpawnedEnemys.Add(LastEnemySpawned);
-					LastEnemySpawned.transform.parent = Holder.transform;
-				}
+//				else {
+//					LastEnemy = NPCs[Random.Range(0, NPCs.Count)];
+//					SpawnPosition = new Vector3(Random.Range(-20, 90), PosibleYPositions[Random.Range(0, PosibleYPositions.Count)], Random.Range(-20, 85));
+//					var LastEnemySpawned = (GameObject)Object.Instantiate(LastEnemy, SpawnPosition, transform.rotation);
+//					LastEnemySpawned.SetActive(true);
+//					SpawnedEnemys.Add(LastEnemySpawned);
+//					LastEnemySpawned.transform.parent = Holder.transform;
+//				}
 			}
 		}
  	}

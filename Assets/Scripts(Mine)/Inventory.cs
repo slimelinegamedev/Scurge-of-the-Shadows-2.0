@@ -390,8 +390,7 @@ namespace Scurge.Player {
 		public void SetSelectedSlot(int slot) {
 			CurrentSelectedSlot = slot;
 		}
-		//TODO: Allow swapping of items when moving
-		//TODO: Set NPC GUI to use 4.6 UI
+		//TODO: Set NPC GUI to use 4.6 UI (PUT ON HOLD, NPCS DONT SPAWN RIGHT NOW)
 		public void HandleDrag(int slot) {
 			if(!Moving) {
 				//Not moving
@@ -734,6 +733,7 @@ namespace Scurge.Player {
 			}
 			if(Moving) {
 				DragImage.transform.localPosition = SlotPositions [CurrentSelectedSlot];
+				DragImage.transform.localPosition = new Vector3(DragImage.transform.localPosition.x, DragImage.transform.localPosition.y, 200);
 				if(cInput.GetKeyDown("Attack/Fire 2")) {
 					ThrowMovingItem();
 				}
