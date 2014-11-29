@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400000}
+  - 114: {fileID: 11400002}
+  - 114: {fileID: 11400000}
+  m_Layer: 0
+  m_Name: Level Creator Data
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -61.9161873, y: 69.9115601, z: -110.924606}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5062c09f025f642f5bff071906b01942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WaitTime: 0
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9601658a52f34e38a6763337b3439c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - name: Stone Brick
+    obj: {fileID: 100000, guid: 6bc17459281e247d38ceb01a25475c09, type: 2}
+    spawnRotation: {x: 0, y: 0, z: 0}
+    combo: 0
+  - name: Mossy
+    obj: {fileID: 100000, guid: 889d5f4f58c3d4368b2c102fcd1e073e, type: 2}
+    spawnRotation: {x: 0, y: 0, z: 0}
+    combo: 0
+  - name: Damaged
+    obj: {fileID: 100000, guid: 6b12c4ad3c31a4fe7b3392289c92d1cf, type: 2}
+    spawnRotation: {x: 0, y: 0, z: 0}
+    combo: 0
+  - name: Pillar
+    obj: {fileID: 100000, guid: db40a5a29910b4b119dc4ce4c5ca0264, type: 2}
+    spawnRotation: {x: 0, y: 0, z: 0}
+    combo: 0
+  - name: Chiseled 1
+    obj: {fileID: 100000, guid: 765fb5c7cb12c4a9f81346cd7c5c300b, type: 2}
+    spawnRotation: {x: 0, y: 0, z: 0}
+    combo: 0
+  - name: Chiseled 2
+    obj: {fileID: 100000, guid: a68fb9833b76d4def9d846b2a51f309f, type: 2}
+    spawnRotation: {x: 0, y: 0, z: 0}
+    combo: 0
+  - name: Chiseled 3
+    obj: {fileID: 100000, guid: 23a4a7ee9ae4f4532ae6a053a6d336ea, type: 2}
+    spawnRotation: {x: 0, y: 0, z: 0}
+    combo: 0
+  - name: Lava
+    obj: {fileID: 100004, guid: 090e0c6cc3bb04cc186067d5a4e16990, type: 2}
+    spawnRotation: {x: 0, y: 0, z: 0}
+    combo: 0
+  - name: Grass Hang
+    obj: {fileID: 100000, guid: a67622a35e8134903a219022e24334e7, type: 2}
+    spawnRotation: {x: 0, y: 90, z: 0}
+    combo: 0
+  - name: Pebble
+    obj: {fileID: 100000, guid: 2a5dda82dda084867a6bfb0d8a862377, type: 2}
+    spawnRotation: {x: 0, y: 90, z: 0}
+    combo: 0
+  - name: Grass Tuft
+    obj: {fileID: 100002, guid: 15b764edf34274e7aa30203b3443db58, type: 2}
+    spawnRotation: {x: 0, y: 90, z: 0}
+    combo: 0
+  - name: Berrys
+    obj: {fileID: 100006, guid: 301f96224d03140afb14f0be2fd67d4c, type: 2}
+    spawnRotation: {x: 0, y: 90, z: 0}
+    combo: 0
+  movingObject: {fileID: 100012, guid: 9868bfe4b88214c9898a73d0dfc757d1, type: 2}
+  rayMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  pivotSet: {x: 0, y: 0, z: 0}
+  blankMat: {fileID: 2100000, guid: 1b2991c88dede4ca4a61b68accddcc47, type: 2}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 100000}
+  m_IsPrefabParent: 1
+  m_IsExploded: 1

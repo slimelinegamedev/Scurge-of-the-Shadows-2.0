@@ -19,6 +19,8 @@ using System.Globalization;
 public class placeableObject {
 	public string name;
 	public GameObject obj;
+	public Vector3 spawnRotation;
+	public KeyCode combo;
 }
 
 [ExecuteInEditMode]
@@ -30,6 +32,7 @@ public class LevelEditorData : MonoBehaviour {
 	public GameObject movingObject;
 	public LayerMask rayMask;
 	public Vector3 pivotSet;
+	public Material blankMat;
 
 	void OnEnable() {
 		instance = gameObject.GetComponent<LevelEditorData>();

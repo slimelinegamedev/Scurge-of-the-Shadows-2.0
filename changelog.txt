@@ -2,6 +2,8 @@ Alpha 0.2.0 - Version Assassin
 UI Overhaul, now works on different resolutions
 New UI skinning, looks way better!
 Inventory equipping lots now have labels beside them, instead of an outline
+Fixed Item dupe bug
+Title screen now more weathered
 Changed Indev to Alpha, Indev was not the word to be using in development
 Added Mana, no more rapid spam spells ;)
 Staffs now use spell items for casting spells

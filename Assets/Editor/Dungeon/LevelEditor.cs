@@ -16,6 +16,7 @@ using Scurge.Util;
 using TeamUtility.IO;
 using System.Globalization;
 using Holoville.HOEditorUtils;
+using Swing.Editor;
 
 public class LevelEditor : EditorWindow {
 
@@ -36,14 +37,24 @@ public class LevelEditor : EditorWindow {
 
 	public bool promptingAxis = false;
 	public bool promptingScale = false;
+	public bool promptingScaleAmount = false;
+	public int scaleAmount = 0;
+	public int movingObjectYAdd = 0;
+	public bool moving = false;
+	public GameObject haveBlankObj;
+	public Transform oldParentOfHaveBlankObj;
 	public Vector3 axisChoice;
 	public Vector3 scaleChoice;
 	public GameObject objectChoice;
+
+	public bool KeyCooldownPageDown = false;
+	public bool KeyCooldownPageUp = false;
 
 	public bool showingDebug = false;
 	public bool showingObjects = false;
 	public int ObjectRemoveIndex;
 	public List<placeableObject> objects;
+	public Vector3 spawnRotation;
 
 	[MenuItem("Tools/Scurge/Dungeon Creation/Level Editor %#i")]
 	static void Init() {
@@ -75,9 +86,7 @@ public class LevelEditor : EditorWindow {
 	void Update() {
 
 	}
-	//TODO: Some scaling things are broken
-	//TODO: Make it so you can move objects
-	//TODO: Make it so you can go up on the Y
+	//TODO: Fix going up on the Y, it stops working after a while, and before that its too fast.
 	void SceneGUI(SceneView sceneView) {
 		if(on) {
 			// This will have scene events including mouse down on scenes objects
@@ -86,15 +95,16 @@ public class LevelEditor : EditorWindow {
 			mousePosition = cur.mousePosition;
 			mousePosition.x += mousePositionAdder.x;
 			mousePosition.y += mousePositionAdder.y;
-			//		mousePosition.y = mousePosition.y - Screen.height;
+			//mousePosition.y = mousePosition.y - Screen.height;
 			//HandleUtility.GUIPointToWorldRay(cur.mousePosition)
 			//Get the mouse ray ^
 			if(movingObject != null) {
 				Debug.DrawRay(Camera.current.transform.position + Camera.current.transform.forward * rayDistance, Camera.current.ScreenToWorldPoint(mousePosition), Color.cyan);
 
 				if(Physics.Raycast(Camera.current.transform.position + Camera.current.transform.forward * 20, Camera.current.ScreenToWorldPoint(mousePosition), out hit, Mathf.Infinity, rayMask)) {
-					Debug.Log("Hit Object Named " + hit.transform.gameObject.name);
-					movingObject.transform.position = hit.transform.position;
+					//Debug.Log("Hit Object Named " + hit.transform.gameObject.name);
+					movingObject.transform.position = new Vector3(hit.transform.position.x, hit.transform.position.y + movingObjectYAdd, hit.transform.position.z);
+					movingObject.transform.localScale = hit.transform.localScale + new Vector3(0.2f, 0.2f, 0.2f);
 					selectedGameObject = hit.transform.gameObject;
 					hasCasted = true;
 				}
@@ -105,114 +115,225 @@ public class LevelEditor : EditorWindow {
 	void DrawSceneGUI() {
 		Handles.BeginGUI();
 		GUI.Label(new Rect(10, 10, 250, 50), "Scurge of the Shadows 2.0 Level Builder");
+		GUI.Label(new Rect(10, 30, 250, 50), "Keypad / To Move Object");
+		GUI.Label(new Rect(10, 50, 250, 50), "Keypad * To Scale");
+		GUI.Label(new Rect(10, 70, 250, 50), "Keypad . To Destroy");
+		GUI.Label(new Rect(10, 90, 250, 50), "Page Up To Move Up");
+		GUI.Label(new Rect(10, 110, 250, 50), "Page Down To Move Down");
 
-		GUI.Box(new Rect(10, Screen.height - 160, Screen.width - 20, 110), "Placeable Objects");
+		if(!moving) {
+			GUI.Box(new Rect(10, Screen.height - 160, Screen.width - 20, 110), "Placeable Objects");
 
-		int xPosition = 20;
-		foreach(placeableObject curPlaceableObject in objects) {
-			if(curPlaceableObject.obj != null && curPlaceableObject.name != "") {
-				if(GUI.Button(new Rect(xPosition, Screen.height - 140, 64, 64), AssetPreview.GetAssetPreview(curPlaceableObject.obj))) {
-					promptAxis();
-					objectChoice = curPlaceableObject.obj;
+			int xPosition = 20;
+			foreach(placeableObject curPlaceableObject in objects) {
+				if(curPlaceableObject.obj != null && curPlaceableObject.name != "") {
+					if(GUI.Button(new Rect(xPosition, Screen.height - 140, 64, 64), AssetPreview.GetAssetPreview(curPlaceableObject.obj))) {
+						promptAxis();
+						spawnRotation = curPlaceableObject.spawnRotation;
+						objectChoice = curPlaceableObject.obj;
+					}
+					else if(Event.current.isKey && Event.current.keyCode == curPlaceableObject.combo){
+
+					}
+					GUI.Label(new Rect(xPosition, Screen.height - 70, 64, 20), curPlaceableObject.name);
+					GUI.Label(new Rect(xPosition + 2, Screen.height - 140, 64, 64), curPlaceableObject.combo.ToString());
+					xPosition += 74;
 				}
-				GUI.Label(new Rect(xPosition, Screen.height - 70, 64, 20), curPlaceableObject.name);
-				xPosition += 74;
+			}
+			if(promptingAxis) {
+				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 32, 64, 64), "Same \n 5") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad5) {
+					axisChoice = new Vector3(0, 0, 0);
+					promptingAxis = false;
+					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+				}
+
+				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 106, 64, 64), "Up \n 8") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad8) {
+					axisChoice = new Vector3(0, 1, 0);
+					promptingAxis = false;
+					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - -42, 64, 64), "Down \n 2") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad2) {
+					axisChoice = new Vector3(0, -1, 0);
+					promptingAxis = false;
+					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+				}
+
+				if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 32, 64, 64), "Left \n 4") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad4) {
+					axisChoice = new Vector3(-1, 0, 0);
+					promptingAxis = false;
+					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 32, 64, 64), "Right \n 6") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad6) {
+					axisChoice = new Vector3(1, 0, 0);
+					promptingAxis = false;
+					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+				}
+
+				if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 106, 64, 64), "Behind \n 7") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad7) {
+					axisChoice = new Vector3(0, 0, 1);
+					promptingAxis = false;
+					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 106, 64, 64), "Forth \n 9") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad9) {
+					axisChoice = new Vector3(0, 0, -1);
+					promptingAxis = false;
+					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+				}
+			}
+			if(promptingScale) {
+				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 32, 64, 64), "Same \n 5") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad5) {
+					scaleChoice = new Vector3(0, 0, 0);
+					promptingScale = false;
+					promptingScaleAmount = true;
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 106, 64, 64), "Up \n 8") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad8) {
+					scaleChoice = new Vector3(0, 1, 0);
+					promptingScale = false;
+					promptingScaleAmount = true;
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - -42, 64, 64), "Down \n 2") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad2) {
+					scaleChoice = new Vector3(0, -1, 0);
+					promptingScale = false;
+					promptingScaleAmount = true;
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 32, 64, 64), "Left \n 4") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad4) {
+					scaleChoice = new Vector3(-1, 0, 0);
+					promptingScale = false;
+					promptingScaleAmount = true;
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 32, 64, 64), "Right \n 6") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad6) {
+					scaleChoice = new Vector3(1, 0, 0);
+					promptingScale = false;
+					promptingScaleAmount = true;
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 106, 64, 64), "Behind \n 7") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad7) {
+					scaleChoice = new Vector3(0, 0, 1);
+					promptingScale = false;
+					promptingScaleAmount = true;
+				}
+				if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 106, 64, 64), "Forth \n 9") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad9) {
+					scaleChoice = new Vector3(0, 0, -1);
+					promptingScale = false;
+					promptingScaleAmount = true;
+				}
 			}
 		}
-		if(promptingAxis) {
-			if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 32, 64, 64), "Same")) {
-				axisChoice = new Vector3(0, 0, 0);
-				promptingAxis = false;
-				Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.identity);
+		if(promptingScaleAmount) {
+			if(GUI.Button(new Rect(Screen.width / 2 - 128, Screen.height / 2, 64, 64), "-")) {
+				scaleAmount -= 1;
 			}
+			else if(Event.current.isKey && Event.current.keyCode == KeyCode.KeypadMinus) {
+				scaleAmount -= 1;
+			}
+			if(GUI.Button(new Rect(Screen.width / 2 + 64, Screen.height / 2, 64, 64), "+")) {
+				scaleAmount += 1;
+			}
+			else if(Event.current.isKey && Event.current.keyCode == KeyCode.KeypadPlus) {
+				scaleAmount += 1;
+			}
+			if(GUI.Button(new Rect(Screen.width / 2 - 64, Screen.height / 2 + 64, 128, 64), "Done \n Keypad Enter") || Event.current.isKey && Event.current.keyCode == KeyCode.KeypadEnter) {
+				promptingScaleAmount = false;
+				if(scaleChoice.x > 0) {
+					scaleChoice.x += scaleAmount;
+					selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + scaleChoice.x / 2, selectedGameObject.transform.position.y + scaleChoice.y, selectedGameObject.transform.position.z + scaleChoice.z);
+					selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
+				}
+				if(scaleChoice.y > 0) {
+					scaleChoice.y += scaleAmount;
+					selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + scaleChoice.x, selectedGameObject.transform.position.y + scaleChoice.y / 2, selectedGameObject.transform.position.z + scaleChoice.z);
+					selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
+				}
+				if(scaleChoice.z > 0) {
+					scaleChoice.z += scaleAmount;
+					selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + scaleChoice.x, selectedGameObject.transform.position.y + scaleChoice.y, selectedGameObject.transform.position.z + scaleChoice.z / 2);
+					selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
+				}
+				scaleAmount = 0;
+			}
+			GUI.Label(new Rect(Screen.width / 2 - 6, Screen.height / 2 + 24, 128, 64), scaleAmount.ToString());
+		}
+		if(Event.current.keyCode == KeyCode.PageUp && !KeyCooldownPageUp) {
+			//Debug.Log("Moving Up!");
+			movingObjectYAdd += 1;
+			KeyCooldownPageUp = true;
+			EditorCoroutine.start(CooldownPageUp());
+//			EditorCoroutine.stop(CooldownPageUp());
+		}
+		if(Event.current.keyCode == KeyCode.PageDown && !KeyCooldownPageDown) {
+			//Debug.Log("Moving Down!");
+			movingObjectYAdd -= 1;
+			KeyCooldownPageDown = true;
+			EditorCoroutine.start(CooldownPageDown());
+//			EditorCoroutine.stop(CooldownPageDown());
+		}
+		if(!promptingAxis && !promptingScale && !moving && !promptingScaleAmount) {
+			if(Event.current.isKey) {
+				if(Event.current.keyCode == KeyCode.KeypadDivide) {
+					haveBlankObj = (GameObject)Instantiate(selectedGameObject, selectedGameObject.transform.position, Quaternion.identity);
+					haveBlankObj.layer = 14;
+					oldParentOfHaveBlankObj = selectedGameObject.transform.parent;
+					haveBlankObj.transform.parent = selectedGameObject.transform.parent;
+					haveBlankObj.renderer.material = LevelEditorData.instance.blankMat;
 
-			if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 106, 64, 64), "Up")) {
-				axisChoice = new Vector3(0, 1, 0);
-				promptingAxis = false;
-				Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.identity);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - -42, 64, 64), "Down")) {
-				axisChoice = new Vector3(0, -1, 0);
-				promptingAxis = false;
-				Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.identity);
-			}
+					selectedGameObject.transform.parent = movingObject.transform;
+					selectedGameObject.transform.localPosition = Vector3.zero;
+					selectedGameObject.layer = 0;
 
-			if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 32, 64, 64), "Left")) {
-				axisChoice = new Vector3(-1, 0, 0);
-				promptingAxis = false;
-				Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.identity);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 32, 64, 64), "Right")) {
-				axisChoice = new Vector3(1, 0, 0);
-				promptingAxis = false;
-				Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.identity);
-			}
-
-			if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 106, 64, 64), "Behind")) {
-				axisChoice = new Vector3(0, 0, 1);
-				promptingAxis = false;
-				Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.identity);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 106, 64, 64), "Forth")) {
-				axisChoice = new Vector3(0, 0, -1);
-				promptingAxis = false;
-				Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.identity);
-			}
-
-			if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - -42, 64, 64), "Destroy")) {
-				axisChoice = new Vector3(0, 0, 0);
-				promptingAxis = false;
-				DestroyImmediate(selectedGameObject);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - -42, 64, 64), "Scale")) {
-				axisChoice = new Vector3(0, 0, 0);
-				promptingAxis = false;
-				promptingScale = true;
+					moving = true;
+				}
+				if(Event.current.keyCode == KeyCode.KeypadMultiply) {
+					promptingScale = true;
+				}
+				if(Event.current.keyCode == KeyCode.KeypadPeriod) {
+					axisChoice = new Vector3(0, 0, 0);
+					DestroyImmediate(selectedGameObject);
+				}
 			}
 		}
-		if(promptingScale) {
-			if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 32, 64, 64), "Back")) {
-				scaleChoice = new Vector3(0, 0, 0);
-				promptingScale = false;
-				promptingAxis = true;
-				selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + 0, selectedGameObject.transform.position.y + 0, selectedGameObject.transform.position.z + 0);
-				selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
+		else if(moving) {
+			//axisChoice = new Vector3(0, 0, 0);
+			//promptingAxis = false;
+			//promptingScale = true;
+			//^ For Scale
+			//
+			//axisChoice = new Vector3(0, 0, 0);
+			//promptingAxis = false;
+			//DestroyImmediate(selectedGameObject);
+			//^ For Destroy
+			//
+			//axisChoice = new Vector3(0, 0, 0);
+			//promptingAxis = false;
+			//moving = true;
+			//
+			//haveBlankObj = (GameObject)Instantiate(selectedGameObject, selectedGameObject.transform.position, Quaternion.identity);
+			//oldParentOfHaveBlankObj = selectedGameObject.transform.parent;
+			//haveBlankObj.transform.parent = selectedGameObject.transform.parent;
+			//haveBlankObj.renderer.material = LevelEditorData.instance.blankMat;
+			//
+			//selectedGameObject.transform.parent = movingObject.transform;
+			//selectedGameObject.transform.localPosition = Vector3.zero;
+			//^ For Move
+
+			if(GUI.Button(new Rect(Screen.width / 2 - 64, Screen.height - 114, 128, 64), "Place \n Keypad Enter")) {
+				DestroyImmediate(haveBlankObj);
+				foreach (Transform child in movingObject.transform) {
+					if(child.name != "Point light") {
+						child.parent = oldParentOfHaveBlankObj;
+//						child.localScale = new Vector3(child.localScale.x + 0.1f, child.localScale.y + 0.1f, child.localScale.z + 0.1f);
+					}
+				}
+				haveBlankObj.layer = 14;
+				moving = false;
 			}
-			if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 106, 64, 64), "Up")) {
-				scaleChoice = new Vector3(0, 1, 0);
-				promptingScale = false;
-				selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + 0, selectedGameObject.transform.position.y + 0.5f, selectedGameObject.transform.position.z + 0);
-				selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - -42, 64, 64), "Down")) {
-				scaleChoice = new Vector3(0, -1, 0);
-				promptingScale = false;
-				selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + 0, selectedGameObject.transform.position.y + -0.5f, selectedGameObject.transform.position.z + 0);
-				selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 32, 64, 64), "Left")) {
-				scaleChoice = new Vector3(-1, 0, 0);
-				promptingScale = false;
-				selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + -0.5f, selectedGameObject.transform.position.y + 0, selectedGameObject.transform.position.z + 0);
-				selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 32, 64, 64), "Right")) {
-				scaleChoice = new Vector3(1, 0, 0);
-				promptingScale = false;
-				selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + 0.5f, selectedGameObject.transform.position.y + 0, selectedGameObject.transform.position.z + 0);
-				selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 106, 64, 64), "Behind")) {
-				scaleChoice = new Vector3(0, 0, 1);
-				promptingScale = false;
-				selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + 0, selectedGameObject.transform.position.y + 0, selectedGameObject.transform.position.z + 0.5f);
-				selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
-			}
-			if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 106, 64, 64), "Forth")) {
-				scaleChoice = new Vector3(0, 0, -1);
-				promptingScale = false;
-				selectedGameObject.transform.position = new Vector3(selectedGameObject.transform.position.x + 0, selectedGameObject.transform.position.y + 0, selectedGameObject.transform.position.z + -0.5f);
-				selectedGameObject.transform.localScale = new Vector3(selectedGameObject.transform.localScale.x + scaleChoice.x, selectedGameObject.transform.localScale.y + scaleChoice.y, selectedGameObject.transform.localScale.z + scaleChoice.z);
+			else if(Event.current.isKey && Event.current.keyCode == KeyCode.KeypadEnter) {
+				DestroyImmediate(haveBlankObj);
+				foreach (Transform child in movingObject.transform) {
+					if(child.name != "Point light") {
+						child.parent = oldParentOfHaveBlankObj;
+						child.gameObject.layer = 14;
+					}
+				}
+				moving = false;
 			}
 		}
 		Handles.EndGUI();
@@ -274,6 +395,22 @@ public class LevelEditor : EditorWindow {
 	}
 
 	#region Utils
+	public IEnumerator CooldownPageUp() {
+		while(true) {
+			//Debug.Log("Starting To Wait...");
+			yield return new WaitForSeconds(0.3f);
+			//Debug.Log("ENOUGH WAITING!!!");
+			KeyCooldownPageUp = false;
+		}
+	}
+	public IEnumerator CooldownPageDown() {
+		while(true) {
+			//Debug.Log("Starting To Wait...");
+			yield return new WaitForSeconds(0.3f);
+			//Debug.Log("ENOUGH WAITING!!!");
+			KeyCooldownPageDown = false;
+		}
+	}
 
 	public void promptAxis() {
 		promptingAxis = true;
