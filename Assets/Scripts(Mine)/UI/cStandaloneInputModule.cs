@@ -162,8 +162,8 @@ namespace UnityEngine.EventSystems {
 		}
 
 		private bool AllowMoveEventProcessing(float time) {
-			bool allow = cInput.GetButtonDown(m_HorizontalAxis);
-			allow |= cInput.GetButtonDown(m_VerticalAxis);
+			bool allow = cInput.GetButtonDown("Move Left") || cInput.GetButtonDown("Move Right");
+			allow |= cInput.GetButtonDown("Move Forward") || cInput.GetButtonDown("Move Backwards");
 			allow |= (time > m_NextAction);
 			return allow;
 		}
@@ -173,13 +173,13 @@ namespace UnityEngine.EventSystems {
 			move.x = cInput.GetAxisRaw(m_HorizontalAxis);
 			move.y = cInput.GetAxisRaw(m_VerticalAxis);
 
-			if(cInput.GetButtonDown(m_HorizontalAxis)) {
+			if(cInput.GetButtonDown("Move Left") || cInput.GetButtonDown("Move Right")) {
 				if(move.x < 0)
 					move.x = -1f;
 				if(move.x > 0)
 					move.x = 1f;
 			}
-			if(cInput.GetButtonDown(m_VerticalAxis)) {
+			if(cInput.GetButtonDown("Move Forward") || cInput.GetButtonDown("Move Backwards")) {
 				if(move.y < 0)
 					move.y = -1f;
 				if(move.y > 0)

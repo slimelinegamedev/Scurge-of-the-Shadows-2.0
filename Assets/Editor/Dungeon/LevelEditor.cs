@@ -144,40 +144,40 @@ public class LevelEditor : EditorWindow {
 				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 32, 64, 64), "Same \n 5") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad5) {
 					axisChoice = new Vector3(0, 0, 0);
 					promptingAxis = false;
-					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+					Instantiate(objectChoice, movingObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
 				}
 
 				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - 106, 64, 64), "Up \n 8") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad8) {
 					axisChoice = new Vector3(0, 1, 0);
 					promptingAxis = false;
-					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+					Instantiate(objectChoice, movingObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
 				}
 				if(GUI.Button(new Rect(Screen.width / 2 - 32, Screen.height / 2 - -42, 64, 64), "Down \n 2") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad2) {
 					axisChoice = new Vector3(0, -1, 0);
 					promptingAxis = false;
-					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+					Instantiate(objectChoice, movingObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
 				}
 
 				if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 32, 64, 64), "Left \n 4") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad4) {
 					axisChoice = new Vector3(-1, 0, 0);
 					promptingAxis = false;
-					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+					Instantiate(objectChoice, movingObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
 				}
 				if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 32, 64, 64), "Right \n 6") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad6) {
 					axisChoice = new Vector3(1, 0, 0);
 					promptingAxis = false;
-					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+					Instantiate(objectChoice, movingObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
 				}
 
 				if(GUI.Button(new Rect(Screen.width / 2 - 106, Screen.height / 2 - 106, 64, 64), "Behind \n 7") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad7) {
 					axisChoice = new Vector3(0, 0, 1);
 					promptingAxis = false;
-					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+					Instantiate(objectChoice, movingObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
 				}
 				if(GUI.Button(new Rect(Screen.width / 2 - -42, Screen.height / 2 - 106, 64, 64), "Forth \n 9") || Event.current.isKey && Event.current.keyCode == KeyCode.Keypad9) {
 					axisChoice = new Vector3(0, 0, -1);
 					promptingAxis = false;
-					Instantiate(objectChoice, selectedGameObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
+					Instantiate(objectChoice, movingObject.transform.position + axisChoice, Quaternion.Euler(spawnRotation.x, spawnRotation.y, spawnRotation.z));
 				}
 			}
 			if(promptingScale) {
@@ -252,14 +252,14 @@ public class LevelEditor : EditorWindow {
 			}
 			GUI.Label(new Rect(Screen.width / 2 - 6, Screen.height / 2 + 24, 128, 64), scaleAmount.ToString());
 		}
-		if(Event.current.keyCode == KeyCode.PageUp && !KeyCooldownPageUp) {
+		if(GUI.Button(new Rect(Screen.width - 74, 110, 64, 64), "Up") || Event.current.keyCode == KeyCode.PageUp && !KeyCooldownPageUp) {
 			//Debug.Log("Moving Up!");
 			movingObjectYAdd += 1;
 			KeyCooldownPageUp = true;
 			EditorCoroutine.start(CooldownPageUp());
 //			EditorCoroutine.stop(CooldownPageUp());
 		}
-		if(Event.current.keyCode == KeyCode.PageDown && !KeyCooldownPageDown) {
+		if(GUI.Button(new Rect(Screen.width - 74, 194, 64, 64), "Down") || Event.current.keyCode == KeyCode.PageDown && !KeyCooldownPageDown) {
 			//Debug.Log("Moving Down!");
 			movingObjectYAdd -= 1;
 			KeyCooldownPageDown = true;

@@ -2,10 +2,13 @@ Alpha 0.2.0 - Version Assassin
 UI Overhaul, now works on different resolutions
 New UI skinning, looks way better!
 Inventory equipping lots now have labels beside them, instead of an outline
+Better and cooler spells
 Fixed Item dupe bug
 Title screen now more weathered
 Changed Indev to Alpha, Indev was not the word to be using in development
 Added Mana, no more rapid spam spells ;)
+Mana now regens itself
+Staff particles
 Staffs now use spell items for casting spells
 Added multiple spells for the staff
 Added loading indicator for level generation (Suggested by omg_ketchup on reddit)
@@ -33,8 +36,10 @@ Removed options from startup menu, now in pause menu (default escape)
 Changed new floor loading screen, cant see game at edge when in different resoultion
 
 For developers
-New Unity version - Must Have Unity Version 4.6.0 or later to contribute
+New Unity version - Must Have Unity Version 4.6.2 or later to contribute
 Added new item creator window, for easy custom Item creation
+You can now more easily and better make custom spells, still WIP
+Spells can now have a particle on the staff
 Meshes now combine in Editor, not during runtime. except for one :D
 All tiles combine into one large tile at runtime
 Item Editor window now has an icon

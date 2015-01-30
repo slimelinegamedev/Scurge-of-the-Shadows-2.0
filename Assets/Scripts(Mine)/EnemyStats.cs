@@ -92,7 +92,7 @@ namespace Scurge.Enemy {
 					StartCoroutine(HurtFlash());
 				}
 				else if(CurrentEnemyHealth < 1) {
-					Die(Dead, 0.0f, DeathParticle);
+					Die(Dead, 0.5f, DeathParticle);
 				}
 			}
 		}
@@ -112,7 +112,8 @@ namespace Scurge.Enemy {
 
 			sound.Play();
 			particle.Play();
-			
+
+//			transform.parent.gameObject.AddComponent<Rigidbody>().AddForce(Objects.Player.transform.forward);
 			Destroy(self, timer);
 		}
 		IEnumerator ParticleBlast(ParticleSystem particles, float WaitTime) {
@@ -140,6 +141,7 @@ namespace Scurge.Enemy {
 			yield return new WaitForSeconds(0.1f);
 			light.gameObject.SetActive(false);
 		}
+
 		IEnumerator SpawnMinions() {
 			while(true) {
 				print("Trying To Spawn!");

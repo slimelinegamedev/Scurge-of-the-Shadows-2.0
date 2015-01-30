@@ -48,8 +48,7 @@ namespace Scurge.Player {
 		RingRed = 5,
 		DaggerThrowing = 6,
 		SpellRedGlow = 7,
-		SpellRepair = 8,
-		SpellDeflection = 9
+		SpellRepair = 8
 	}
 
 	public enum Ring {
@@ -70,7 +69,7 @@ namespace Scurge.Player {
 
 	#region Structs
 	[System.Serializable]
-	public struct Spell {
+	public class Spell {
 		public string name;
 		public bool hasParticle;
 		public GameObject particle;
@@ -510,6 +509,7 @@ namespace Scurge.Player {
 					}
 					else if(slot - 16 == 1) {
 						print("Using Equipping Slot 1");
+						Destroy(curStaff.currentStaffParticle);
 						if(curItemType == ItemType.Spell) {
 							if(EquippedItems [slot - 16] != Item.None) {
 								if(Moving) {
@@ -666,6 +666,7 @@ namespace Scurge.Player {
 					}
 				}
 			}
+			SpellSet();
 		}
 
 		public void ApplyStats() {
@@ -708,11 +709,37 @@ namespace Scurge.Player {
 				}
 			}
 		}
+
+		public void SpellSet() {
+			Destroy(curStaff.currentStaffParticle);
+
+			if(heldItems[(int)EquippedItems[1]].UsingCustomSpells) {
+				if(EquippedItems[1] == Item.None) {
+					curStaff.ChangeCustomSpells(new HeldItem());
+				}
+				if(EquippedItems[1] != Item.None) {
+					curStaff.ChangeCustomSpells(heldItems[(int)EquippedItems[1]]);
+				}
+			}
+			else {
+				if(EquippedItems[1] == Item.None) {
+					curStaff.ChangeSpell(new Spell());
+				}
+				if(EquippedItems[1] != Item.None) {
+					curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
+				}
+			}
+		}
 		#endregion
 
 		#region Methods
 		void Start() {
-			curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
+			if(heldItems[(int)EquippedItems[1]].UsingCustomSpells) {
+				curStaff.ChangeCustomSpells(heldItems[(int)EquippedItems[1]]);
+			}
+			else {
+				curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
+			}
 			DragImage.gameObject.SetActive(false);
 		}
 
@@ -724,12 +751,6 @@ namespace Scurge.Player {
 			else {
 				Screen.showCursor = true;
 				Screen.lockCursor = false;
-				if(EquippedItems[1] == Item.None) {
-					curStaff.ChangeSpell(new Spell());
-				}
-				if(EquippedItems[1] != Item.None) {
-					curStaff.ChangeSpell(heldItems[(int)EquippedItems[1]].spell);
-				}
 			}
 			if(Moving) {
 				DragImage.transform.localPosition = SlotPositions [CurrentSelectedSlot];

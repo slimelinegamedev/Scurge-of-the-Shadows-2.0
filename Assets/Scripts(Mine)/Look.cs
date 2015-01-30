@@ -11,6 +11,9 @@ namespace Scurge.Util {
 		void Start() {
 			initialRotation = transform.rotation.z;
 			initialRotationX = transform.rotation.x;
+			if(camera == null) {
+				print("I Have No Camera! Im " + gameObject.name + " And My Parent Is " + transform.parent + "! Help Me!!!");
+			}
 		}
 	 
 		void Update() {

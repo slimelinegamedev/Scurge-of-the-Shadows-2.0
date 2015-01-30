@@ -55,17 +55,15 @@ namespace Scurge.Player {
 				return false;
 			}
 		}
-		IEnumerator ManaRegen() {
-			while(true) {
-				RegenMana(ManaRegenAmount);
-				yield return new WaitForSeconds(ManaRegenWait);
-			}
-		}
 		#endregion
 
 		#region Unity Methods
+
+		void Awake() {
+			StartRegen();
+		}
+
 		void Start() {
-			StartCoroutine(ManaRegen());
 			Highscore = GameObject.Find("Highscore").GetComponent<Highscore>();
 		}
 
@@ -135,10 +133,7 @@ namespace Scurge.Player {
 
 		#region Giving/Restoring
 		public void RegenMana(int amount) {
-			if(Mana < MaxMana) {
-				Mana += amount;
-			}
-			print("Regening!");
+			Mana = Mana + amount;
 		}
 		public void GiveGold(int amount) {
 			Gold += amount;
@@ -232,6 +227,17 @@ namespace Scurge.Player {
 				Countdown = 0;
 			}
 		}
+
+		public void StartRegen() {
+			InvokeRepeating("ManaRegen", 2, ManaRegenWait);
+		}
+		
+		void ManaRegen() {
+			print("Regening Mana Part 1!");
+			RegenMana(ManaRegenAmount);
+			print("Regening Mana Wait!");
+		}
+
 		#endregion
 	}
 }

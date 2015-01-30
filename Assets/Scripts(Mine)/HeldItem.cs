@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Scurge.Util;
 using Scurge.Player;
 using Scurge.Enemy;
@@ -25,13 +26,52 @@ namespace Scurge.Player {
 		Nothing = 4
 	}
 
+	public enum SpellShape {
+		AreaOfEffect,
+		Beam,
+		Binding,
+		Channel,
+		Projectile,
+		Self,
+		Touch,
+		Wall
+	}
+
+	public enum SpellAttackType {
+		Earth,
+		Fire,
+		Water,
+		Air,
+		Electricity,
+		Poison,
+		Heal
+	}
+
+	[System.Serializable]
+	public class CustomSpell {
+		public string EditorLabel = "Label";
+
+		public SpellShape shape;
+		public SpellAttackType attackType;
+		public AudioSource sound;
+
+		public bool SHOWING_IN_EDITOR = false;
+	}
+
 	public class HeldItem : MonoBehaviour {
 
 		public Inventory Inventory;
 		public Stats Stats;
 		public EnemyStats EnemyStats;
 		public Type ItemType;
+		public bool IsStaff = false;
 		public Spell spell;
+
+		public bool UsingCustomSpells = false;
+		public GameObject StaffParticle;
+		public List<CustomSpell> CustomSpells = new List<CustomSpell>() {
+			new CustomSpell()
+		};
 		public Side ItemSide;
 		public Command ItemCommand;
 		public Item item;
@@ -55,10 +95,30 @@ namespace Scurge.Player {
 		public Animation SwingAnimation;
 		public Pause Pause;
 
+		public GameObject currentStaffParticle;
+		public bool HasPutStaffParticle = false;
+
 		//TODO: Make cooldown work when not hitting the enemy
+		//TODO: Make the new spells actually work now
 
 		public void ChangeSpell(Spell spellToChangeTo) {
+			Inventory.curStaff.UsingCustomSpells = false;
+			Inventory.curStaff.CustomSpells = new List<CustomSpell>() {
+				new CustomSpell()
+			};
 			spell = spellToChangeTo;
+		}
+
+		public void ChangeCustomSpells(HeldItem heldItem) {
+			Inventory.curStaff.UsingCustomSpells = true;
+			Inventory.curStaff.spell = null;
+			Inventory.curStaff.CustomSpells = heldItem.CustomSpells;
+
+			GameObject newStaffParticle = (GameObject)Instantiate(heldItem.StaffParticle, Vector3.zero, heldItem.StaffParticle.transform.rotation);
+			newStaffParticle.transform.parent = Inventory.curStaff.transform;
+			newStaffParticle.transform.localPosition = new Vector3(0, 0.00158f, 0);
+
+			Inventory.curStaff.currentStaffParticle = newStaffParticle;
 		}
 
 		void Update() {
@@ -76,27 +136,37 @@ namespace Scurge.Player {
 						}
 
 						if(!Cooldown) {
-							if(ItemType == Type.Melee) {
-								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+							if(!UsingCustomSpells) {
+								if(ItemType == Type.Melee) {
+									EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+								}
+								else if(ItemCommand == Command.Throw) {
+									ThrowProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+								}
+								else if(ItemCommand == Command.Spell) {
+									UseSpell(spell);
+								}
 							}
-							else if(ItemCommand == Command.Throw) {
-								ThrowProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
-							}
-							else if(ItemCommand == Command.Spell) {
-								UseSpell(spell);
+							else {
+								UseCustomSpell(CustomSpells);
 							}
 						}
 						else if(Cooldown) {
-							if(ItemType == Type.Melee) {
-								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+							if(!UsingCustomSpells) {
+								if(ItemType == Type.Melee) {
+									EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+								}
+								else if(ItemCommand == Command.Throw) {
+									ThrowProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+								}
+								else if(ItemCommand == Command.Spell) {
+									UseSpell(spell);
+								}
+								StartCoroutine(SwingCool(CooldownTime));
 							}
-							else if(ItemCommand == Command.Throw) {
-								ThrowProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+							else {
+								UseCustomSpell(CustomSpells);
 							}
-							else if(ItemCommand == Command.Spell) {
-								UseSpell(spell);
-							}
-							StartCoroutine(SwingCool(CooldownTime));
 						}
 						if(HasAnimation) {
 							if(CanSwing) {
@@ -131,27 +201,37 @@ namespace Scurge.Player {
 						}
 
 						if(!Cooldown) {
-							if(ItemType == Type.Melee) {
-								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+							if(!UsingCustomSpells) {
+								if(ItemType == Type.Melee) {
+									EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+								}
+								else if(ItemCommand == Command.Throw) {
+									ThrowProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+								}
+								else if(ItemCommand == Command.Spell) {
+									UseSpell(spell);
+								}
 							}
-							else if(ItemCommand == Command.Throw) {
-								ThrowProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
-							}
-							else if(ItemCommand == Command.Spell) {
-								UseSpell(spell);
+							else {
+								UseCustomSpell(CustomSpells);
 							}
 						}
 						else if(Cooldown) {
-							if(ItemType == Type.Melee) {
-								EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+							if(!UsingCustomSpells) {
+								if(ItemType == Type.Melee) {
+									EnemyStats.DealDamage(Random.Range(DamageMin, DamageMax));
+								}
+								else if(ItemCommand == Command.Throw) {
+									ThrowProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+								}
+								else if(ItemCommand == Command.Spell) {
+									UseSpell(spell);
+								}
+								StartCoroutine(SwingCool(CooldownTime));
 							}
-							else if(ItemCommand == Command.Throw) {
-								ThrowProjectile(Projectile, Objects.Player.transform.position + Objects.Camera.transform.TransformDirection(Vector3.forward) + new Vector3(0, 0.7f, 0), Objects.Camera.transform.TransformDirection(Vector3.forward), 2000);
+							else {
+								UseCustomSpell(CustomSpells);
 							}
-							else if(ItemCommand == Command.Spell) {
-								UseSpell(spell);
-							}
-							StartCoroutine(SwingCool(CooldownTime));
 						}
 						if(HasAnimation) {
 							if(CanSwing) {
@@ -187,11 +267,6 @@ namespace Scurge.Player {
 			if(ShowUses) {
 				GUI.Label(new Rect(1200, 690, 100, 25), Uses + " / " + MaxUses);
 			}
-		}
-
-		void ThrowProjectile(GameObject Projectile, Vector3 Position, Vector3 Direction, int Power) {
-			var NewProjectile = (GameObject)Instantiate(Projectile, Position, transform.rotation);
-			NewProjectile.transform.rigidbody.AddForce(Direction * Power);
 		}
 
 		public GameObject lastSpawnedParticle;
@@ -235,6 +310,15 @@ namespace Scurge.Player {
 				#endregion
 				print("Using Spell!");
 			}
+		}
+
+		public void UseCustomSpell(List<CustomSpell> customSpells) {
+
+		}
+
+		void ThrowProjectile(GameObject Projectile, Vector3 Position, Vector3 Direction, int Power) {
+			var NewProjectile = (GameObject)Instantiate(Projectile, Position, transform.rotation);
+			NewProjectile.transform.rigidbody.AddForce(Direction * Power);
 		}
 
 		IEnumerator Wait(float time) {
