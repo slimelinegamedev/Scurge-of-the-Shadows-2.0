@@ -273,7 +273,7 @@ public class LevelEditor : EditorWindow {
 					haveBlankObj.layer = 14;
 					oldParentOfHaveBlankObj = selectedGameObject.transform.parent;
 					haveBlankObj.transform.parent = selectedGameObject.transform.parent;
-					haveBlankObj.renderer.material = LevelEditorData.instance.blankMat;
+					haveBlankObj.GetComponent<Renderer>().material = LevelEditorData.instance.blankMat;
 
 					selectedGameObject.transform.parent = movingObject.transform;
 					selectedGameObject.transform.localPosition = Vector3.zero;

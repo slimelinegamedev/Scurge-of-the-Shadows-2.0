@@ -192,14 +192,14 @@ namespace Scurge.Util {
 					Objects.PauseObject.SetActive(true);
 					PauseAnimator.SetTrigger("Pause");
 					Disable.DisableObj(true, false);
-					Screen.showCursor = true;
+					Cursor.visible = true;
 					Time.timeScale = 0;
 				}
 				else if(!Open) {
 					PauseAnimator.SetTrigger("Pause");
 					Disable.EnableObj(true, false);
 					Time.timeScale = 1;
-					Screen.showCursor = false;
+					Cursor.visible = false;
 					Objects.PauseObject.SetActive(false);
 				}
 			}

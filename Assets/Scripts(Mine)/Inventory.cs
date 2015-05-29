@@ -302,7 +302,7 @@ namespace Scurge.Player {
 
 		public void ThrowItem(Item thrower) {
 			var ThrownItem = (GameObject)Instantiate(ThrownObjects [(int)thrower], transform.position, transform.rotation);
-			ThrownItem.transform.rigidbody.AddForce(Objects.Camera.transform.TransformDirection(Vector3.forward) * 500);
+			ThrownItem.transform.GetComponent<Rigidbody>().AddForce(Objects.Camera.transform.TransformDirection(Vector3.forward) * 500);
 		}
 		public void ThrowMovingItem() {
 			if(Moving) {
@@ -315,7 +315,7 @@ namespace Scurge.Player {
 				Moving = false;
 
 				//Throw
-				ThrownItem.transform.rigidbody.AddForce(Objects.Camera.transform.TransformDirection(Vector3.forward) * 500);
+				ThrownItem.transform.GetComponent<Rigidbody>().AddForce(Objects.Camera.transform.TransformDirection(Vector3.forward) * 500);
 			}
 			else {
 				print("Nothing moving to throw");
@@ -745,11 +745,11 @@ namespace Scurge.Player {
 
 		void Update() {
 			if(!InventoryOpen) {
-				Screen.showCursor = false;
+				Cursor.visible = false;
 				Screen.lockCursor = true;
 			}
 			else {
-				Screen.showCursor = true;
+				Cursor.visible = true;
 				Screen.lockCursor = false;
 			}
 			if(Moving) {
@@ -768,14 +768,14 @@ namespace Scurge.Player {
 			if(cInput.GetKeyDown("Inventory") && !Moving && !Pause.Open) {
 				InventoryOpen = !InventoryOpen;
 				if(InventoryOpen) {
-					Screen.showCursor = true;
+					Cursor.visible = true;
 					Screen.lockCursor = false;
 					Disable.DisableObj(false, false);
 					print("Enabling(Showing) Inventory");
 					Objects.UIInventory.SetActive(true);
 				}
 				else if(!InventoryOpen) {
-					Screen.showCursor = false;
+					Cursor.visible = false;
 					Screen.lockCursor = true;
 					Disable.EnableObj(false, false);
 					print("Disabling(Hiding) Inventory");

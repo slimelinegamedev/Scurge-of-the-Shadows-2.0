@@ -4,7 +4,7 @@ using System.Collections;
 namespace Scurge.Util {
 	public class Culling : MonoBehaviour {
 		void Update() {
-			if(!renderer.isVisible) {
+			if(!GetComponent<Renderer>().isVisible) {
 				gameObject.GetComponent<Renderer>().enabled = false;
 			}
 			else {

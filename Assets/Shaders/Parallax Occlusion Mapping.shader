@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'glstate.matrix.mvp' with 'UNITY_MATRIX_MVP'
+
 Shader "Relief_Correct_Silhouettes" {
 	Properties {
 		_MainTex ("Color Map", 		2D) = "white" {} 
@@ -11,7 +13,8 @@ Shader "Relief_Correct_Silhouettes" {
 		_LightPosition ("Light Position", Vector) = (-10,10,-10,1)
 		_LightColor ("Light Color", Color) = (1,1,1,1)
 	}
-	SubShader 
+	#warning Upgrade NOTE: SubShader commented out; uses _ObjectSpaceCameraPos which was removed. You can try computing that from _WorldSpaceCameraPos.
+/*SubShader 
 	{
         Pass     
         {
@@ -64,7 +67,7 @@ v2f vertex_shader(a2v In)
 	
 	float4 pos = float4(In.vertex.xyz, 1.0);
 	
-	Out.hpos 		= mul(glstate.matrix.mvp, pos);
+	Out.hpos 		= mul(UNITY_MATRIX_MVP, pos);
 	Out.texcoord 	= In.texCoord.xy*_Tile;;	
 
 	float3 In_binormal = cross( In.normal, In.tangent.xyz )*In.tangent.w;
@@ -212,5 +215,5 @@ f2s main_relief(v2f IN)
 
 ENDCG //----------        
         } // Pass  
-	} // SubShader  
+	}*/ // SubShader  
 } // Shader

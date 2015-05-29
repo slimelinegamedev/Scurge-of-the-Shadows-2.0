@@ -27,7 +27,7 @@ namespace Scurge.Util {
 		public Text CodeNameText;
 
 		IEnumerator Start() {
-		        	VersionCheckWWW = new WWW("http://zaegames-drabweb.rhcloud.com/SotS_2/version.txt");
+		        	VersionCheckWWW = new WWW("http://zaegames-drabweb.rhcloud.com/sots/version.txt");
 		        	yield return VersionCheckWWW;
 		}
 
@@ -50,7 +50,7 @@ namespace Scurge.Util {
 			}
 		}
 		public void OpenDownload() {
-			Application.OpenURL("http://zaegames-drabweb.rhcloud.com/SotS_2/");
+			Application.OpenURL("http://zaegames-drabweb.rhcloud.com/sots/");
 		}
 	}
 }

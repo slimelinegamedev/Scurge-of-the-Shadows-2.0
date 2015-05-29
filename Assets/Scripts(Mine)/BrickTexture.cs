@@ -18,13 +18,13 @@ namespace Scurge.Environment {
 			int WhichTex = Random.Range(0, 300);
 
 			if(WhichTex >= 150) {
-				gameObject.renderer.material = Textures[0];
+				gameObject.GetComponent<Renderer>().material = Textures[0];
 			}
 			else if(WhichTex < 150 && WhichTex >= 250) {
-				gameObject.renderer.material = Textures[1];
+				gameObject.GetComponent<Renderer>().material = Textures[1];
 			}
 			else if(WhichTex < 250) {
-				gameObject.renderer.material = Textures[2];
+				gameObject.GetComponent<Renderer>().material = Textures[2];
 			}
 		} 
 	}

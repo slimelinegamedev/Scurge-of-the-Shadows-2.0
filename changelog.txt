@@ -8,7 +8,7 @@ Title screen now more weathered
 Changed Indev to Alpha, Indev was not the word to be using in development
 Added Mana, no more rapid spam spells ;)
 Mana now regens itself
-Staff particles
+Staff particlesD
 Staffs now use spell items for casting spells
 Added multiple spells for the staff
 Added loading indicator for level generation (Suggested by omg_ketchup on reddit)

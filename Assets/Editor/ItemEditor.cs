@@ -146,6 +146,12 @@ namespace Scurge.Editor {
 						else {
 							EditorGUI.indentLevel++;
 							CurrentHeldItem.StaffParticle = (GameObject)EditorGUILayout.ObjectField("Staff Particle", CurrentHeldItem.StaffParticle, typeof(GameObject));
+							CurrentHeldItem.usingMasterSound = EditorGUILayout.Toggle("Using Single Sound", CurrentHeldItem.usingMasterSound);
+							if(CurrentHeldItem.usingMasterSound) {
+								EditorGUI.indentLevel++;
+								CurrentHeldItem.masterSound = (AudioSource)EditorGUILayout.ObjectField("Sound", CurrentHeldItem.masterSound, typeof(AudioSource), true);
+								EditorGUI.indentLevel--;
+							}
 							EditorGUI.indentLevel--;
 							GUILayout.Space(5);
 							#region Custom Spells
@@ -271,7 +277,9 @@ namespace Scurge.Editor {
 
 					customSpells[iterateCustomSpells].attackType = (SpellAttackType)EditorGUILayout.EnumPopup("Spell Attack Type", customSpells[iterateCustomSpells].attackType);
 
-					customSpells[iterateCustomSpells].sound = (AudioSource)EditorGUILayout.ObjectField("Sound", customSpells[iterateCustomSpells].sound, typeof(AudioSource), true);
+					if(!heldItem.usingMasterSound) {
+						customSpells[iterateCustomSpells].sound = (AudioSource)EditorGUILayout.ObjectField("Sound", customSpells[iterateCustomSpells].sound, typeof(AudioSource), true);
+					}
 
 					if(iterateCustomSpells > 0) {
 						if(GUILayout.Button("Delete This Custom Spell")) {

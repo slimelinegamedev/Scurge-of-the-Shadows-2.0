@@ -76,7 +76,7 @@ public class TexturePackTexture : MonoBehaviour {
 			yield return download;
 			texture.SetTexture("_BumpMap", NormalMapGen.CreateDOT3(download.texture, 0.5f, 0.01f));
 
-			renderer.material = texture;
+			GetComponent<Renderer>().material = texture;
 
 			Texture2D BumpMap = (Texture2D)texture.GetTexture("_BumpMap");
 			Texture2D MainTex = (Texture2D)texture.GetTexture("_MainTex");
@@ -86,7 +86,7 @@ public class TexturePackTexture : MonoBehaviour {
 			texture.SetTexture("_MainTex", MainTex);
 		}
 		else  {
-			renderer.material = defaultTex;
+			GetComponent<Renderer>().material = defaultTex;
 		}
 	}
 }

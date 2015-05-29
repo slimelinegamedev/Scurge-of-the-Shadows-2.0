@@ -82,7 +82,7 @@ namespace Scurge.Player {
 			}
 			if(Dead) {
 				bool HasDied = false;
-				Screen.showCursor = true;
+				Cursor.visible = true;
 				Screen.lockCursor = false;
 				if(!HasDied) {
 					StartCoroutine(CountdownTimer());

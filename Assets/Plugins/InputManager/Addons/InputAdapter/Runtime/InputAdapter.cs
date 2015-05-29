@@ -552,7 +552,7 @@ namespace TeamUtility.IO
 			_inputDevice = inpuDevice;
 			if(inpuDevice == InputDevice.Joystick)
 			{
-				Screen.showCursor = false;
+				Cursor.visible = false;
 				InputManager.SetConfiguration(_joystickConfiguration);
 #if UNITY_EDITOR
 				Debug.Log("Current Input Device: Joystick");
@@ -560,7 +560,7 @@ namespace TeamUtility.IO
 			}
 			else
 			{
-				Screen.showCursor = true;
+				Cursor.visible = true;
 				InputManager.SetConfiguration(_keyboardConfiguration);
 #if UNITY_EDITOR
 				Debug.Log("Current Input Device: KeyboardAndMouse");
@@ -604,7 +604,7 @@ namespace TeamUtility.IO
 		
 		private void OnDestroy()
 		{
-			Screen.showCursor = true;
+			Cursor.visible = true;
 			StopAllCoroutines();
 		}
 	}

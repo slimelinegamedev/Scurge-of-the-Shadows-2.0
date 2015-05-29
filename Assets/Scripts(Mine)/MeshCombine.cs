@@ -32,7 +32,7 @@ public class MeshCombine : MonoBehaviour {
 
 		for (int i=0;i<filters.Length;i++) {
 			MeshFilter filter = (MeshFilter)filters[i];
-			Renderer curRenderer  = filters[i].renderer;
+			Renderer curRenderer  = filters[i].GetComponent<Renderer>();
 			MeshCombineUtility.MeshInstance instance = new MeshCombineUtility.MeshInstance ();
 			instance.mesh = filter.sharedMesh;
 			if (curRenderer != null && curRenderer.enabled && instance.mesh != null) {
@@ -69,16 +69,16 @@ public class MeshCombine : MonoBehaviour {
 				if (obj.GetComponent(typeof(MeshFilter)) == null)
 					obj.AddComponent(typeof(MeshFilter));
 				if (!obj.GetComponent("MeshRenderer"))
-					obj.AddComponent("MeshRenderer");
+					obj.AddComponent<MeshRenderer>();
 
 				MeshFilter filter = (MeshFilter)obj.GetComponent(typeof(MeshFilter));
 				filter.mesh = MeshCombineUtility.Combine(instances, generateTriangleStrips);
-				obj.renderer.material = (Material)de.Key;
-				obj.renderer.enabled = true;
-				obj.renderer.castShadows = castShadows;
-				obj.renderer.receiveShadows = receiveShadows;
+				obj.GetComponent<Renderer>().material = (Material)de.Key;
+				obj.GetComponent<Renderer>().enabled = true;
+				obj.GetComponent<Renderer>().castShadows = castShadows;
+				obj.GetComponent<Renderer>().receiveShadows = receiveShadows;
 				obj.AddComponent<MeshCollider>();
-				obj.renderer.material = mat;
+				obj.GetComponent<Renderer>().material = mat;
 				if(addCollider) {
 					obj.AddComponent<MeshCollider>();
 				}
@@ -93,8 +93,8 @@ public class MeshCombine : MonoBehaviour {
 				go.transform.localRotation = Quaternion.identity;
 				go.transform.localPosition = Vector3.zero;
 				go.AddComponent(typeof(MeshFilter));
-				go.AddComponent("MeshRenderer");
-				go.renderer.material = (Material)de.Key;
+				go.AddComponent<MeshRenderer>();
+				go.GetComponent<Renderer>().material = (Material)de.Key;
 				MeshFilter filter = (MeshFilter)go.GetComponent(typeof(MeshFilter));
 				filter.mesh = MeshCombineUtility.Combine(instances, generateTriangleStrips);
 				go.AddComponent<MeshCollider>();

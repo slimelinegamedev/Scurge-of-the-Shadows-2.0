@@ -15,7 +15,7 @@ public class CameraZoom : MonoBehaviour
 	
 	void Start ()
 	{
-		SetBaseFOV(camera.fieldOfView);
+		SetBaseFOV(GetComponent<Camera>().fieldOfView);
 	}
 	
 	void Update ()
@@ -34,7 +34,7 @@ public class CameraZoom : MonoBehaviour
 	
 	private void UpdateZoom()
 	{
-		camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, targetFOV, zoomSpeed * Time.deltaTime);
+		GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView, targetFOV, zoomSpeed * Time.deltaTime);
 	}
 	
 	public void SetBaseFOV(float fov)

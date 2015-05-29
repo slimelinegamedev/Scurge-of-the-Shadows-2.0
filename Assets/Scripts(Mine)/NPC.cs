@@ -58,7 +58,7 @@ namespace Scurge.Environment {
 				}
 			}
 			if(Interacting) {
-				Screen.showCursor = true;
+				Cursor.visible = true;
 				Screen.lockCursor = false;
 			}
 		}
@@ -71,7 +71,7 @@ namespace Scurge.Environment {
 				GUI.Box(new Rect(415, 110, 450, 500), "Trades");
 				if(GUI.Button(new Rect(425, 140, 430, 50), "Exit")) {
 					Disable.EnableObj(true, false);
-					Screen.showCursor = false;
+					Cursor.visible = false;
 					Screen.lockCursor = true;
 					Interacting = false;
 				}

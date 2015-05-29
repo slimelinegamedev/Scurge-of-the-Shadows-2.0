@@ -52,13 +52,18 @@ namespace Scurge.Enemy {
 			HurtParticle.Stop();
 			DeathParticle.Stop();
 			StartCoroutine(CanHurt());
-			StartCoroutine(SpawnMinions());
 		}
 
 		void Update() {
 			if(CanAttack && InRange) {
 				Stats.Hurt(Random.Range(MinDamage, MaxDamage));
 				CanAttack = false;
+			}
+			if(self.gameObject.GetComponent<Renderer>().isVisible) {
+				StartCoroutine(SpawnMinions());
+			}
+			else if(!self.gameObject.GetComponent<Renderer>().isVisible) {
+				StopCoroutine(SpawnMinions());
 			}
 		}
 
@@ -141,7 +146,6 @@ namespace Scurge.Enemy {
 			yield return new WaitForSeconds(0.1f);
 			light.gameObject.SetActive(false);
 		}
-
 		IEnumerator SpawnMinions() {
 			while(true) {
 				print("Trying To Spawn!");

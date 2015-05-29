@@ -42,6 +42,7 @@ namespace Scurge.Player {
 		Fire,
 		Water,
 		Air,
+		Time,
 		Electricity,
 		Poison,
 		Heal
@@ -95,6 +96,8 @@ namespace Scurge.Player {
 		public Animation SwingAnimation;
 		public Pause Pause;
 
+		public bool usingMasterSound = false;
+		public AudioSource masterSound;
 		public GameObject currentStaffParticle;
 		public bool HasPutStaffParticle = false;
 
@@ -148,7 +151,7 @@ namespace Scurge.Player {
 								}
 							}
 							else {
-								UseCustomSpell(CustomSpells);
+								UseCustomSpell(this);
 							}
 						}
 						else if(Cooldown) {
@@ -165,7 +168,7 @@ namespace Scurge.Player {
 								StartCoroutine(SwingCool(CooldownTime));
 							}
 							else {
-								UseCustomSpell(CustomSpells);
+								UseCustomSpell(this);
 							}
 						}
 						if(HasAnimation) {
@@ -213,7 +216,7 @@ namespace Scurge.Player {
 								}
 							}
 							else {
-								UseCustomSpell(CustomSpells);
+								UseCustomSpell(this);
 							}
 						}
 						else if(Cooldown) {
@@ -230,7 +233,7 @@ namespace Scurge.Player {
 								StartCoroutine(SwingCool(CooldownTime));
 							}
 							else {
-								UseCustomSpell(CustomSpells);
+								UseCustomSpell(this);
 							}
 						}
 						if(HasAnimation) {
@@ -312,13 +315,402 @@ namespace Scurge.Player {
 			}
 		}
 
-		public void UseCustomSpell(List<CustomSpell> customSpells) {
+		public void UseCustomSpell(HeldItem heldItem) {
+			if(heldItem.usingMasterSound) {
+				heldItem.masterSound.Play();
+			}
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.shape) {
+					case SpellShape.AreaOfEffect:
+						//AoE
+						AreaOfEffectSpell(heldItem);
+						break;
+					
+					case SpellShape.Beam:
+						//Beam
+						BeamSpell(heldItem);
+						break;
 
+					case SpellShape.Binding:
+						//Binding
+						BindingSpell(heldItem);
+						break;
+
+					case SpellShape.Channel:
+						//Channel
+						ChannelSpell(heldItem);
+						break;
+
+					case SpellShape.Projectile:
+						//Projectile
+						ProjectileSpell(heldItem);
+						break;
+
+					case SpellShape.Self:
+						//Self
+						SelfSpell(heldItem);
+						break;
+
+					case SpellShape.Touch:
+						//Touch
+						TouchSpell(heldItem);
+						break;
+
+					case SpellShape.Wall:
+						//Wall
+						WallSpell(heldItem);
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
 		}
+
+		#region Custom Spell Functions
+
+		public void AreaOfEffectSpell(HeldItem heldItem) {
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.attackType) {
+					case SpellAttackType.Air:
+						//Air
+						break;
+
+					case SpellAttackType.Earth:
+						//Earth
+						break;
+
+					case SpellAttackType.Electricity:
+						//Electricity
+						break;
+
+					case SpellAttackType.Fire:
+						//Fire
+						break;
+
+					case SpellAttackType.Water:
+						//Water
+						break;
+
+					case SpellAttackType.Heal:
+						//Heal
+						break;
+
+					case SpellAttackType.Poison:
+						//Poison
+						break;
+
+					case SpellAttackType.Time:
+						//Time
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
+		}
+
+		public void BeamSpell(HeldItem heldItem) {
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.attackType) {
+					case SpellAttackType.Air:
+						//Air
+						break;
+
+					case SpellAttackType.Earth:
+						//Earth
+						break;
+
+					case SpellAttackType.Electricity:
+						//Electricity
+						break;
+
+					case SpellAttackType.Fire:
+						//Fire
+						break;
+
+					case SpellAttackType.Water:
+						//Water
+						break;
+
+					case SpellAttackType.Heal:
+						//Heal
+						break;
+
+					case SpellAttackType.Poison:
+						//Poison
+						break;
+
+					case SpellAttackType.Time:
+						//Time
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
+		}
+
+		public void BindingSpell(HeldItem heldItem) {
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.attackType) {
+					case SpellAttackType.Air:
+						//Air
+						break;
+
+					case SpellAttackType.Earth:
+						//Earth
+						break;
+
+					case SpellAttackType.Electricity:
+						//Electricity
+						break;
+
+					case SpellAttackType.Fire:
+						//Fire
+						break;
+
+					case SpellAttackType.Water:
+						//Water
+						break;
+
+					case SpellAttackType.Heal:
+						//Heal
+						break;
+
+					case SpellAttackType.Poison:
+						//Poison
+						break;
+
+					case SpellAttackType.Time:
+						//Time
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
+		}
+
+		public void ChannelSpell(HeldItem heldItem) {
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.attackType) {
+					case SpellAttackType.Air:
+						//Air
+						break;
+
+					case SpellAttackType.Earth:
+						//Earth
+						break;
+
+					case SpellAttackType.Electricity:
+						//Electricity
+						break;
+
+					case SpellAttackType.Fire:
+						//Fire
+						break;
+
+					case SpellAttackType.Water:
+						//Water
+						break;
+
+					case SpellAttackType.Heal:
+						//Heal
+						break;
+
+					case SpellAttackType.Poison:
+						//Poison
+						break;
+
+					case SpellAttackType.Time:
+						//Time
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
+		}
+
+		public void ProjectileSpell(HeldItem heldItem) {
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.attackType) {
+					case SpellAttackType.Air:
+						//Air
+						break;
+
+					case SpellAttackType.Earth:
+						//Earth
+						break;
+
+					case SpellAttackType.Electricity:
+						//Electricity
+						break;
+
+					case SpellAttackType.Fire:
+						//Fire
+						break;
+
+					case SpellAttackType.Water:
+						//Water
+						break;
+
+					case SpellAttackType.Heal:
+						//Heal
+						break;
+
+					case SpellAttackType.Poison:
+						//Poison
+						break;
+
+					case SpellAttackType.Time:
+						//Time
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
+		}
+
+		public void SelfSpell(HeldItem heldItem) {
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.attackType) {
+					case SpellAttackType.Air:
+						//Air
+						break;
+
+					case SpellAttackType.Earth:
+						//Earth
+						break;
+
+					case SpellAttackType.Electricity:
+						//Electricity
+						break;
+
+					case SpellAttackType.Fire:
+						//Fire
+						break;
+
+					case SpellAttackType.Water:
+						//Water
+						break;
+
+					case SpellAttackType.Heal:
+						//Heal
+						break;
+
+					case SpellAttackType.Poison:
+						//Poison
+						break;
+
+					case SpellAttackType.Time:
+						//Time
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
+		}
+
+		public void TouchSpell(HeldItem heldItem) {
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.attackType) {
+					case SpellAttackType.Air:
+						//Air
+						break;
+
+					case SpellAttackType.Earth:
+						//Earth
+						break;
+
+					case SpellAttackType.Electricity:
+						//Electricity
+						break;
+
+					case SpellAttackType.Fire:
+						//Fire
+						break;
+
+					case SpellAttackType.Water:
+						//Water
+						break;
+
+					case SpellAttackType.Heal:
+						//Heal
+						break;
+
+					case SpellAttackType.Poison:
+						//Poison
+						break;
+
+					case SpellAttackType.Time:
+						//Time
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
+		}
+
+		public void WallSpell(HeldItem heldItem) {
+			foreach(CustomSpell customSpell in heldItem.CustomSpells) {
+				switch(customSpell.attackType) {
+					case SpellAttackType.Air:
+						//Air
+						break;
+
+					case SpellAttackType.Earth:
+						//Earth
+						break;
+
+					case SpellAttackType.Electricity:
+						//Electricity
+						break;
+
+					case SpellAttackType.Fire:
+						//Fire
+						break;
+
+					case SpellAttackType.Water:
+						//Water
+						break;
+
+					case SpellAttackType.Heal:
+						//Heal
+						break;
+
+					case SpellAttackType.Poison:
+						//Poison
+						break;
+
+					case SpellAttackType.Time:
+						//Time
+						break;
+
+					default:
+						Debug.LogError("How Did You Manage This Bug? Tell Me How On GitHub!");
+						return;
+				}
+			}
+		}
+
+		#endregion
 
 		void ThrowProjectile(GameObject Projectile, Vector3 Position, Vector3 Direction, int Power) {
 			var NewProjectile = (GameObject)Instantiate(Projectile, Position, transform.rotation);
-			NewProjectile.transform.rigidbody.AddForce(Direction * Power);
+			NewProjectile.transform.GetComponent<Rigidbody>().AddForce(Direction * Power);
 		}
 
 		IEnumerator Wait(float time) {
